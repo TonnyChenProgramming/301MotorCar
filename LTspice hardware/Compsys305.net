@@ -1,0 +1,27 @@
+* C:\LocalProject\301MotorCar\LTspice hardware\Compsys305.asc
+V1 N001 0 5
+C1 Vfiltered N002 150nf
+R2 Vfiltered 0 100k
+R1 N002 0 50k
+I1 N001 N002 SINE(88uA 2uA 100)
+V2 V5 0 5
+R3 V5 V_1volt 40k
+R4 V_1volt 0 10k
+XU2 N003 V_1volt V5 0 Vsch LM324
+R9 N003 Vsin 10K
+R10 Vsch N003 160K
+V3 Vsin 0 SINE(0 1.27 100)
+C2 Vdc 0 150nf
+R5 Vdc Vsch 100k
+XU1 N004 V_1volt V5 0 Vout LM324
+R6 N004 Vdc 100k
+R7 Vout N004 100k
+.tran 0 1 0 0.1ms
+* Phototransistor Circuit & Filter circuit
+* Voltage Divder Circuit
+.lib LM324.lib
+* Schmitt trigger
+* RC filter to convert PWM wave into DC wave
+* DC wave to digital Output
+.backanno
+.end
