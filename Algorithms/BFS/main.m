@@ -6,26 +6,33 @@ m = map_convert('map_1.txt');
 plotmap(m);
 
 % Start & goal positions in [row, col] format
-startPos = [14, 2]; % Example start (row 14, col 2)
-goalPos  = [2, 17]; % Example goal (row 2, col 17)
+startPos = [2, 2]; % Example start (row 14, col 2)
+goalPos  = [14, 14]; % Example goal (row 2, col 17)
 
-% Run BFS
-path = bfs_grid(m, startPos, goalPos);
+% Run BFS (now returns both final path and visit order)
+[path, visitCoords] = bfs_grid(m, startPos, goalPos);
 
-% Display result
+% === Figure 1: Path only ===
 if ~isempty(path)
     disp('Path found by BFS:');
     disp(path);
 
-    % Plot path on the map
     figure;
-    plotmap(m, path);
+    plotmap(m, path); % Your existing plotmap draws steps for coordinates
+    title('Shortest Path Found by BFS');
 else
     disp('No path found.');
 end
 
-%% BFS function for a grid map
-function path = bfs_grid(map, startPos, goalPos)
+% === Figure 2: Full BFS exploration order ===
+if ~isempty(visitCoords)
+    figure;
+    plotmap(m, visitCoords);
+    title('BFS Exploration Order (Numbered Steps)');
+end
+
+%% BFS function for a grid map (records visit order)
+function [path, visitCoords] = bfs_grid(map, startPos, goalPos)
     rows = size(map, 1);
     cols = size(map, 2);
 
@@ -37,6 +44,7 @@ function path = bfs_grid(map, startPos, goalPos)
     queue = startPos;
     visited(startPos(1), startPos(2)) = true;
 
+    visitCoords = startPos; % First visited cell is the start
     found = false;
 
     while ~isempty(queue)
@@ -57,6 +65,7 @@ function path = bfs_grid(map, startPos, goalPos)
                 visited(nr, nc) = true;
                 parent(nr, nc, :) = current;
                 queue(end+1, :) = [nr, nc];
+                visitCoords = [visitCoords; nr, nc]; % Record visit order
             end
         end
     end
