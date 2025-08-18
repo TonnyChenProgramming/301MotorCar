@@ -7,12 +7,15 @@ I1 N001 N002 SINE(88uA 2uA 100)
 V2 V5 0 5
 R3 V5 V_halfVolt 270k
 R4 V_halfVolt 0 30k
-XU2 Vsin V_halfVolt V5 0 Vsch LM324
+XU2 N003 V_halfVolt V5 0 Vsch LM324
 V3 Vsin 0 SINE(0 1.27 100)
 C2 Vdc 0 150nf
 R5 Vdc Vsch 100k
 XLM324 Vdc V_halfVolt V5 0 Vout LM324
 R8 V5 GPIO 1k
+D1 Vsin N003 D
+.model D D
+.lib C:\Users\cta10\AppData\Local\LTspice\lib\cmp\standard.dio
 .tran 0 1 0 0.1ms
 * Phototransistor Circuit & Filter circuit
 * Voltage Divder Circuit
