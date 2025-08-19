@@ -39,7 +39,7 @@ int main()
 // --------------------------------    
 // ----- INITIALIZATIONS ----------
     CYGlobalIntEnable;
-    PWM_1_Start();
+    //PWM_1_Start();
     //PWM_2_Start();
     //isr_eoc2_Start();
     //ADC_SAR_1_Start();
@@ -64,11 +64,19 @@ int main()
             usbPutString(line);
             flag_KB_string = 0;
         }
-        if (sample_flag){
-            uint8 adc_val = ADC_SAR_1_GetResult8();
-            VDAC_SetValue(adc_val);
-            sample_flag = 0;
-        }
+        //if (sample_flag){
+            //uint8 adc_val = ADC_SAR_1_GetResult8();
+            //VDAC_SetValue(adc_val);
+            //sample_flag = 0;
+        //}
+                // --- minimal OUT1 read + print ---
+        char buf[16];
+        sprintf(buf, "OUT1=%d\r\n", OUT1_Read());
+        usbPutString(buf);
+        // ---------------------------------
+
+        CyDelay(100); // add a small delay to avoid flooding USB terminal
+        
     }   
 }
 //* ========================================

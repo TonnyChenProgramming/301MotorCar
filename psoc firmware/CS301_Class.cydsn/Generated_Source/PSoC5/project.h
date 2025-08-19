@@ -94,6 +94,8 @@
 #include "isr_eoc2.h"
 #include "V_ADC_in_aliases.h"
 #include "V_ADC_in.h"
+#include "OUT1_aliases.h"
+#include "OUT1.h"
 #include "QuadDec_M1_Cnt16.h"
 #include "QuadDec_M2_Cnt16.h"
 #include "ADC_SAR.h"
