@@ -1,15 +1,13 @@
-function [retmap, retvisited, retsteps] = dijkstra(mapfile, startlocation, targetlocation)
+function [retmap, retvisited, retsteps] = a_star(mapfile, startlocation, targetlocation)
 % Dijkstra's Algorithm Pathfinding
-% mapfile       : filename of the map (e.g. 'map_1.txt')
-% startlocation : [row col] start
-% targetlocation: [row col] goal
-%
+
+
 % retmap     : map matrix (0 = free, 1 = wall)
 % retvisited : 0 = visited, 1 = not visited
 % retsteps   : ordered path [row col] from start to goal
 
     % Load map from file
-    retmap = map_convert(mapfile);
+    retmap = map_convert(mapfile); %returns a binary map
     [ROWS, COLS] = size(retmap);
 
     % Initialise visited (1 = not visited, 0 = visited)
