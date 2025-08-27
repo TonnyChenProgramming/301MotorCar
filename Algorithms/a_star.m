@@ -1,82 +1,84 @@
 function [retmap, retvisited, retsteps] = a_star(mapfile, startlocation, targetlocation)
-% Dijkstra's Algorithm Pathfinding
+%A* is the best algorithm for our case because it is a one to one algorithm, more efficient due to the heuristic and doesnt calculate unnecessary paths
 
-
-% retmap     : map matrix (0 = free, 1 = wall)
-% retvisited : 0 = visited, 1 = not visited
-% retsteps   : ordered path [row col] from start to goal
-
-    % Load map from file
-    retmap = map_convert(mapfile); %returns a binary map
+    % Read map
+    retmap = map_convert(mapfile);
     [ROWS, COLS] = size(retmap);
 
-    % Initialise visited (1 = not visited, 0 = visited)
+    % 1 means not visited, 0 means visited
     visited = ones(ROWS, COLS);
 
-    % Distance from start to each cell (infinite to start with)
+    % Distance from start
     dist = inf(ROWS, COLS);
     dist(startlocation(1), startlocation(2)) = 0;
 
-    % Parent for path reconstruction
+    % For tracing the path
     parent = cell(ROWS, COLS);
 
-    % Open list: [row col distance]
+    % List of cells to check next
     openList = [startlocation 0];
 
     found = false;
 
+    % Manhattan distance to goal
+    heuristic = @(r, c, goal) abs(r - goal(1)) + abs(c - goal(2));
+
+
     while ~isempty(openList)
-        % Pick node with smallest distance
+    % Pick cell with lowest cost
         [~, idx] = min(openList(:,3));
         current = openList(idx, 1:2);
-        openList(idx,:) = []; % remove from list
+        openList(idx,:) = [];
 
         r = current(1);
         c = current(2);
 
-        % If target found, stop
+    % Stop if at goal
         if isequal(current, targetlocation)
             found = true;
             break;
         end
 
-        % Skip if already visited
+    % Skip visited cells
         if visited(r,c) == 0
             continue;
         end
 
-        % Mark visited
+    % Mark as visited
         visited(r,c) = 0;
 
-        % Check 4 neighbours (up, right, down, left)
+    % Check up, right, down, left
         neighbours = [r-1, c; r, c+1; r+1, c; r, c-1];
 
         for k = 1:4
             nr = neighbours(k,1);
             nc = neighbours(k,2);
 
-            % Skip if out of bounds
+            % Out of bounds
             if nr < 1 || nr > ROWS || nc < 1 || nc > COLS
                 continue;
             end
 
-            % Skip if wall
+            % Wall
             if retmap(nr,nc) == 1
                 continue;
             end
 
-            % New distance
-            newDist = dist(r,c) + 1; % cost = 1 for each step
+            % Distance to neighbour
+            newDist = dist(r,c) + 1;
+            hCost = heuristic(nr, nc, targetlocation);
+            totalCost = newDist + hCost;
 
+            % Update if better
             if newDist < dist(nr,nc)
                 dist(nr,nc) = newDist;
                 parent{nr,nc} = [r c];
-                openList = [openList; nr nc newDist];
+                openList = [openList; nr nc totalCost];
             end
         end
     end
 
-    % Reconstruct path
+    % Build path
     retsteps = [];
     if found
         path = targetlocation;
@@ -86,6 +88,6 @@ function [retmap, retvisited, retsteps] = a_star(mapfile, startlocation, targetl
         retsteps = path;
     end
 
-    % Output visited in correct format
+    % Return visited
     retvisited = visited;
 end

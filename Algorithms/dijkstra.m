@@ -1,65 +1,66 @@
 function [retmap, retvisited, retsteps] = dijkstra(mapfile, startlocation, targetlocation)
-    % Load map from file
+%dijkstra is not the best because it calculates one to all paths, innefficient.
+    % Read map
     retmap = map_convert(mapfile);
     [ROWS, COLS] = size(retmap);
 
-    % Initialise visited (1 = not visited, 0 = visited)
+    % 1 means not visited, 0 means visited
     visited = ones(ROWS, COLS);
 
-    % Distance from start to each cell (infinite to start with)
+    % Distance from start
     dist = inf(ROWS, COLS);
     dist(startlocation(1), startlocation(2)) = 0;
 
-    % Parent for path reconstruction
+    % For tracing the path
     parent = cell(ROWS, COLS);
 
-    % Open list: [row col distance]
+    % List of cells to check next
     openList = [startlocation 0];
 
     found = false;
 
     while ~isempty(openList)
-        % Pick node with smallest distance
+    % Pick cell with smallest distance
         [~, idx] = min(openList(:,3));
         current = openList(idx, 1:2);
-        openList(idx,:) = []; % remove from list
+    openList(idx,:) = [];
 
         r = current(1);
         c = current(2);
 
-        % If target found, stop
+    % Stop if at goal
         if isequal(current, targetlocation)
             found = true;
             break;
         end
 
-        % Skip if already visited
+    % Skip visited cells
         if visited(r,c) == 0
             continue;
         end
 
-        % Mark visited
+    % Mark as visited
         visited(r,c) = 0;
 
-        % Check 4 neighbours (up, right, down, left)
+    % Check up, right, down, left
         neighbours = [r-1, c; r, c+1; r+1, c; r, c-1];
 
         for k = 1:4
             nr = neighbours(k,1);
             nc = neighbours(k,2);
 
-            % Skip if out of bounds
+            % Out of bounds
             if nr < 1 || nr > ROWS || nc < 1 || nc > COLS
                 continue;
             end
 
-            % Skip if wall
+            % Wall
             if retmap(nr,nc) == 1
                 continue;
             end
 
-            % New distance
-            newDist = dist(r,c) + 1; % cost = 1 for each step
+            % Distance to neighbour
+            newDist = dist(r,c) + 1;
 
             if newDist < dist(nr,nc)
                 dist(nr,nc) = newDist;
@@ -69,7 +70,7 @@ function [retmap, retvisited, retsteps] = dijkstra(mapfile, startlocation, targe
         end
     end
 
-    % Reconstruct path
+    % Build path
     retsteps = [];
     if found
         path = targetlocation;
@@ -79,6 +80,6 @@ function [retmap, retvisited, retsteps] = dijkstra(mapfile, startlocation, targe
         retsteps = path;
     end
 
-    % Output visited in correct format
+    % Return visited
     retvisited = visited;
 end
