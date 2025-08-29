@@ -1,4 +1,4 @@
-function [retmap, retvisited, retsteps] = dijkstra(mapfile, startlocation, targetlocation)
+function [retmap, retvisited, retsteps, all] = dijkstra(mapfile, startlocation, targetlocation)
 %dijkstra is not the best because it calculates one to all paths, innefficient.
     % Read map
     retmap = map_convert(mapfile);
@@ -16,6 +16,9 @@ function [retmap, retvisited, retsteps] = dijkstra(mapfile, startlocation, targe
 
     % List of cells to check next
     openList = [startlocation 0];
+
+    % Setup all steps
+    all = [];
 
     found = false;
 
@@ -41,6 +44,9 @@ function [retmap, retvisited, retsteps] = dijkstra(mapfile, startlocation, targe
 
     % Mark as visited
         visited(r,c) = 0;
+
+    %update all steps
+    all = [all; r c];
 
     % Check up, right, down, left
         neighbours = [r-1, c; r, c+1; r+1, c; r, c-1];
