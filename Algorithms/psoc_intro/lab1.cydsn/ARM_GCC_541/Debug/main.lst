@@ -1,0 +1,506 @@
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccSHZare.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.main,"ax",%progbits
+  20              		.align	2
+  21              		.global	main
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	main, %function
+  25              	main:
+  26              	.LFB63:
+  27              		.file 1 "main.c"
+   1:main.c        **** 
+   2:main.c        **** /* ========================================
+   3:main.c        ****  * Laboratory Exercise 1
+   4:main.c        ****  *
+   5:main.c        ****  * Build and download project
+   6:main.c        ****  * Push SW1 to light led
+   7:main.c        ****  * 
+   8:main.c        ****  * Copyright Univ of Auckland, 2016
+   9:main.c        ****  * All Rights Reserved
+  10:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+  11:main.c        ****  *
+  12:main.c        ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+  13:main.c        ****  * WHICH IS THE PROPERTY OF Univ of Auckland.
+  14:main.c        ****  *
+  15:main.c        ****  * ========================================
+  16:main.c        **** */
+  17:main.c        **** #include <project.h>
+  18:main.c        **** 
+  19:main.c        **** int main()
+  20:main.c        **** {
+  28              		.loc 1 20 0
+  29              		.cfi_startproc
+  30              		@ Volatile: function does not return.
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  21:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccSHZare.s 			page 2
+
+
+  37              		.loc 1 21 0
+  38              		.syntax unified
+  39              	@ 21 "main.c" 1
+  40 0002 62B6     		CPSIE   i
+  41              	@ 0 "" 2
+  22:main.c        **** 
+  23:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  24:main.c        ****     LED_Write(1);
+  42              		.loc 1 24 0
+  43              		.thumb
+  44              		.syntax unified
+  45 0004 0120     		movs	r0, #1
+  46 0006 FFF7FEFF 		bl	LED_Write
+  47              	.LVL0:
+  48              	.L2:
+  49 000a FEE7     		b	.L2
+  50              		.cfi_endproc
+  51              	.LFE63:
+  52              		.size	main, .-main
+  53              		.text
+  54              	.Letext0:
+  55              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+  56              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+  57              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+  58              		.file 5 "Generated_Source\\PSoC5/LED.h"
+  59              		.section	.debug_info,"",%progbits
+  60              	.Ldebug_info0:
+  61 0000 E6000000 		.4byte	0xe6
+  62 0004 0400     		.2byte	0x4
+  63 0006 00000000 		.4byte	.Ldebug_abbrev0
+  64 000a 04       		.byte	0x4
+  65 000b 01       		.uleb128 0x1
+  66 000c 3A000000 		.4byte	.LASF16
+  67 0010 0C       		.byte	0xc
+  68 0011 2E000000 		.4byte	.LASF17
+  69 0015 17010000 		.4byte	.LASF18
+  70 0019 00000000 		.4byte	.Ldebug_ranges0+0
+  71 001d 00000000 		.4byte	0
+  72 0021 00000000 		.4byte	.Ldebug_line0
+  73 0025 02       		.uleb128 0x2
+  74 0026 01       		.byte	0x1
+  75 0027 06       		.byte	0x6
+  76 0028 70010000 		.4byte	.LASF0
+  77 002c 02       		.uleb128 0x2
+  78 002d 01       		.byte	0x1
+  79 002e 08       		.byte	0x8
+  80 002f FB000000 		.4byte	.LASF1
+  81 0033 02       		.uleb128 0x2
+  82 0034 02       		.byte	0x2
+  83 0035 05       		.byte	0x5
+  84 0036 98010000 		.4byte	.LASF2
+  85 003a 02       		.uleb128 0x2
+  86 003b 02       		.byte	0x2
+  87 003c 07       		.byte	0x7
+  88 003d 0E000000 		.4byte	.LASF3
+  89 0041 03       		.uleb128 0x3
+  90 0042 88010000 		.4byte	.LASF9
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccSHZare.s 			page 3
+
+
+  91 0046 02       		.byte	0x2
+  92 0047 3F       		.byte	0x3f
+  93 0048 4C000000 		.4byte	0x4c
+  94 004c 02       		.uleb128 0x2
+  95 004d 04       		.byte	0x4
+  96 004e 05       		.byte	0x5
+  97 004f 0E010000 		.4byte	.LASF4
+  98 0053 02       		.uleb128 0x2
+  99 0054 04       		.byte	0x4
+ 100 0055 07       		.byte	0x7
+ 101 0056 D2000000 		.4byte	.LASF5
+ 102 005a 02       		.uleb128 0x2
+ 103 005b 08       		.byte	0x8
+ 104 005c 05       		.byte	0x5
+ 105 005d 00000000 		.4byte	.LASF6
+ 106 0061 02       		.uleb128 0x2
+ 107 0062 08       		.byte	0x8
+ 108 0063 07       		.byte	0x7
+ 109 0064 E4000000 		.4byte	.LASF7
+ 110 0068 04       		.uleb128 0x4
+ 111 0069 04       		.byte	0x4
+ 112 006a 05       		.byte	0x5
+ 113 006b 696E7400 		.ascii	"int\000"
+ 114 006f 02       		.uleb128 0x2
+ 115 0070 04       		.byte	0x4
+ 116 0071 07       		.byte	0x7
+ 117 0072 21000000 		.4byte	.LASF8
+ 118 0076 03       		.uleb128 0x3
+ 119 0077 A2010000 		.4byte	.LASF10
+ 120 007b 03       		.byte	0x3
+ 121 007c 2C       		.byte	0x2c
+ 122 007d 41000000 		.4byte	0x41
+ 123 0081 02       		.uleb128 0x2
+ 124 0082 04       		.byte	0x4
+ 125 0083 04       		.byte	0x4
+ 126 0084 92010000 		.4byte	.LASF11
+ 127 0088 02       		.uleb128 0x2
+ 128 0089 08       		.byte	0x8
+ 129 008a 04       		.byte	0x4
+ 130 008b 5C010000 		.4byte	.LASF12
+ 131 008f 02       		.uleb128 0x2
+ 132 0090 01       		.byte	0x1
+ 133 0091 08       		.byte	0x8
+ 134 0092 09010000 		.4byte	.LASF13
+ 135 0096 02       		.uleb128 0x2
+ 136 0097 04       		.byte	0x4
+ 137 0098 07       		.byte	0x7
+ 138 0099 AA010000 		.4byte	.LASF14
+ 139 009d 02       		.uleb128 0x2
+ 140 009e 08       		.byte	0x8
+ 141 009f 04       		.byte	0x4
+ 142 00a0 7C010000 		.4byte	.LASF15
+ 143 00a4 05       		.uleb128 0x5
+ 144 00a5 35000000 		.4byte	.LASF19
+ 145 00a9 01       		.byte	0x1
+ 146 00aa 13       		.byte	0x13
+ 147 00ab 68000000 		.4byte	0x68
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccSHZare.s 			page 4
+
+
+ 148 00af 00000000 		.4byte	.LFB63
+ 149 00b3 0C000000 		.4byte	.LFE63-.LFB63
+ 150 00b7 01       		.uleb128 0x1
+ 151 00b8 9C       		.byte	0x9c
+ 152 00b9 CD000000 		.4byte	0xcd
+ 153 00bd 06       		.uleb128 0x6
+ 154 00be 0A000000 		.4byte	.LVL0
+ 155 00c2 DE000000 		.4byte	0xde
+ 156 00c6 07       		.uleb128 0x7
+ 157 00c7 01       		.uleb128 0x1
+ 158 00c8 50       		.byte	0x50
+ 159 00c9 01       		.uleb128 0x1
+ 160 00ca 31       		.byte	0x31
+ 161 00cb 00       		.byte	0
+ 162 00cc 00       		.byte	0
+ 163 00cd 08       		.uleb128 0x8
+ 164 00ce 63010000 		.4byte	.LASF20
+ 165 00d2 04       		.byte	0x4
+ 166 00d3 1207     		.2byte	0x712
+ 167 00d5 D9000000 		.4byte	0xd9
+ 168 00d9 09       		.uleb128 0x9
+ 169 00da 76000000 		.4byte	0x76
+ 170 00de 0A       		.uleb128 0xa
+ 171 00df C8000000 		.4byte	.LASF21
+ 172 00e3 C8000000 		.4byte	.LASF21
+ 173 00e7 05       		.byte	0x5
+ 174 00e8 26       		.byte	0x26
+ 175 00e9 00       		.byte	0
+ 176              		.section	.debug_abbrev,"",%progbits
+ 177              	.Ldebug_abbrev0:
+ 178 0000 01       		.uleb128 0x1
+ 179 0001 11       		.uleb128 0x11
+ 180 0002 01       		.byte	0x1
+ 181 0003 25       		.uleb128 0x25
+ 182 0004 0E       		.uleb128 0xe
+ 183 0005 13       		.uleb128 0x13
+ 184 0006 0B       		.uleb128 0xb
+ 185 0007 03       		.uleb128 0x3
+ 186 0008 0E       		.uleb128 0xe
+ 187 0009 1B       		.uleb128 0x1b
+ 188 000a 0E       		.uleb128 0xe
+ 189 000b 55       		.uleb128 0x55
+ 190 000c 17       		.uleb128 0x17
+ 191 000d 11       		.uleb128 0x11
+ 192 000e 01       		.uleb128 0x1
+ 193 000f 10       		.uleb128 0x10
+ 194 0010 17       		.uleb128 0x17
+ 195 0011 00       		.byte	0
+ 196 0012 00       		.byte	0
+ 197 0013 02       		.uleb128 0x2
+ 198 0014 24       		.uleb128 0x24
+ 199 0015 00       		.byte	0
+ 200 0016 0B       		.uleb128 0xb
+ 201 0017 0B       		.uleb128 0xb
+ 202 0018 3E       		.uleb128 0x3e
+ 203 0019 0B       		.uleb128 0xb
+ 204 001a 03       		.uleb128 0x3
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccSHZare.s 			page 5
+
+
+ 205 001b 0E       		.uleb128 0xe
+ 206 001c 00       		.byte	0
+ 207 001d 00       		.byte	0
+ 208 001e 03       		.uleb128 0x3
+ 209 001f 16       		.uleb128 0x16
+ 210 0020 00       		.byte	0
+ 211 0021 03       		.uleb128 0x3
+ 212 0022 0E       		.uleb128 0xe
+ 213 0023 3A       		.uleb128 0x3a
+ 214 0024 0B       		.uleb128 0xb
+ 215 0025 3B       		.uleb128 0x3b
+ 216 0026 0B       		.uleb128 0xb
+ 217 0027 49       		.uleb128 0x49
+ 218 0028 13       		.uleb128 0x13
+ 219 0029 00       		.byte	0
+ 220 002a 00       		.byte	0
+ 221 002b 04       		.uleb128 0x4
+ 222 002c 24       		.uleb128 0x24
+ 223 002d 00       		.byte	0
+ 224 002e 0B       		.uleb128 0xb
+ 225 002f 0B       		.uleb128 0xb
+ 226 0030 3E       		.uleb128 0x3e
+ 227 0031 0B       		.uleb128 0xb
+ 228 0032 03       		.uleb128 0x3
+ 229 0033 08       		.uleb128 0x8
+ 230 0034 00       		.byte	0
+ 231 0035 00       		.byte	0
+ 232 0036 05       		.uleb128 0x5
+ 233 0037 2E       		.uleb128 0x2e
+ 234 0038 01       		.byte	0x1
+ 235 0039 3F       		.uleb128 0x3f
+ 236 003a 19       		.uleb128 0x19
+ 237 003b 03       		.uleb128 0x3
+ 238 003c 0E       		.uleb128 0xe
+ 239 003d 3A       		.uleb128 0x3a
+ 240 003e 0B       		.uleb128 0xb
+ 241 003f 3B       		.uleb128 0x3b
+ 242 0040 0B       		.uleb128 0xb
+ 243 0041 49       		.uleb128 0x49
+ 244 0042 13       		.uleb128 0x13
+ 245 0043 8701     		.uleb128 0x87
+ 246 0045 19       		.uleb128 0x19
+ 247 0046 11       		.uleb128 0x11
+ 248 0047 01       		.uleb128 0x1
+ 249 0048 12       		.uleb128 0x12
+ 250 0049 06       		.uleb128 0x6
+ 251 004a 40       		.uleb128 0x40
+ 252 004b 18       		.uleb128 0x18
+ 253 004c 9742     		.uleb128 0x2117
+ 254 004e 19       		.uleb128 0x19
+ 255 004f 01       		.uleb128 0x1
+ 256 0050 13       		.uleb128 0x13
+ 257 0051 00       		.byte	0
+ 258 0052 00       		.byte	0
+ 259 0053 06       		.uleb128 0x6
+ 260 0054 898201   		.uleb128 0x4109
+ 261 0057 01       		.byte	0x1
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccSHZare.s 			page 6
+
+
+ 262 0058 11       		.uleb128 0x11
+ 263 0059 01       		.uleb128 0x1
+ 264 005a 31       		.uleb128 0x31
+ 265 005b 13       		.uleb128 0x13
+ 266 005c 00       		.byte	0
+ 267 005d 00       		.byte	0
+ 268 005e 07       		.uleb128 0x7
+ 269 005f 8A8201   		.uleb128 0x410a
+ 270 0062 00       		.byte	0
+ 271 0063 02       		.uleb128 0x2
+ 272 0064 18       		.uleb128 0x18
+ 273 0065 9142     		.uleb128 0x2111
+ 274 0067 18       		.uleb128 0x18
+ 275 0068 00       		.byte	0
+ 276 0069 00       		.byte	0
+ 277 006a 08       		.uleb128 0x8
+ 278 006b 34       		.uleb128 0x34
+ 279 006c 00       		.byte	0
+ 280 006d 03       		.uleb128 0x3
+ 281 006e 0E       		.uleb128 0xe
+ 282 006f 3A       		.uleb128 0x3a
+ 283 0070 0B       		.uleb128 0xb
+ 284 0071 3B       		.uleb128 0x3b
+ 285 0072 05       		.uleb128 0x5
+ 286 0073 49       		.uleb128 0x49
+ 287 0074 13       		.uleb128 0x13
+ 288 0075 3F       		.uleb128 0x3f
+ 289 0076 19       		.uleb128 0x19
+ 290 0077 3C       		.uleb128 0x3c
+ 291 0078 19       		.uleb128 0x19
+ 292 0079 00       		.byte	0
+ 293 007a 00       		.byte	0
+ 294 007b 09       		.uleb128 0x9
+ 295 007c 35       		.uleb128 0x35
+ 296 007d 00       		.byte	0
+ 297 007e 49       		.uleb128 0x49
+ 298 007f 13       		.uleb128 0x13
+ 299 0080 00       		.byte	0
+ 300 0081 00       		.byte	0
+ 301 0082 0A       		.uleb128 0xa
+ 302 0083 2E       		.uleb128 0x2e
+ 303 0084 00       		.byte	0
+ 304 0085 3F       		.uleb128 0x3f
+ 305 0086 19       		.uleb128 0x19
+ 306 0087 3C       		.uleb128 0x3c
+ 307 0088 19       		.uleb128 0x19
+ 308 0089 6E       		.uleb128 0x6e
+ 309 008a 0E       		.uleb128 0xe
+ 310 008b 03       		.uleb128 0x3
+ 311 008c 0E       		.uleb128 0xe
+ 312 008d 3A       		.uleb128 0x3a
+ 313 008e 0B       		.uleb128 0xb
+ 314 008f 3B       		.uleb128 0x3b
+ 315 0090 0B       		.uleb128 0xb
+ 316 0091 00       		.byte	0
+ 317 0092 00       		.byte	0
+ 318 0093 00       		.byte	0
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccSHZare.s 			page 7
+
+
+ 319              		.section	.debug_aranges,"",%progbits
+ 320 0000 1C000000 		.4byte	0x1c
+ 321 0004 0200     		.2byte	0x2
+ 322 0006 00000000 		.4byte	.Ldebug_info0
+ 323 000a 04       		.byte	0x4
+ 324 000b 00       		.byte	0
+ 325 000c 0000     		.2byte	0
+ 326 000e 0000     		.2byte	0
+ 327 0010 00000000 		.4byte	.LFB63
+ 328 0014 0C000000 		.4byte	.LFE63-.LFB63
+ 329 0018 00000000 		.4byte	0
+ 330 001c 00000000 		.4byte	0
+ 331              		.section	.debug_ranges,"",%progbits
+ 332              	.Ldebug_ranges0:
+ 333 0000 00000000 		.4byte	.LFB63
+ 334 0004 0C000000 		.4byte	.LFE63
+ 335 0008 00000000 		.4byte	0
+ 336 000c 00000000 		.4byte	0
+ 337              		.section	.debug_line,"",%progbits
+ 338              	.Ldebug_line0:
+ 339 0000 5F010000 		.section	.debug_str,"MS",%progbits,1
+ 339      02004801 
+ 339      00000201 
+ 339      FB0E0D00 
+ 339      01010101 
+ 340              	.LASF6:
+ 341 0000 6C6F6E67 		.ascii	"long long int\000"
+ 341      206C6F6E 
+ 341      6720696E 
+ 341      7400
+ 342              	.LASF3:
+ 343 000e 73686F72 		.ascii	"short unsigned int\000"
+ 343      7420756E 
+ 343      7369676E 
+ 343      65642069 
+ 343      6E7400
+ 344              	.LASF8:
+ 345 0021 756E7369 		.ascii	"unsigned int\000"
+ 345      676E6564 
+ 345      20696E74 
+ 345      00
+ 346              	.LASF17:
+ 347 002e 6D61696E 		.ascii	"main.c\000"
+ 347      2E6300
+ 348              	.LASF19:
+ 349 0035 6D61696E 		.ascii	"main\000"
+ 349      00
+ 350              	.LASF16:
+ 351 003a 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 351      43313120 
+ 351      352E342E 
+ 351      31203230 
+ 351      31363036 
+ 352 006d 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 352      20726576 
+ 352      6973696F 
+ 352      6E203233 
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccSHZare.s 			page 8
+
+
+ 352      37373135 
+ 353 00a0 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 353      66756E63 
+ 353      74696F6E 
+ 353      2D736563 
+ 353      74696F6E 
+ 354              	.LASF21:
+ 355 00c8 4C45445F 		.ascii	"LED_Write\000"
+ 355      57726974 
+ 355      6500
+ 356              	.LASF5:
+ 357 00d2 6C6F6E67 		.ascii	"long unsigned int\000"
+ 357      20756E73 
+ 357      69676E65 
+ 357      6420696E 
+ 357      7400
+ 358              	.LASF7:
+ 359 00e4 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 359      206C6F6E 
+ 359      6720756E 
+ 359      7369676E 
+ 359      65642069 
+ 360              	.LASF1:
+ 361 00fb 756E7369 		.ascii	"unsigned char\000"
+ 361      676E6564 
+ 361      20636861 
+ 361      7200
+ 362              	.LASF13:
+ 363 0109 63686172 		.ascii	"char\000"
+ 363      00
+ 364              	.LASF4:
+ 365 010e 6C6F6E67 		.ascii	"long int\000"
+ 365      20696E74 
+ 365      00
+ 366              	.LASF18:
+ 367 0117 433A5C70 		.ascii	"C:\\psocProjects\\psoc student pack\\lab exercise\\"
+ 367      736F6350 
+ 367      726F6A65 
+ 367      6374735C 
+ 367      70736F63 
+ 368 0146 70736F63 		.ascii	"psoc_intro\\lab1.cydsn\000"
+ 368      5F696E74 
+ 368      726F5C6C 
+ 368      6162312E 
+ 368      63796473 
+ 369              	.LASF12:
+ 370 015c 646F7562 		.ascii	"double\000"
+ 370      6C6500
+ 371              	.LASF20:
+ 372 0163 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 372      52784275 
+ 372      66666572 
+ 372      00
+ 373              	.LASF0:
+ 374 0170 7369676E 		.ascii	"signed char\000"
+ 374      65642063 
+ 374      68617200 
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccSHZare.s 			page 9
+
+
+ 375              	.LASF15:
+ 376 017c 6C6F6E67 		.ascii	"long double\000"
+ 376      20646F75 
+ 376      626C6500 
+ 377              	.LASF9:
+ 378 0188 5F5F696E 		.ascii	"__int32_t\000"
+ 378      7433325F 
+ 378      7400
+ 379              	.LASF11:
+ 380 0192 666C6F61 		.ascii	"float\000"
+ 380      7400
+ 381              	.LASF2:
+ 382 0198 73686F72 		.ascii	"short int\000"
+ 382      7420696E 
+ 382      7400
+ 383              	.LASF10:
+ 384 01a2 696E7433 		.ascii	"int32_t\000"
+ 384      325F7400 
+ 385              	.LASF14:
+ 386 01aa 73697A65 		.ascii	"sizetype\000"
+ 386      74797065 
+ 386      00
+ 387              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
