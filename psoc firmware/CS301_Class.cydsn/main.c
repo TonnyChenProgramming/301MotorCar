@@ -84,7 +84,7 @@ CY_ISR(Timer_TS_ISR_Handler)
 int main(void)
 {
     CyGlobalIntEnable;
-
+    RIGHT_TURN();
     QuadDec_M1_Start();
     QuadDec_M1_SetCounter(0);
     enc_last = QuadDec_M1_GetCounter();

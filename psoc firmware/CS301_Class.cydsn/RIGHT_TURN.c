@@ -19,6 +19,7 @@ void RIGHT_TURN()
     CYGlobalIntEnable;
     PWM_1_Start();
     PWM_1_WriteCompare(255);
-    PWM_1_Stop();
+    CyDelay(250);
+    PWM_1_WriteCompare(127);
 
 }
