@@ -12,23 +12,13 @@
 
 /* [] END OF FILE */
 
+#include "RIGHT_TURN.h"
 
-#include <project.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-
-#include "defines.h"     
-#include "vars.h"
-#include "isr_eoc2.h"
-
-int main()
+void RIGHT_TURN()
 {
     CYGlobalIntEnable;
     PWM_1_Start();
     PWM_1_WriteCompare(255);
-    CyDelay(1000);   // 1000 ms delay
     PWM_1_Stop();
 
 }

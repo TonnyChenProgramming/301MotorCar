@@ -18,7 +18,6 @@ void LEFT_TURN()
     CYGlobalIntEnable;
     PWM_2_Start();
     PWM_2_WriteCompare(255);
-    CyDelay(1000);   // 1000 ms delay
     PWM_2_Stop();
 
 }

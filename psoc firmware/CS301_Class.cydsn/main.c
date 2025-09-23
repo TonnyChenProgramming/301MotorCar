@@ -23,8 +23,9 @@
 
 #include "defines.h"     
 #include "vars.h"
-#include "isr_eoc2.h"
+#include "isr_1.h"
 #include "LEFT_TURN.h"
+#include "RIGHT_TURN.h"
 
 #define ENCODER_CPR 500
 #define QUAD_MULT 4        
@@ -40,13 +41,13 @@ static volatile float   spd_rpm  = 0.0f;
 
 static volatile uint8_t flag_print = 0;
 
-static void print_telemetry(void);
+// static void print_telemetry(void);
 void usbPutString(char *s);
 void usbPutChar(char c);
 void handle_usb();
 
 /* Timer ISR */
-CY_ISR(Timer_1_ISR_Handler)
+CY_ISR(Timer_TS_ISR_Handler)
 {
     // tick bookkeeping
     if (++ts_speed   >= DECIMATE_TS_SPEED)   { ts_speed = 0;   flag_ts_speed = 1;   }
@@ -71,10 +72,10 @@ CY_ISR(Timer_1_ISR_Handler)
         spd_rpm = rev_per_sec * 60.0f;
     }
 
-#ifdef Timer_1_ClearInterrupt
-    Timer_1_ClearInterrupt(Timer_1_INTR_MASK_TC);
+#ifdef Timer_TS_ClearInterrupt
+    Timer_TS_ClearInterrupt(Timer_TS_INTR_MASK_TC);
 #else
-    (void)Timer_1_ReadStatusRegister();
+    (void)Timer_TS_ReadStatusRegister();
 #endif
 }
 
@@ -82,7 +83,7 @@ CY_ISR(Timer_1_ISR_Handler)
 /* ================= Main ================= */
 int main(void)
 {
-    CYGlobalIntEnable;
+    CyGlobalIntEnable;
 
     QuadDec_M1_Start();
     QuadDec_M1_SetCounter(0);
@@ -92,8 +93,8 @@ int main(void)
     USBUART_Start(0, USBUART_5V_OPERATION);
 #endif
 
-    isr_2_StartEx(Timer_1_ISR_Handler);   // hook first
-    Timer_1_Start();                      // then start
+    isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
+    Timer_TS_Start();                      // then start
 
     for(;;) {
         if (flag_ts_display) {
@@ -111,7 +112,7 @@ int main(void)
     }
 }
 
-static void print_telemetry(void)
+/* static void print_telemetry(void)
 {
     uint8 intr = CyEnterCriticalSection();
     int32_t pos = enc_pos;
@@ -125,6 +126,7 @@ static void print_telemetry(void)
    (long)pos, (double)cps, (double)rpm, (double)rps);
     usbPutString(buf);
 }
+*/
 
 void usbPutString(char *s)
 {

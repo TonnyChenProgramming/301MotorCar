@@ -21,10 +21,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "defines.h"     
-#include "vars.h"
-#include "isr_eoc2.h"
-
 void LEFT_TURN();
     
 
