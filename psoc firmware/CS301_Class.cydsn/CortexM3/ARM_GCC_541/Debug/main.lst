@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
   55              		.type	flag_ts_update, %object
   56              		.size	flag_ts_update, 1
   57              	flag_ts_update:
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 2
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 2
 
 
   58 000b 00       		.space	1
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  106              		.bss
  107 0012 0000     		.align	2
  108              	enc_last:
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 3
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 3
 
 
  109 0014 00000000 		.space	4
@@ -177,33 +177,34 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
   26:main.c        **** #include "isr_1.h"
   27:main.c        **** #include "LEFT_TURN.h"
   28:main.c        **** #include "RIGHT_TURN.h"
-  29:main.c        **** 
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 4
+  29:main.c        **** #include "STRAIGHT.h"
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 4
 
 
-  30:main.c        **** #define ENCODER_CPR 500
-  31:main.c        **** #define QUAD_MULT 4        
-  32:main.c        **** #define COUNTS_PER_REV (ENCODER_CPR * QUAD_MULT)
-  33:main.c        **** 
-  34:main.c        **** #define TIMER_BASE_HZ 10000UL
-  35:main.c        **** 
-  36:main.c        **** static volatile int32_t enc_last = 0;      
-  37:main.c        **** static volatile int32_t enc_pos  = 0;      
-  38:main.c        **** static volatile float   spd_cps  = 0.0f;   
-  39:main.c        **** static volatile float   spd_rps  = 0.0f;   
-  40:main.c        **** static volatile float   spd_rpm  = 0.0f;   
-  41:main.c        **** 
-  42:main.c        **** static volatile uint8_t flag_print = 0;
-  43:main.c        **** 
-  44:main.c        **** // static void print_telemetry(void);
-  45:main.c        **** void usbPutString(char *s);
-  46:main.c        **** void usbPutChar(char c);
-  47:main.c        **** void handle_usb();
-  48:main.c        **** 
-  49:main.c        **** /* Timer ISR */
-  50:main.c        **** CY_ISR(Timer_TS_ISR_Handler)
-  51:main.c        **** {
- 137              		.loc 1 51 0
+  30:main.c        **** 
+  31:main.c        **** #define ENCODER_CPR 500
+  32:main.c        **** #define QUAD_MULT 4        
+  33:main.c        **** #define COUNTS_PER_REV (ENCODER_CPR * QUAD_MULT)
+  34:main.c        **** 
+  35:main.c        **** #define TIMER_BASE_HZ 10000UL
+  36:main.c        **** 
+  37:main.c        **** static volatile int32_t enc_last = 0;      
+  38:main.c        **** static volatile int32_t enc_pos  = 0;      
+  39:main.c        **** static volatile float   spd_cps  = 0.0f;   
+  40:main.c        **** static volatile float   spd_rps  = 0.0f;   
+  41:main.c        **** static volatile float   spd_rpm  = 0.0f;   
+  42:main.c        **** 
+  43:main.c        **** static volatile uint8_t flag_print = 0;
+  44:main.c        **** 
+  45:main.c        **** // static void print_telemetry(void);
+  46:main.c        **** void usbPutString(char *s);
+  47:main.c        **** void usbPutChar(char c);
+  48:main.c        **** void handle_usb();
+  49:main.c        **** 
+  50:main.c        **** /* Timer ISR */
+  51:main.c        **** CY_ISR(Timer_TS_ISR_Handler)
+  52:main.c        **** {
+ 137              		.loc 1 52 0
  138              		.cfi_startproc
  139              		@ args = 0, pretend = 0, frame = 16
  140              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -215,9 +216,9 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  146              		.cfi_def_cfa_offset 24
  147 0004 00AF     		add	r7, sp, #0
  148              		.cfi_def_cfa_register 7
-  52:main.c        ****     // tick bookkeeping
-  53:main.c        ****     if (++ts_speed   >= DECIMATE_TS_SPEED)   { ts_speed = 0;   flag_ts_speed = 1;   }
- 149              		.loc 1 53 0
+  53:main.c        ****     // tick bookkeeping
+  54:main.c        ****     if (++ts_speed   >= DECIMATE_TS_SPEED)   { ts_speed = 0;   flag_ts_speed = 1;   }
+ 149              		.loc 1 54 0
  150 0006 344B     		ldr	r3, .L5
  151 0008 1B88     		ldrh	r3, [r3]
  152 000a 0133     		adds	r3, r3, #1
@@ -228,7 +229,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  157 0014 1B88     		ldrh	r3, [r3]
  158 0016 632B     		cmp	r3, #99
  159 0018 05D9     		bls	.L2
- 160              		.loc 1 53 0 is_stmt 0 discriminator 1
+ 160              		.loc 1 54 0 is_stmt 0 discriminator 1
  161 001a 2F4B     		ldr	r3, .L5
  162 001c 0022     		movs	r2, #0
  163 001e 1A80     		strh	r2, [r3]	@ movhi
@@ -236,11 +237,11 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  165 0022 0122     		movs	r2, #1
  166 0024 1A70     		strb	r2, [r3]
  167              	.L2:
-  54:main.c        ****     if (++ts_display >= DECIMATE_TS_DISPLAY) { ts_display = 0; flag_ts_display = 1; }
- 168              		.loc 1 54 0 is_stmt 1
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 5
+  55:main.c        ****     if (++ts_display >= DECIMATE_TS_DISPLAY) { ts_display = 0; flag_ts_display = 1; }
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 5
 
 
+ 168              		.loc 1 55 0 is_stmt 1
  169 0026 2E4B     		ldr	r3, .L5+8
  170 0028 1B88     		ldrh	r3, [r3]
  171 002a 0133     		adds	r3, r3, #1
@@ -251,7 +252,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  176 0034 1B88     		ldrh	r3, [r3]
  177 0036 B3F57A7F 		cmp	r3, #1000
  178 003a 05D3     		bcc	.L3
- 179              		.loc 1 54 0 is_stmt 0 discriminator 1
+ 179              		.loc 1 55 0 is_stmt 0 discriminator 1
  180 003c 284B     		ldr	r3, .L5+8
  181 003e 0022     		movs	r2, #0
  182 0040 1A80     		strh	r2, [r3]	@ movhi
@@ -259,51 +260,51 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  184 0044 0122     		movs	r2, #1
  185 0046 1A70     		strb	r2, [r3]
  186              	.L3:
-  55:main.c        **** 
-  56:main.c        ****     // Do speed math only when due
-  57:main.c        ****     if (flag_ts_speed) {
- 187              		.loc 1 57 0 is_stmt 1
+  56:main.c        **** 
+  57:main.c        ****     // Do speed math only when due
+  58:main.c        ****     if (flag_ts_speed) {
+ 187              		.loc 1 58 0 is_stmt 1
  188 0048 244B     		ldr	r3, .L5+4
  189 004a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
  190 004c 002B     		cmp	r3, #0
  191 004e 3CD0     		beq	.L4
  192              	.LBB2:
-  58:main.c        ****         flag_ts_speed = 0;
- 193              		.loc 1 58 0
+  59:main.c        ****         flag_ts_speed = 0;
+ 193              		.loc 1 59 0
  194 0050 224B     		ldr	r3, .L5+4
  195 0052 0022     		movs	r2, #0
  196 0054 1A70     		strb	r2, [r3]
-  59:main.c        **** 
-  60:main.c        ****         int32_t now   = QuadDec_M1_GetCounter();
- 197              		.loc 1 60 0
+  60:main.c        **** 
+  61:main.c        ****         int32_t now   = QuadDec_M1_GetCounter();
+ 197              		.loc 1 61 0
  198 0056 FFF7FEFF 		bl	QuadDec_M1_GetCounter
  199 005a 0346     		mov	r3, r0
  200 005c FB60     		str	r3, [r7, #12]
-  61:main.c        ****         int32_t delta = now - enc_last;
- 201              		.loc 1 61 0
+  62:main.c        ****         int32_t delta = now - enc_last;
+ 201              		.loc 1 62 0
  202 005e 224B     		ldr	r3, .L5+16
  203 0060 1B68     		ldr	r3, [r3]
  204 0062 FA68     		ldr	r2, [r7, #12]
  205 0064 D31A     		subs	r3, r2, r3
  206 0066 BB60     		str	r3, [r7, #8]
-  62:main.c        ****         enc_last      = now;
- 207              		.loc 1 62 0
+  63:main.c        ****         enc_last      = now;
+ 207              		.loc 1 63 0
  208 0068 1F4A     		ldr	r2, .L5+16
  209 006a FB68     		ldr	r3, [r7, #12]
  210 006c 1360     		str	r3, [r2]
-  63:main.c        ****         enc_pos       = now;
- 211              		.loc 1 63 0
+  64:main.c        ****         enc_pos       = now;
+ 211              		.loc 1 64 0
  212 006e 1F4A     		ldr	r2, .L5+20
  213 0070 FB68     		ldr	r3, [r7, #12]
  214 0072 1360     		str	r3, [r2]
-  64:main.c        **** 
-  65:main.c        ****         // counts/sec over Δt = DECIMATE_TS_SPEED / TIMER_BASE_HZ
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 6
+  65:main.c        **** 
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 6
 
 
-  66:main.c        ****         // cps = delta * TIMER_BASE_HZ / DECIMATE_TS_SPEED
-  67:main.c        ****         float cps = (float)delta * ((float)TIMER_BASE_HZ / (float)DECIMATE_TS_SPEED);
- 215              		.loc 1 67 0
+  66:main.c        ****         // counts/sec over Δt = DECIMATE_TS_SPEED / TIMER_BASE_HZ
+  67:main.c        ****         // cps = delta * TIMER_BASE_HZ / DECIMATE_TS_SPEED
+  68:main.c        ****         float cps = (float)delta * ((float)TIMER_BASE_HZ / (float)DECIMATE_TS_SPEED);
+ 215              		.loc 1 68 0
  216 0074 B868     		ldr	r0, [r7, #8]
  217 0076 FFF7FEFF 		bl	__aeabi_i2f
  218 007a 0346     		mov	r3, r0
@@ -312,14 +313,14 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  221 0080 FFF7FEFF 		bl	__aeabi_fmul
  222 0084 0346     		mov	r3, r0
  223 0086 7B60     		str	r3, [r7, #4]	@ float
-  68:main.c        ****         spd_cps = cps;
- 224              		.loc 1 68 0
+  69:main.c        ****         spd_cps = cps;
+ 224              		.loc 1 69 0
  225 0088 1A4A     		ldr	r2, .L5+28
  226 008a 7B68     		ldr	r3, [r7, #4]	@ float
  227 008c 1360     		str	r3, [r2]	@ float
-  69:main.c        **** 
-  70:main.c        ****         float rev_per_sec = spd_cps / (float)(/* CPR × 4 */ 3 * 4 * 19); // = 228 if your PDF moto
- 228              		.loc 1 70 0
+  70:main.c        **** 
+  71:main.c        ****         float rev_per_sec = spd_cps / (float)(/* CPR × 4 */ 3 * 4 * 19); // = 228 if your PDF moto
+ 228              		.loc 1 71 0
  229 008e 194B     		ldr	r3, .L5+28
  230 0090 1B68     		ldr	r3, [r3]	@ float
  231 0092 1949     		ldr	r1, .L5+32
@@ -327,8 +328,8 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  233 0096 FFF7FEFF 		bl	__aeabi_fdiv
  234 009a 0346     		mov	r3, r0
  235 009c 3B60     		str	r3, [r7]	@ float
-  71:main.c        ****         spd_rps = rev_per_sec * 2.0f * 3.14159265358979323846f;
- 236              		.loc 1 71 0
+  72:main.c        ****         spd_rps = rev_per_sec * 2.0f * 3.14159265358979323846f;
+ 236              		.loc 1 72 0
  237 009e 3B68     		ldr	r3, [r7]	@ float
  238 00a0 1946     		mov	r1, r3
  239 00a2 1846     		mov	r0, r3
@@ -341,8 +342,8 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  246 00b4 1A46     		mov	r2, r3
  247 00b6 124B     		ldr	r3, .L5+40
  248 00b8 1A60     		str	r2, [r3]	@ float
-  72:main.c        ****         spd_rpm = rev_per_sec * 60.0f;
- 249              		.loc 1 72 0
+  73:main.c        ****         spd_rpm = rev_per_sec * 60.0f;
+ 249              		.loc 1 73 0
  250 00ba 1249     		ldr	r1, .L5+44
  251 00bc 3868     		ldr	r0, [r7]	@ float
  252 00be FFF7FEFF 		bl	__aeabi_fmul
@@ -352,20 +353,20 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  256 00c8 1A60     		str	r2, [r3]	@ float
  257              	.L4:
  258              	.LBE2:
-  73:main.c        ****     }
-  74:main.c        **** 
-  75:main.c        **** #ifdef Timer_TS_ClearInterrupt
-  76:main.c        ****     Timer_TS_ClearInterrupt(Timer_TS_INTR_MASK_TC);
-  77:main.c        **** #else
-  78:main.c        ****     (void)Timer_TS_ReadStatusRegister();
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 7
+  74:main.c        ****     }
+  75:main.c        **** 
+  76:main.c        **** #ifdef Timer_TS_ClearInterrupt
+  77:main.c        ****     Timer_TS_ClearInterrupt(Timer_TS_INTR_MASK_TC);
+  78:main.c        **** #else
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 7
 
 
- 259              		.loc 1 78 0
+  79:main.c        ****     (void)Timer_TS_ReadStatusRegister();
+ 259              		.loc 1 79 0
  260 00ca FFF7FEFF 		bl	Timer_TS_ReadStatusRegister
-  79:main.c        **** #endif
-  80:main.c        **** }
- 261              		.loc 1 80 0
+  80:main.c        **** #endif
+  81:main.c        **** }
+ 261              		.loc 1 81 0
  262 00ce 00BF     		nop
  263 00d0 1037     		adds	r7, r7, #16
  264              		.cfi_def_cfa_offset 8
@@ -409,18 +410,18 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  298              		.type	main, %function
  299              	main:
  300              	.LFB65:
-  81:main.c        **** 
   82:main.c        **** 
-  83:main.c        **** /* ================= Main ================= */
-  84:main.c        **** int main(void)
-  85:main.c        **** {
- 301              		.loc 1 85 0
+  83:main.c        **** 
+  84:main.c        **** /* ================= Main ================= */
+  85:main.c        **** int main(void)
+  86:main.c        **** {
+ 301              		.loc 1 86 0
  302              		.cfi_startproc
  303              		@ args = 0, pretend = 0, frame = 64
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 8
+
+
  304              		@ frame_needed = 1, uses_anonymous_args = 0
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 8
-
-
  305 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
  306              		.cfi_def_cfa_offset 28
  307              		.cfi_offset 4, -28
@@ -434,70 +435,70 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  315              		.cfi_def_cfa_offset 120
  316 0006 06AF     		add	r7, sp, #24
  317              		.cfi_def_cfa 7, 96
-  86:main.c        ****     CyGlobalIntEnable;
- 318              		.loc 1 86 0
+  87:main.c        ****     CyGlobalIntEnable;
+ 318              		.loc 1 87 0
  319              		.syntax unified
- 320              	@ 86 "main.c" 1
+ 320              	@ 87 "main.c" 1
  321 0008 62B6     		CPSIE   i
  322              	@ 0 "" 2
-  87:main.c        ****     RIGHT_TURN();
- 323              		.loc 1 87 0
+  88:main.c        ****     STRAIGHT();
+ 323              		.loc 1 88 0
  324              		.thumb
  325              		.syntax unified
- 326 000a FFF7FEFF 		bl	RIGHT_TURN
-  88:main.c        ****     QuadDec_M1_Start();
- 327              		.loc 1 88 0
+ 326 000a FFF7FEFF 		bl	STRAIGHT
+  89:main.c        ****     QuadDec_M1_Start();
+ 327              		.loc 1 89 0
  328 000e FFF7FEFF 		bl	QuadDec_M1_Start
-  89:main.c        ****     QuadDec_M1_SetCounter(0);
- 329              		.loc 1 89 0
+  90:main.c        ****     QuadDec_M1_SetCounter(0);
+ 329              		.loc 1 90 0
  330 0012 0020     		movs	r0, #0
  331 0014 FFF7FEFF 		bl	QuadDec_M1_SetCounter
-  90:main.c        ****     enc_last = QuadDec_M1_GetCounter();
- 332              		.loc 1 90 0
+  91:main.c        ****     enc_last = QuadDec_M1_GetCounter();
+ 332              		.loc 1 91 0
  333 0018 FFF7FEFF 		bl	QuadDec_M1_GetCounter
  334 001c 0346     		mov	r3, r0
  335 001e 1A46     		mov	r2, r3
  336 0020 224B     		ldr	r3, .L11
  337 0022 1A60     		str	r2, [r3]
-  91:main.c        **** 
-  92:main.c        **** #ifdef USE_USB
-  93:main.c        ****     USBUART_Start(0, USBUART_5V_OPERATION);
- 338              		.loc 1 93 0
+  92:main.c        **** 
+  93:main.c        **** #ifdef USE_USB
+  94:main.c        ****     USBUART_Start(0, USBUART_5V_OPERATION);
+ 338              		.loc 1 94 0
  339 0024 0121     		movs	r1, #1
  340 0026 0020     		movs	r0, #0
  341 0028 FFF7FEFF 		bl	USBUART_Start
-  94:main.c        **** #endif
-  95:main.c        **** 
-  96:main.c        ****     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
- 342              		.loc 1 96 0
+  95:main.c        **** #endif
+  96:main.c        **** 
+  97:main.c        ****     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
+ 342              		.loc 1 97 0
  343 002c 2048     		ldr	r0, .L11+4
  344 002e FFF7FEFF 		bl	isr_1_StartEx
-  97:main.c        ****     Timer_TS_Start();                      // then start
- 345              		.loc 1 97 0
+  98:main.c        ****     Timer_TS_Start();                      // then start
+ 345              		.loc 1 98 0
  346 0032 FFF7FEFF 		bl	Timer_TS_Start
  347              	.L10:
-  98:main.c        **** 
-  99:main.c        ****     for(;;) {
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 9
+  99:main.c        **** 
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 9
 
 
- 100:main.c        ****         if (flag_ts_display) {
- 348              		.loc 1 100 0
+ 100:main.c        ****     for(;;) {
+ 101:main.c        ****         if (flag_ts_display) {
+ 348              		.loc 1 101 0
  349 0036 1F4B     		ldr	r3, .L11+8
  350 0038 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
  351 003a 002B     		cmp	r3, #0
  352 003c 29D0     		beq	.L8
  353              	.LBB3:
- 101:main.c        ****             flag_ts_display = 0;
- 354              		.loc 1 101 0
+ 102:main.c        ****             flag_ts_display = 0;
+ 354              		.loc 1 102 0
  355 003e 1D4B     		ldr	r3, .L11+8
  356 0040 0022     		movs	r2, #0
  357 0042 1A70     		strb	r2, [r3]
- 102:main.c        **** 
- 103:main.c        ****             // if float printf isn’t enabled, convert to fixed point (see note below)
- 104:main.c        ****             char buf[64];
- 105:main.c        ****             snprintf(buf, sizeof(buf),
- 358              		.loc 1 105 0
+ 103:main.c        **** 
+ 104:main.c        ****             // if float printf isn’t enabled, convert to fixed point (see note below)
+ 105:main.c        ****             char buf[64];
+ 106:main.c        ****             snprintf(buf, sizeof(buf),
+ 358              		.loc 1 106 0
  359 0044 1C4B     		ldr	r3, .L11+12
  360 0046 1E68     		ldr	r6, [r3]
  361 0048 1C4B     		ldr	r3, .L11+16
@@ -526,36 +527,36 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  384 0082 114A     		ldr	r2, .L11+28
  385 0084 4021     		movs	r1, #64
  386 0086 FFF7FEFF 		bl	snprintf
- 106:main.c        ****                      "pos:%ld cps:%.0f rpm:%.1f rps:%.2f\r\n",
- 107:main.c        ****                      (long)enc_pos, (double)spd_cps, (double)spd_rpm, (double)spd_rps);
- 108:main.c        ****             usbPutString(buf);
- 387              		.loc 1 108 0
+ 107:main.c        ****                      "pos:%ld cps:%.0f rpm:%.1f rps:%.2f\r\n",
+ 108:main.c        ****                      (long)enc_pos, (double)spd_cps, (double)spd_rpm, (double)spd_rps);
+ 109:main.c        ****             usbPutString(buf);
+ 387              		.loc 1 109 0
  388 008a 3B46     		mov	r3, r7
  389 008c 1846     		mov	r0, r3
  390 008e FFF7FEFF 		bl	usbPutString
  391              	.L8:
  392              	.LBE3:
- 109:main.c        ****         }
- 110:main.c        ****         handle_usb();
- 393              		.loc 1 110 0
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 10
+ 110:main.c        ****         }
+ 111:main.c        ****         handle_usb();
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 10
 
 
+ 393              		.loc 1 111 0
  394 0092 FFF7FEFF 		bl	handle_usb
- 111:main.c        ****         if (flag_KB_string) { usbPutString(line); flag_KB_string = 0; }
- 395              		.loc 1 111 0
+ 112:main.c        ****         if (flag_KB_string) { usbPutString(line); flag_KB_string = 0; }
+ 395              		.loc 1 112 0
  396 0096 0D4B     		ldr	r3, .L11+32
  397 0098 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
  398 009a 002B     		cmp	r3, #0
  399 009c CBD0     		beq	.L10
- 400              		.loc 1 111 0 is_stmt 0 discriminator 1
+ 400              		.loc 1 112 0 is_stmt 0 discriminator 1
  401 009e 0C48     		ldr	r0, .L11+36
  402 00a0 FFF7FEFF 		bl	usbPutString
  403 00a4 094B     		ldr	r3, .L11+32
  404 00a6 0022     		movs	r2, #0
  405 00a8 1A70     		strb	r2, [r3]
- 112:main.c        ****     }
- 406              		.loc 1 112 0 is_stmt 1 discriminator 1
+ 113:main.c        ****     }
+ 406              		.loc 1 113 0 is_stmt 1 discriminator 1
  407 00aa C4E7     		b	.L10
  408              	.L12:
  409              		.align	2
@@ -581,30 +582,30 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  429              		.type	usbPutString, %function
  430              	usbPutString:
  431              	.LFB66:
- 113:main.c        **** }
- 114:main.c        **** 
- 115:main.c        **** /* static void print_telemetry(void)
- 116:main.c        **** {
- 117:main.c        ****     uint8 intr = CyEnterCriticalSection();
- 118:main.c        ****     int32_t pos = enc_pos;
- 119:main.c        ****     float cps   = spd_cps;
- 120:main.c        ****     float rpm   = spd_rpm;
- 121:main.c        ****     float rps   = spd_rps;
- 122:main.c        ****     CyExitCriticalSection(intr);
- 123:main.c        **** 
- 124:main.c        ****     char buf[64];
- 125:main.c        ****     snprintf(buf, sizeof(buf), "pos:%ld cps:%.0f rpm:%.1f rps:%.2f\r\n",
- 126:main.c        ****    (long)pos, (double)cps, (double)rpm, (double)rps);
- 127:main.c        ****     usbPutString(buf);
- 128:main.c        **** }
- 129:main.c        **** */
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 11
+ 114:main.c        **** }
+ 115:main.c        **** 
+ 116:main.c        **** /* static void print_telemetry(void)
+ 117:main.c        **** {
+ 118:main.c        ****     uint8 intr = CyEnterCriticalSection();
+ 119:main.c        ****     int32_t pos = enc_pos;
+ 120:main.c        ****     float cps   = spd_cps;
+ 121:main.c        ****     float rpm   = spd_rpm;
+ 122:main.c        ****     float rps   = spd_rps;
+ 123:main.c        ****     CyExitCriticalSection(intr);
+ 124:main.c        **** 
+ 125:main.c        ****     char buf[64];
+ 126:main.c        ****     snprintf(buf, sizeof(buf), "pos:%ld cps:%.0f rpm:%.1f rps:%.2f\r\n",
+ 127:main.c        ****    (long)pos, (double)cps, (double)rpm, (double)rps);
+ 128:main.c        ****     usbPutString(buf);
+ 129:main.c        **** }
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 11
 
 
- 130:main.c        **** 
- 131:main.c        **** void usbPutString(char *s)
- 132:main.c        **** {
- 432              		.loc 1 132 0
+ 130:main.c        **** */
+ 131:main.c        **** 
+ 132:main.c        **** void usbPutString(char *s)
+ 133:main.c        **** {
+ 432              		.loc 1 133 0
  433              		.cfi_startproc
  434              		@ args = 0, pretend = 0, frame = 8
  435              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -617,30 +618,30 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  442 0004 00AF     		add	r7, sp, #0
  443              		.cfi_def_cfa_register 7
  444 0006 7860     		str	r0, [r7, #4]
- 133:main.c        **** #ifdef USE_USB
- 134:main.c        ****     while (USBUART_CDCIsReady() == 0) {}
- 445              		.loc 1 134 0
+ 134:main.c        **** #ifdef USE_USB
+ 135:main.c        ****     while (USBUART_CDCIsReady() == 0) {}
+ 445              		.loc 1 135 0
  446 0008 00BF     		nop
  447              	.L14:
- 448              		.loc 1 134 0 is_stmt 0 discriminator 1
+ 448              		.loc 1 135 0 is_stmt 0 discriminator 1
  449 000a FFF7FEFF 		bl	USBUART_CDCIsReady
  450 000e 0346     		mov	r3, r0
  451 0010 002B     		cmp	r3, #0
  452 0012 FAD0     		beq	.L14
- 135:main.c        ****     s[63] = '\0';
- 453              		.loc 1 135 0 is_stmt 1
+ 136:main.c        ****     s[63] = '\0';
+ 453              		.loc 1 136 0 is_stmt 1
  454 0014 7B68     		ldr	r3, [r7, #4]
  455 0016 3F33     		adds	r3, r3, #63
  456 0018 0022     		movs	r2, #0
  457 001a 1A70     		strb	r2, [r3]
- 136:main.c        ****     s[62] = '!';              
- 458              		.loc 1 136 0
+ 137:main.c        ****     s[62] = '!';              
+ 458              		.loc 1 137 0
  459 001c 7B68     		ldr	r3, [r7, #4]
  460 001e 3E33     		adds	r3, r3, #62
  461 0020 2122     		movs	r2, #33
  462 0022 1A70     		strb	r2, [r3]
- 137:main.c        ****     USBUART_PutData((uint8*)s, (uint16)strlen(s));
- 463              		.loc 1 137 0
+ 138:main.c        ****     USBUART_PutData((uint8*)s, (uint16)strlen(s));
+ 463              		.loc 1 138 0
  464 0024 7868     		ldr	r0, [r7, #4]
  465 0026 FFF7FEFF 		bl	strlen
  466 002a 0346     		mov	r3, r0
@@ -648,19 +649,19 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  468 002e 1946     		mov	r1, r3
  469 0030 7868     		ldr	r0, [r7, #4]
  470 0032 FFF7FEFF 		bl	USBUART_PutData
- 138:main.c        **** #else
- 139:main.c        ****     (void)s;
- 140:main.c        **** #endif
- 141:main.c        **** }
- 471              		.loc 1 141 0
+ 139:main.c        **** #else
+ 140:main.c        ****     (void)s;
+ 141:main.c        **** #endif
+ 142:main.c        **** }
+ 471              		.loc 1 142 0
  472 0036 00BF     		nop
  473 0038 0837     		adds	r7, r7, #8
  474              		.cfi_def_cfa_offset 8
  475 003a BD46     		mov	sp, r7
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 12
+
+
  476              		.cfi_def_cfa_register 13
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 12
-
-
  477              		@ sp needed
  478 003c 80BD     		pop	{r7, pc}
  479              		.cfi_endproc
@@ -674,10 +675,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  487              		.type	usbPutChar, %function
  488              	usbPutChar:
  489              	.LFB67:
- 142:main.c        **** 
- 143:main.c        **** void usbPutChar(char c)
- 144:main.c        **** {
- 490              		.loc 1 144 0
+ 143:main.c        **** 
+ 144:main.c        **** void usbPutChar(char c)
+ 145:main.c        **** {
+ 490              		.loc 1 145 0
  491              		.cfi_startproc
  492              		@ args = 0, pretend = 0, frame = 8
  493              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -691,36 +692,36 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  501              		.cfi_def_cfa_register 7
  502 0006 0346     		mov	r3, r0
  503 0008 FB71     		strb	r3, [r7, #7]
- 145:main.c        **** #ifdef USE_USB
- 146:main.c        ****     while (USBUART_CDCIsReady() == 0) {}
- 504              		.loc 1 146 0
+ 146:main.c        **** #ifdef USE_USB
+ 147:main.c        ****     while (USBUART_CDCIsReady() == 0) {}
+ 504              		.loc 1 147 0
  505 000a 00BF     		nop
  506              	.L16:
- 507              		.loc 1 146 0 is_stmt 0 discriminator 1
+ 507              		.loc 1 147 0 is_stmt 0 discriminator 1
  508 000c FFF7FEFF 		bl	USBUART_CDCIsReady
  509 0010 0346     		mov	r3, r0
  510 0012 002B     		cmp	r3, #0
  511 0014 FAD0     		beq	.L16
- 147:main.c        ****     USBUART_PutChar((uint8)c);
- 512              		.loc 1 147 0 is_stmt 1
+ 148:main.c        ****     USBUART_PutChar((uint8)c);
+ 512              		.loc 1 148 0 is_stmt 1
  513 0016 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
  514 0018 1846     		mov	r0, r3
  515 001a FFF7FEFF 		bl	USBUART_PutChar
- 148:main.c        **** #else
- 149:main.c        ****     (void)c;
- 150:main.c        **** #endif
- 151:main.c        **** }
- 516              		.loc 1 151 0
+ 149:main.c        **** #else
+ 150:main.c        ****     (void)c;
+ 151:main.c        **** #endif
+ 152:main.c        **** }
+ 516              		.loc 1 152 0
  517 001e 00BF     		nop
  518 0020 0837     		adds	r7, r7, #8
  519              		.cfi_def_cfa_offset 8
  520 0022 BD46     		mov	sp, r7
  521              		.cfi_def_cfa_register 13
  522              		@ sp needed
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 13
+
+
  523 0024 80BD     		pop	{r7, pc}
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 13
-
-
  524              		.cfi_endproc
  525              	.LFE67:
  526              		.size	usbPutChar, .-usbPutChar
@@ -732,10 +733,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  532              		.type	handle_usb, %function
  533              	handle_usb:
  534              	.LFB68:
- 152:main.c        **** 
- 153:main.c        **** void handle_usb(void)
- 154:main.c        **** {
- 535              		.loc 1 154 0
+ 153:main.c        **** 
+ 154:main.c        **** void handle_usb(void)
+ 155:main.c        **** {
+ 535              		.loc 1 155 0
  536              		.cfi_startproc
  537              		@ args = 0, pretend = 0, frame = 8
  538              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -747,109 +748,109 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  544              		.cfi_def_cfa_offset 16
  545 0004 00AF     		add	r7, sp, #0
  546              		.cfi_def_cfa_register 7
- 155:main.c        **** #ifdef USE_USB
- 156:main.c        ****     static uint8 usbStarted = FALSE;
- 157:main.c        ****     static uint16 usbBufCount = 0;
- 158:main.c        **** 
- 159:main.c        ****     if (!usbStarted) {
- 547              		.loc 1 159 0
+ 156:main.c        **** #ifdef USE_USB
+ 157:main.c        ****     static uint8 usbStarted = FALSE;
+ 158:main.c        ****     static uint16 usbBufCount = 0;
+ 159:main.c        **** 
+ 160:main.c        ****     if (!usbStarted) {
+ 547              		.loc 1 160 0
  548 0006 2C4B     		ldr	r3, .L29
  549 0008 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
  550 000a 002B     		cmp	r3, #0
  551 000c 0AD1     		bne	.L18
- 160:main.c        ****         if (USBUART_GetConfiguration()) {
- 552              		.loc 1 160 0
+ 161:main.c        ****         if (USBUART_GetConfiguration()) {
+ 552              		.loc 1 161 0
  553 000e FFF7FEFF 		bl	USBUART_GetConfiguration
  554 0012 0346     		mov	r3, r0
  555 0014 002B     		cmp	r3, #0
  556 0016 49D0     		beq	.L27
- 161:main.c        ****             USBUART_CDC_Init();
- 557              		.loc 1 161 0
+ 162:main.c        ****             USBUART_CDC_Init();
+ 557              		.loc 1 162 0
  558 0018 FFF7FEFF 		bl	USBUART_CDC_Init
- 162:main.c        ****             usbStarted = TRUE;
- 559              		.loc 1 162 0
+ 163:main.c        ****             usbStarted = TRUE;
+ 559              		.loc 1 163 0
  560 001c 264B     		ldr	r3, .L29
  561 001e 0122     		movs	r2, #1
  562 0020 1A70     		strb	r2, [r3]
- 163:main.c        ****         }
- 164:main.c        ****         return;
- 563              		.loc 1 164 0
+ 164:main.c        ****         }
+ 165:main.c        ****         return;
+ 563              		.loc 1 165 0
  564 0022 43E0     		b	.L27
  565              	.L18:
- 165:main.c        ****     }
- 166:main.c        **** 
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 14
+ 166:main.c        ****     }
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 14
 
 
- 167:main.c        ****     if (USBUART_DataIsReady() == 0) return;
- 566              		.loc 1 167 0
+ 167:main.c        **** 
+ 168:main.c        ****     if (USBUART_DataIsReady() == 0) return;
+ 566              		.loc 1 168 0
  567 0024 FFF7FEFF 		bl	USBUART_DataIsReady
  568 0028 0346     		mov	r3, r0
  569 002a 002B     		cmp	r3, #0
  570 002c 40D0     		beq	.L28
- 168:main.c        **** 
- 169:main.c        ****     uint8 c = USBUART_GetChar();
- 571              		.loc 1 169 0
+ 169:main.c        **** 
+ 170:main.c        ****     uint8 c = USBUART_GetChar();
+ 571              		.loc 1 170 0
  572 002e FFF7FEFF 		bl	USBUART_GetChar
  573 0032 0346     		mov	r3, r0
  574 0034 FB71     		strb	r3, [r7, #7]
- 170:main.c        **** 
- 171:main.c        ****     if ((c == CHAR_ENTER) || (c == '\n')) {
- 575              		.loc 1 171 0
+ 171:main.c        **** 
+ 172:main.c        ****     if ((c == CHAR_ENTER) || (c == '\n')) {
+ 575              		.loc 1 172 0
  576 0036 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
  577 0038 0D2B     		cmp	r3, #13
  578 003a 02D0     		beq	.L22
- 579              		.loc 1 171 0 is_stmt 0 discriminator 1
+ 579              		.loc 1 172 0 is_stmt 0 discriminator 1
  580 003c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
  581 003e 0A2B     		cmp	r3, #10
  582 0040 10D1     		bne	.L23
  583              	.L22:
- 172:main.c        ****         entry[usbBufCount] = '\0';
- 584              		.loc 1 172 0 is_stmt 1
+ 173:main.c        ****         entry[usbBufCount] = '\0';
+ 584              		.loc 1 173 0 is_stmt 1
  585 0042 1E4B     		ldr	r3, .L29+4
  586 0044 1B88     		ldrh	r3, [r3]
  587 0046 1A46     		mov	r2, r3
  588 0048 1D4B     		ldr	r3, .L29+8
  589 004a 0021     		movs	r1, #0
  590 004c 9954     		strb	r1, [r3, r2]
- 173:main.c        ****         strcpy(line, entry);
- 591              		.loc 1 173 0
+ 174:main.c        ****         strcpy(line, entry);
+ 591              		.loc 1 174 0
  592 004e 1C49     		ldr	r1, .L29+8
  593 0050 1C48     		ldr	r0, .L29+12
  594 0052 FFF7FEFF 		bl	strcpy
- 174:main.c        ****         usbBufCount = 0;
- 595              		.loc 1 174 0
+ 175:main.c        ****         usbBufCount = 0;
+ 595              		.loc 1 175 0
  596 0056 194B     		ldr	r3, .L29+4
  597 0058 0022     		movs	r2, #0
  598 005a 1A80     		strh	r2, [r3]	@ movhi
- 175:main.c        ****         flag_KB_string = 1;
- 599              		.loc 1 175 0
+ 176:main.c        ****         flag_KB_string = 1;
+ 599              		.loc 1 176 0
  600 005c 1A4B     		ldr	r3, .L29+16
  601 005e 0122     		movs	r2, #1
  602 0060 1A70     		strb	r2, [r3]
  603 0062 26E0     		b	.L17
  604              	.L23:
- 176:main.c        ****     } else {
- 177:main.c        ****         if (((c == CHAR_BACKSP) || (c == CHAR_DEL)) && (usbBufCount > 0)) {
- 605              		.loc 1 177 0
+ 177:main.c        ****     } else {
+ 178:main.c        ****         if (((c == CHAR_BACKSP) || (c == CHAR_DEL)) && (usbBufCount > 0)) {
+ 605              		.loc 1 178 0
  606 0064 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
  607 0066 082B     		cmp	r3, #8
  608 0068 02D0     		beq	.L24
- 609              		.loc 1 177 0 is_stmt 0 discriminator 2
+ 609              		.loc 1 178 0 is_stmt 0 discriminator 2
  610 006a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 15
+
+
  611 006c 7F2B     		cmp	r3, #127
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 15
-
-
  612 006e 0AD1     		bne	.L25
  613              	.L24:
- 614              		.loc 1 177 0 discriminator 3
+ 614              		.loc 1 178 0 discriminator 3
  615 0070 124B     		ldr	r3, .L29+4
  616 0072 1B88     		ldrh	r3, [r3]
  617 0074 002B     		cmp	r3, #0
  618 0076 06D0     		beq	.L25
- 178:main.c        ****             usbBufCount--;
- 619              		.loc 1 178 0 is_stmt 1
+ 179:main.c        ****             usbBufCount--;
+ 619              		.loc 1 179 0 is_stmt 1
  620 0078 104B     		ldr	r3, .L29+4
  621 007a 1B88     		ldrh	r3, [r3]
  622 007c 013B     		subs	r3, r3, #1
@@ -858,22 +859,22 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  625 0082 1A80     		strh	r2, [r3]	@ movhi
  626 0084 15E0     		b	.L17
  627              	.L25:
- 179:main.c        ****         } else {
- 180:main.c        ****             if (usbBufCount > (BUF_SIZE - 2)) {
- 628              		.loc 1 180 0
+ 180:main.c        ****         } else {
+ 181:main.c        ****             if (usbBufCount > (BUF_SIZE - 2)) {
+ 628              		.loc 1 181 0
  629 0086 0D4B     		ldr	r3, .L29+4
  630 0088 1B88     		ldrh	r3, [r3]
  631 008a 3E2B     		cmp	r3, #62
  632 008c 03D9     		bls	.L26
- 181:main.c        ****                 USBUART_PutChar('!');
- 633              		.loc 1 181 0
+ 182:main.c        ****                 USBUART_PutChar('!');
+ 633              		.loc 1 182 0
  634 008e 2120     		movs	r0, #33
  635 0090 FFF7FEFF 		bl	USBUART_PutChar
  636 0094 0DE0     		b	.L17
  637              	.L26:
- 182:main.c        ****             } else {
- 183:main.c        ****                 entry[usbBufCount++] = (char)c;
- 638              		.loc 1 183 0
+ 183:main.c        ****             } else {
+ 184:main.c        ****                 entry[usbBufCount++] = (char)c;
+ 638              		.loc 1 184 0
  639 0096 094B     		ldr	r3, .L29+4
  640 0098 1B88     		ldrh	r3, [r3]
  641 009a 5A1C     		adds	r2, r3, #1
@@ -886,24 +887,24 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  648 00a8 5354     		strb	r3, [r2, r1]
  649 00aa 02E0     		b	.L17
  650              	.L27:
- 164:main.c        ****     }
- 651              		.loc 1 164 0
+ 165:main.c        ****     }
+ 651              		.loc 1 165 0
  652 00ac 00BF     		nop
  653 00ae 00E0     		b	.L17
  654              	.L28:
- 167:main.c        **** 
- 655              		.loc 1 167 0
+ 168:main.c        **** 
+ 655              		.loc 1 168 0
  656 00b0 00BF     		nop
  657              	.L17:
- 184:main.c        ****             }
- 185:main.c        ****         }
- 186:main.c        ****     }
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 16
+ 185:main.c        ****             }
+ 186:main.c        ****         }
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 16
 
 
- 187:main.c        **** #endif
- 188:main.c        **** }
- 658              		.loc 1 188 0
+ 187:main.c        ****     }
+ 188:main.c        **** #endif
+ 189:main.c        **** }
+ 658              		.loc 1 189 0
  659 00b2 0837     		adds	r7, r7, #8
  660              		.cfi_def_cfa_offset 8
  661 00b4 BD46     		mov	sp, r7
@@ -913,8 +914,8 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  665              	.L30:
  666              		.align	2
  667              	.L29:
- 668 00b8 29000000 		.word	usbStarted.8366
- 669 00bc 2A000000 		.word	usbBufCount.8367
+ 668 00b8 29000000 		.word	usbStarted.8367
+ 669 00bc 2A000000 		.word	usbBufCount.8368
  670 00c0 00000000 		.word	entry
  671 00c4 00000000 		.word	line
  672 00c8 00000000 		.word	flag_KB_string
@@ -922,10 +923,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  674              	.LFE68:
  675              		.size	handle_usb, .-handle_usb
  676              		.bss
- 677              	usbStarted.8366:
+ 677              	usbStarted.8367:
  678 0029 00       		.space	1
  679              		.align	1
- 680              	usbBufCount.8367:
+ 680              	usbBufCount.8368:
  681 002a 0000     		.space	2
  682              		.text
  683              	.Letext0:
@@ -957,10 +958,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  709 0031 02       		.byte	0x2
  710 0032 1D       		.byte	0x1d
  711 0033 37000000 		.4byte	0x37
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 17
+
+
  712 0037 02       		.uleb128 0x2
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 17
-
-
  713 0038 01       		.byte	0x1
  714 0039 08       		.byte	0x8
  715 003a DA010000 		.4byte	.LASF1
@@ -1017,10 +1018,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  766 009d E901     		.2byte	0x1e9
  767 009f 37000000 		.4byte	0x37
  768 00a3 05       		.uleb128 0x5
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 18
+
+
  769 00a4 19030000 		.4byte	.LASF14
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 18
-
-
  770 00a8 04       		.byte	0x4
  771 00a9 EA01     		.2byte	0x1ea
  772 00ab 45000000 		.4byte	0x45
@@ -1077,10 +1078,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  823 0113 2D       		.byte	0x2d
  824 0114 97000000 		.4byte	0x97
  825 0118 01       		.byte	0x1
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 19
+
+
  826 0119 09       		.uleb128 0x9
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 19
-
-
  827 011a DA020000 		.4byte	.LASF24
  828 011e 05       		.byte	0x5
  829 011f 2E       		.byte	0x2e
@@ -1137,10 +1138,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  880 0185 09       		.uleb128 0x9
  881 0186 02030000 		.4byte	.LASF33
  882 018a 05       		.byte	0x5
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 20
+
+
  883 018b 37       		.byte	0x37
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 20
-
-
  884 018c BB000000 		.4byte	0xbb
  885 0190 14       		.byte	0x14
  886 0191 09       		.uleb128 0x9
@@ -1177,7 +1178,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  917 01ce 0A       		.uleb128 0xa
  918 01cf BA030000 		.4byte	.LASF41
  919 01d3 01       		.byte	0x1
- 920 01d4 32       		.byte	0x32
+ 920 01d4 33       		.byte	0x33
  921 01d5 00000000 		.4byte	.LFB64
  922 01d9 0C010000 		.4byte	.LFE64-.LFB64
  923 01dd 01       		.uleb128 0x1
@@ -1189,7 +1190,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  929 01ec 0C       		.uleb128 0xc
  930 01ed 6E6F7700 		.ascii	"now\000"
  931 01f1 01       		.byte	0x1
- 932 01f2 3C       		.byte	0x3c
+ 932 01f2 3D       		.byte	0x3d
  933 01f3 8C000000 		.4byte	0x8c
  934 01f7 02       		.uleb128 0x2
  935 01f8 91       		.byte	0x91
@@ -1197,10 +1198,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  937 01fa 0D       		.uleb128 0xd
  938 01fb 72000000 		.4byte	.LASF39
  939 01ff 01       		.byte	0x1
- 940 0200 3D       		.byte	0x3d
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 21
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 21
 
 
+ 940 0200 3E       		.byte	0x3e
  941 0201 8C000000 		.4byte	0x8c
  942 0205 02       		.uleb128 0x2
  943 0206 91       		.byte	0x91
@@ -1208,7 +1209,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  945 0208 0C       		.uleb128 0xc
  946 0209 63707300 		.ascii	"cps\000"
  947 020d 01       		.byte	0x1
- 948 020e 43       		.byte	0x43
+ 948 020e 44       		.byte	0x44
  949 020f C7000000 		.4byte	0xc7
  950 0213 02       		.uleb128 0x2
  951 0214 91       		.byte	0x91
@@ -1216,7 +1217,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  953 0216 0D       		.uleb128 0xd
  954 0217 CE010000 		.4byte	.LASF40
  955 021b 01       		.byte	0x1
- 956 021c 46       		.byte	0x46
+ 956 021c 47       		.byte	0x47
  957 021d C7000000 		.4byte	0xc7
  958 0221 02       		.uleb128 0x2
  959 0222 91       		.byte	0x91
@@ -1226,7 +1227,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  963 0226 0E       		.uleb128 0xe
  964 0227 63000000 		.4byte	.LASF76
  965 022b 01       		.byte	0x1
- 966 022c 54       		.byte	0x54
+ 966 022c 55       		.byte	0x55
  967 022d 73000000 		.4byte	0x73
  968 0231 00000000 		.4byte	.LFB65
  969 0235 D4000000 		.4byte	.LFE65-.LFB65
@@ -1239,7 +1240,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  976 0248 0C       		.uleb128 0xc
  977 0249 62756600 		.ascii	"buf\000"
  978 024d 01       		.byte	0x1
- 979 024e 68       		.byte	0x68
+ 979 024e 69       		.byte	0x69
  980 024f 59020000 		.4byte	0x259
  981 0253 03       		.uleb128 0x3
  982 0254 91       		.byte	0x91
@@ -1256,11 +1257,11 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  993 0269 0A       		.uleb128 0xa
  994 026a 52010000 		.4byte	.LASF42
  995 026e 01       		.byte	0x1
- 996 026f 83       		.byte	0x83
+ 996 026f 84       		.byte	0x84
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 22
+
+
  997 0270 00000000 		.4byte	.LFB66
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 22
-
-
  998 0274 3E000000 		.4byte	.LFE66-.LFB66
  999 0278 01       		.uleb128 0x1
  1000 0279 9C       		.byte	0x9c
@@ -1268,7 +1269,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1002 027e 11       		.uleb128 0x11
  1003 027f 7300     		.ascii	"s\000"
  1004 0281 01       		.byte	0x1
- 1005 0282 83       		.byte	0x83
+ 1005 0282 84       		.byte	0x84
  1006 0283 EA000000 		.4byte	0xea
  1007 0287 02       		.uleb128 0x2
  1008 0288 91       		.byte	0x91
@@ -1277,7 +1278,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1011 028b 0A       		.uleb128 0xa
  1012 028c 00000000 		.4byte	.LASF43
  1013 0290 01       		.byte	0x1
- 1014 0291 8F       		.byte	0x8f
+ 1014 0291 90       		.byte	0x90
  1015 0292 00000000 		.4byte	.LFB67
  1016 0296 26000000 		.4byte	.LFE67-.LFB67
  1017 029a 01       		.uleb128 0x1
@@ -1286,7 +1287,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1020 02a0 11       		.uleb128 0x11
  1021 02a1 6300     		.ascii	"c\000"
  1022 02a3 01       		.byte	0x1
- 1023 02a4 8F       		.byte	0x8f
+ 1023 02a4 90       		.byte	0x90
  1024 02a5 D5000000 		.4byte	0xd5
  1025 02a9 02       		.uleb128 0x2
  1026 02aa 91       		.byte	0x91
@@ -1295,7 +1296,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1029 02ad 0A       		.uleb128 0xa
  1030 02ae 88030000 		.4byte	.LASF44
  1031 02b2 01       		.byte	0x1
- 1032 02b3 99       		.byte	0x99
+ 1032 02b3 9A       		.byte	0x9a
  1033 02b4 00000000 		.4byte	.LFB68
  1034 02b8 CC000000 		.4byte	.LFE68-.LFB68
  1035 02bc 01       		.uleb128 0x1
@@ -1304,26 +1305,26 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1038 02c2 0D       		.uleb128 0xd
  1039 02c3 39030000 		.4byte	.LASF45
  1040 02c7 01       		.byte	0x1
- 1041 02c8 9C       		.byte	0x9c
+ 1041 02c8 9D       		.byte	0x9d
  1042 02c9 97000000 		.4byte	0x97
  1043 02cd 05       		.uleb128 0x5
  1044 02ce 03       		.byte	0x3
- 1045 02cf 29000000 		.4byte	usbStarted.8366
+ 1045 02cf 29000000 		.4byte	usbStarted.8367
  1046 02d3 0D       		.uleb128 0xd
  1047 02d4 95020000 		.4byte	.LASF46
  1048 02d8 01       		.byte	0x1
- 1049 02d9 9D       		.byte	0x9d
+ 1049 02d9 9E       		.byte	0x9e
  1050 02da A3000000 		.4byte	0xa3
  1051 02de 05       		.uleb128 0x5
  1052 02df 03       		.byte	0x3
- 1053 02e0 2A000000 		.4byte	usbBufCount.8367
+ 1053 02e0 2A000000 		.4byte	usbBufCount.8368
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 23
+
+
  1054 02e4 0C       		.uleb128 0xc
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 23
-
-
  1055 02e5 6300     		.ascii	"c\000"
  1056 02e7 01       		.byte	0x1
- 1057 02e8 A9       		.byte	0xa9
+ 1057 02e8 AA       		.byte	0xaa
  1058 02e9 97000000 		.4byte	0x97
  1059 02ed 02       		.uleb128 0x2
  1060 02ee 91       		.byte	0x91
@@ -1332,7 +1333,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1063 02f1 0D       		.uleb128 0xd
  1064 02f2 F9010000 		.4byte	.LASF47
  1065 02f6 01       		.byte	0x1
- 1066 02f7 24       		.byte	0x24
+ 1066 02f7 25       		.byte	0x25
  1067 02f8 02030000 		.4byte	0x302
  1068 02fc 05       		.uleb128 0x5
  1069 02fd 03       		.byte	0x3
@@ -1342,7 +1343,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1073 0307 0D       		.uleb128 0xd
  1074 0308 0B000000 		.4byte	.LASF48
  1075 030c 01       		.byte	0x1
- 1076 030d 25       		.byte	0x25
+ 1076 030d 26       		.byte	0x26
  1077 030e 02030000 		.4byte	0x302
  1078 0312 05       		.uleb128 0x5
  1079 0313 03       		.byte	0x3
@@ -1350,7 +1351,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1081 0318 0D       		.uleb128 0xd
  1082 0319 12010000 		.4byte	.LASF49
  1083 031d 01       		.byte	0x1
- 1084 031e 26       		.byte	0x26
+ 1084 031e 27       		.byte	0x27
  1085 031f 29030000 		.4byte	0x329
  1086 0323 05       		.uleb128 0x5
  1087 0324 03       		.byte	0x3
@@ -1360,7 +1361,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1091 032e 0D       		.uleb128 0xd
  1092 032f E8010000 		.4byte	.LASF50
  1093 0333 01       		.byte	0x1
- 1094 0334 27       		.byte	0x27
+ 1094 0334 28       		.byte	0x28
  1095 0335 29030000 		.4byte	0x329
  1096 0339 05       		.uleb128 0x5
  1097 033a 03       		.byte	0x3
@@ -1368,7 +1369,7 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1099 033f 0D       		.uleb128 0xd
  1100 0340 C6010000 		.4byte	.LASF51
  1101 0344 01       		.byte	0x1
- 1102 0345 28       		.byte	0x28
+ 1102 0345 29       		.byte	0x29
  1103 0346 29030000 		.4byte	0x329
  1104 034a 05       		.uleb128 0x5
  1105 034b 03       		.byte	0x3
@@ -1376,11 +1377,11 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1107 0350 0D       		.uleb128 0xd
  1108 0351 CF020000 		.4byte	.LASF52
  1109 0355 01       		.byte	0x1
- 1110 0356 2A       		.byte	0x2a
+ 1110 0356 2B       		.byte	0x2b
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 24
+
+
  1111 0357 F0000000 		.4byte	0xf0
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 24
-
-
  1112 035b 05       		.uleb128 0x5
  1113 035c 03       		.byte	0x3
  1114 035d 28000000 		.4byte	flag_print
@@ -1437,10 +1438,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1165 03cc 05       		.uleb128 0x5
  1166 03cd 03       		.byte	0x3
  1167 03ce 00000000 		.4byte	flag_ts_enc
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 25
+
+
  1168 03d2 14       		.uleb128 0x14
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 25
-
-
  1169 03d3 64010000 		.4byte	.LASF59
  1170 03d7 05       		.byte	0x5
  1171 03d8 19       		.byte	0x19
@@ -1497,10 +1498,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1222 0444 03       		.byte	0x3
  1223 0445 00000000 		.4byte	dataready_flag
  1224 0449 14       		.uleb128 0x14
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 26
+
+
  1225 044a 93030000 		.4byte	.LASF66
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 26
-
-
  1226 044e 05       		.byte	0x5
  1227 044f 24       		.byte	0x24
  1228 0450 97000000 		.4byte	0x97
@@ -1557,10 +1558,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1279 04bf 00       		.byte	0
  1280              		.section	.debug_abbrev,"",%progbits
  1281              	.Ldebug_abbrev0:
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 27
+
+
  1282 0000 01       		.uleb128 0x1
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 27
-
-
  1283 0001 11       		.uleb128 0x11
  1284 0002 01       		.byte	0x1
  1285 0003 25       		.uleb128 0x25
@@ -1617,10 +1618,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1336 0036 05       		.uleb128 0x5
  1337 0037 16       		.uleb128 0x16
  1338 0038 00       		.byte	0
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 28
+
+
  1339 0039 03       		.uleb128 0x3
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 28
-
-
  1340 003a 0E       		.uleb128 0xe
  1341 003b 3A       		.uleb128 0x3a
  1342 003c 0B       		.uleb128 0xb
@@ -1677,10 +1678,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1393 006f 00       		.byte	0
  1394 0070 00       		.byte	0
  1395 0071 0A       		.uleb128 0xa
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 29
+
+
  1396 0072 2E       		.uleb128 0x2e
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 29
-
-
  1397 0073 01       		.byte	0x1
  1398 0074 3F       		.uleb128 0x3f
  1399 0075 19       		.uleb128 0x19
@@ -1737,10 +1738,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1450 00a9 0B       		.uleb128 0xb
  1451 00aa 3B       		.uleb128 0x3b
  1452 00ab 0B       		.uleb128 0xb
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 30
+
+
  1453 00ac 49       		.uleb128 0x49
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 30
-
-
  1454 00ad 13       		.uleb128 0x13
  1455 00ae 02       		.uleb128 0x2
  1456 00af 18       		.uleb128 0x18
@@ -1797,10 +1798,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1507 00e3 03       		.uleb128 0x3
  1508 00e4 08       		.uleb128 0x8
  1509 00e5 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 31
+
+
  1510 00e6 0B       		.uleb128 0xb
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 31
-
-
  1511 00e7 3B       		.uleb128 0x3b
  1512 00e8 0B       		.uleb128 0xb
  1513 00e9 49       		.uleb128 0x49
@@ -1857,10 +1858,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1564 011c 3F       		.uleb128 0x3f
  1565 011d 19       		.uleb128 0x19
  1566 011e 02       		.uleb128 0x2
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 32
+
+
  1567 011f 18       		.uleb128 0x18
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 32
-
-
  1568 0120 00       		.byte	0
  1569 0121 00       		.byte	0
  1570 0122 00       		.byte	0
@@ -1917,10 +1918,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1613      6E6300
  1614              	.LASF18:
  1615 001a 646F7562 		.ascii	"double\000"
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 33
+
+
  1615      6C6500
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 33
-
-
  1616              	.LASF63:
  1617 0021 666C6167 		.ascii	"flag_packet\000"
  1617      5F706163 
@@ -1977,10 +1978,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1639      20646F75 
  1639      626C6500 
  1640              	.LASF49:
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 34
+
+
  1641 0112 7370645F 		.ascii	"spd_cps\000"
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 34
-
-
  1641      63707300 
  1642              	.LASF23:
  1643 011a 696E6465 		.ascii	"index\000"
@@ -2037,10 +2038,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1670              	.LASF6:
  1671 0195 6C6F6E67 		.ascii	"long int\000"
  1671      20696E74 
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 35
+
+
  1671      00
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 35
-
-
  1672              	.LASF4:
  1673 019e 5F5F7569 		.ascii	"__uint8_t\000"
  1673      6E74385F 
@@ -2097,10 +2098,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1698              	.LASF74:
  1699 0234 433A5C55 		.ascii	"C:\\Users\\acant\\Downloads\\301MotorCar\\psoc firm"
  1699      73657273 
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 36
+
+
  1699      5C616361 
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 36
-
-
  1699      6E745C44 
  1699      6F776E6C 
  1700 0262 77617265 		.ascii	"ware\\CS301_Class.cydsn\000"
@@ -2157,10 +2158,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1724 02f5 67325F64 		.ascii	"g2_direction\000"
  1724      69726563 
  1724      74696F6E 
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 37
+
+
  1724      00
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 37
-
-
  1725              	.LASF33:
  1726 0302 67315F73 		.ascii	"g1_speed\000"
  1726      70656564 
@@ -2217,10 +2218,10 @@ ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 1
  1752      6C655F75 
  1752      736200
  1753              	.LASF66:
+ARM GAS  C:\Users\acant\AppData\Local\Temp\ccAcdQaf.s 			page 38
+
+
  1754 0393 666C6167 		.ascii	"flag_rf_transmission_active\000"
-ARM GAS  C:\Users\acant\AppData\Local\Temp\ccfM6q5W.s 			page 38
-
-
  1754      5F72665F 
  1754      7472616E 
  1754      736D6973 

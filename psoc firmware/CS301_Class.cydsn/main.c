@@ -26,6 +26,7 @@
 #include "isr_1.h"
 #include "LEFT_TURN.h"
 #include "RIGHT_TURN.h"
+#include "STRAIGHT.h"
 
 #define ENCODER_CPR 500
 #define QUAD_MULT 4        
@@ -84,7 +85,7 @@ CY_ISR(Timer_TS_ISR_Handler)
 int main(void)
 {
     CyGlobalIntEnable;
-    RIGHT_TURN();
+    STRAIGHT();
     QuadDec_M1_Start();
     QuadDec_M1_SetCounter(0);
     enc_last = QuadDec_M1_GetCounter();

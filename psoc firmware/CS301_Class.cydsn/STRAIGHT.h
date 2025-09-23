@@ -11,14 +11,17 @@
 */
 
 /* [] END OF FILE */
-#include "LEFT_TURN.h"
 
-void LEFT_TURN()
-{
-    CYGlobalIntEnable;
-    PWM_2_Start();
-    PWM_2_WriteCompare(255);
-    CyDelay(260);
-    PWM_2_WriteCompare(127);
+#ifndef STRAIGHT_H
+#define STRAIGHT_H
 
-}
+#include <project.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+
+void STRAIGHT();
+    
+
+#endif
