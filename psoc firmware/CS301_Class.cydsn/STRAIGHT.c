@@ -15,8 +15,6 @@
 
 void MOVE_STRAIGHT()
 {
-    PWM_1_Start();
-    PWM_2_Start();
     PWM_1_WriteCompare(210);
     PWM_2_WriteCompare(210);
     CyDelay(1000);

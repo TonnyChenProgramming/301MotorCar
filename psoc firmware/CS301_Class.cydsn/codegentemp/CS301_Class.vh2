@@ -2,7 +2,7 @@
 --	Conversion of CS301_Class.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Wed Sep 24 14:06:08 2025
+--	Wed Sep 24 16:13:59 2025
 --
 
 USE cypress.cypress.all;
@@ -1056,6 +1056,16 @@ SIGNAL Net_4390 : bit;
 SIGNAL tmpIO_0__Output_6_net_0 : bit;
 TERMINAL tmpSIOVREF__Output_6_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__Output_6_net_0 : bit;
+SIGNAL \VDAC8_1:Net_83\ : bit;
+SIGNAL \VDAC8_1:Net_81\ : bit;
+SIGNAL \VDAC8_1:Net_82\ : bit;
+TERMINAL Net_4393 : bit;
+TERMINAL \VDAC8_1:Net_77\ : bit;
+SIGNAL tmpOE__Vref_net_0 : bit;
+SIGNAL tmpFB_0__Vref_net_0 : bit;
+SIGNAL tmpIO_0__Vref_net_0 : bit;
+TERMINAL tmpSIOVREF__Vref_net_0 : bit;
+SIGNAL tmpINTERRUPT_0__Vref_net_0 : bit;
 SIGNAL \QuadDec_M1:Net_1251\\D\ : bit;
 SIGNAL \QuadDec_M1:Cnt16:CounterUDB:prevCapture\\D\ : bit;
 SIGNAL \QuadDec_M1:Cnt16:CounterUDB:overflow_reg_i\\D\ : bit;
@@ -4058,6 +4068,91 @@ Output_6:cy_psoc3_pins_v1_10
 		out_clock_en=>tmpOE__M1_IN1_net_0,
 		out_reset=>Net_2183,
 		interrupt=>tmpINTERRUPT_0__Output_6_net_0);
+\VDAC8_1:viDAC8\:cy_psoc3_vidac8_v1_0
+	GENERIC MAP(cy_registers=>"",
+		reg_data=>'0',
+		is_all_if_any=>'0')
+	PORT MAP(reset=>Net_2183,
+		idir=>Net_2183,
+		ioff=>Net_2183,
+		data=>(Net_2183, Net_2183, Net_2183, Net_2183,
+			Net_2183, Net_2183, Net_2183, Net_2183),
+		strobe=>Net_2183,
+		strobe_udb=>Net_2183,
+		vout=>Net_4393,
+		iout=>\VDAC8_1:Net_77\);
+\VDAC8_1:cy_analog_noconnect_1\:cy_analog_noconnect_v1_0
+	PORT MAP(noconnect=>\VDAC8_1:Net_77\);
+Vref:cy_psoc3_pins_v1_10
+	GENERIC MAP(id=>"77715107-f8d5-47e5-a629-0fb83101ac6b",
+		drive_mode=>"000",
+		ibuf_enabled=>"0",
+		init_dr_st=>"0",
+		input_sync=>"1",
+		input_clk_en=>'0',
+		input_sync_mode=>"0",
+		intr_mode=>"00",
+		invert_in_clock=>'0',
+		invert_in_clock_en=>'0',
+		invert_in_reset=>'0',
+		invert_out_clock=>'0',
+		invert_out_clock_en=>'0',
+		invert_out_reset=>'0',
+		io_voltage=>"",
+		layout_mode=>"CONTIGUOUS",
+		output_conn=>"0",
+		output_sync=>"0",
+		output_clk_en=>'0',
+		output_mode=>"0",
+		output_reset=>'0',
+		output_clock_mode=>"0",
+		oe_sync=>"0",
+		oe_conn=>"0",
+		oe_reset=>'0',
+		pin_aliases=>"",
+		pin_mode=>"A",
+		por_state=>4,
+		sio_group_cnt=>0,
+		sio_hifreq=>"00000000",
+		sio_hyst=>"1",
+		sio_ibuf=>"00000000",
+		sio_info=>"00",
+		sio_obuf=>"00000000",
+		sio_refsel=>"00000000",
+		sio_vtrip=>"00000000",
+		sio_vohsel=>"00000000",
+		slew_rate=>"0",
+		spanning=>'0',
+		sw_only=>'0',
+		vtrip=>"10",
+		width=>1,
+		port_alias_required=>'0',
+		port_alias_group=>"",
+		use_annotation=>"0",
+		pa_in_clock=>-1,
+		pa_in_clock_en=>-1,
+		pa_in_reset=>-1,
+		pa_out_clock=>-1,
+		pa_out_clock_en=>-1,
+		pa_out_reset=>-1,
+		ovt_needed=>"0",
+		ovt_slew_control=>"00",
+		ovt_hyst_trim=>"0",
+		input_buffer_sel=>"00")
+	PORT MAP(oe=>(tmpOE__M1_IN1_net_0),
+		y=>(Net_2183),
+		fb=>(tmpFB_0__Vref_net_0),
+		analog=>Net_4393,
+		io=>(tmpIO_0__Vref_net_0),
+		siovref=>(tmpSIOVREF__Vref_net_0),
+		annotation=>(open),
+		in_clock=>Net_2183,
+		in_clock_en=>tmpOE__M1_IN1_net_0,
+		in_reset=>Net_2183,
+		out_clock=>Net_2183,
+		out_clock_en=>tmpOE__M1_IN1_net_0,
+		out_reset=>Net_2183,
+		interrupt=>tmpINTERRUPT_0__Vref_net_0);
 \QuadDec_M1:Net_1251\:cy_dff
 	PORT MAP(d=>\QuadDec_M1:Net_1251\\D\,
 		clk=>\QuadDec_M1:bQuadDec:sync_clock\,

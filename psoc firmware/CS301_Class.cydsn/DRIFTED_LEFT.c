@@ -16,8 +16,6 @@
 
 void DRIFT_RIGHT()
 {
-    CYGlobalIntEnable;
-    PWM_2_Start();
     PWM_2_WriteCompare(145);
     CyDelay(260);
     PWM_2_WriteCompare(12);

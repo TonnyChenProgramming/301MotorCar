@@ -17,8 +17,6 @@
 
 void DRIFT_LEFT()
 {
-    CYGlobalIntEnable;
-    PWM_1_Start();
     PWM_1_WriteCompare(145);
     CyDelay(260);
     PWM_1_WriteCompare(12);
