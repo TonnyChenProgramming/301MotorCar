@@ -12,3 +12,15 @@
 
 /* [] END OF FILE */
 
+
+#include "DRIFTED_RIGHT.h"
+
+void DRIFTED_RIGHT()
+{
+    CYGlobalIntEnable;
+    PWM_1_Start();
+    PWM_1_WriteCompare(145);
+    CyDelay(260);
+    PWM_1_WriteCompare(12);
+
+}
