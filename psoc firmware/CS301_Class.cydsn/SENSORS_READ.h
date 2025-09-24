@@ -25,8 +25,8 @@
 // States of movement
 typedef enum {
     STRAIGHT,
-    TURN_LEFT,
-    TURN_RIGHT,
+    LEFT_TURN,
+    RIGHT_TURN,
     DRIFTED_LEFT,
     DRIFTED_RIGHT
 } MovementState;

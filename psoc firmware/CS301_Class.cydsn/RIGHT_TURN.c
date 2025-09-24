@@ -14,7 +14,7 @@
 
 #include "RIGHT_TURN.h"
 
-void RIGHT_TURN()
+void TURN_RIGHT()
 {
     CYGlobalIntEnable;
     PWM_1_Start();

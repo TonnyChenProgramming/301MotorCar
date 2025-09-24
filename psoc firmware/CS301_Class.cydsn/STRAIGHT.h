@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-void STRAIGHT();
+void MOVE_STRAIGHT();
     
 
 #endif

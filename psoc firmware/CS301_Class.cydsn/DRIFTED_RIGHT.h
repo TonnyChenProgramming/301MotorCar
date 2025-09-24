@@ -11,3 +11,16 @@
 */
 
 /* [] END OF FILE */
+
+#ifndef DRIFTED_RIGHT_H
+#define DRIFTED_RIGHT_H
+
+#include <project.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+
+void DRIFT_LEFT();
+    
+#endif

@@ -34,8 +34,8 @@ MovementState GetMovement(void) {
     
     switch(sensors) {
         case 0b001110: return STRAIGHT;
-        case 0b001111: return TURN_LEFT;
-        case 0b001010: return TURN_RIGHT;
+        case 0b001111: return LEFT_TURN;
+        case 0b001010: return RIGHT_TURN;
         case 0b000110: return DRIFTED_RIGHT;
         case 0b001000: return DRIFTED_LEFT;
         default:       return STRAIGHT;

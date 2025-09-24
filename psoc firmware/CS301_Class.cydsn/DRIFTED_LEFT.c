@@ -14,7 +14,7 @@
 
 #include "DRIFTED_LEFT.h"
 
-void DRIFTED_LEFT()
+void DRIFT_RIGHT()
 {
     CYGlobalIntEnable;
     PWM_2_Start();

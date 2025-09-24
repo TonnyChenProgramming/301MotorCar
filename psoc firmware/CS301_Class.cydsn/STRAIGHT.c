@@ -13,7 +13,7 @@
 /* [] END OF FILE */
 #include "STRAIGHT.h"
 
-void STRAIGHT()
+void MOVE_STRAIGHT()
 {
     PWM_1_Start();
     PWM_2_Start();

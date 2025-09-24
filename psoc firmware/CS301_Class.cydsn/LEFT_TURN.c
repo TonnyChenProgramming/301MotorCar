@@ -13,7 +13,7 @@
 /* [] END OF FILE */
 #include "LEFT_TURN.h"
 
-void LEFT_TURN()
+void TURN_LEFT()
 {
     CYGlobalIntEnable;
     PWM_2_Start();

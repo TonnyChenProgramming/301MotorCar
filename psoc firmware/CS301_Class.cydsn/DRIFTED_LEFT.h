@@ -21,7 +21,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-void DRIFTED_LEFT();
+void DRIFT_RIGHT();
     
-
 #endif

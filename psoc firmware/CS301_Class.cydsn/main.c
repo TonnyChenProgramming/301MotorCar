@@ -27,6 +27,9 @@
 #include "LEFT_TURN.h"
 #include "RIGHT_TURN.h"
 #include "STRAIGHT.h"
+#include "DRIFTED_RIGHT.h"
+#include "DRIFTED_LEFT.h"
+#include "SENSORS_READ.h"
 
 #define ENCODER_CPR 500
 #define QUAD_MULT 4        
@@ -85,7 +88,7 @@ CY_ISR(Timer_TS_ISR_Handler)
 int main(void)
 {
     CyGlobalIntEnable;
-    STRAIGHT();
+    MOVE_STRAIGHT();
     QuadDec_M1_Start();
     QuadDec_M1_SetCounter(0);
     enc_last = QuadDec_M1_GetCounter();
@@ -108,6 +111,16 @@ int main(void)
                      (long)enc_pos, (double)spd_cps, (double)spd_rpm, (double)spd_rps);
             usbPutString(buf);
         }
+           
+        MovementState move = GetMovement();
+        switch(move) {
+            case STRAIGHT:          MOVE_STRAIGHT();    break;
+            case LEFT_TURN:         TURN_LEFT();        break;
+            case RIGHT_TURN:        TURN_RIGHT();       break;
+            case DRIFTED_LEFT:      DRIFT_RIGHT();      break;
+            case DRIFTED_RIGHT:     DRIFT_LEFT();       break; 
+        }
+        
         handle_usb();
         if (flag_KB_string) { usbPutString(line); flag_KB_string = 0; }
     }

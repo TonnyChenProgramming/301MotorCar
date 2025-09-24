@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-void RIGHT_TURN();
+void TURN_RIGHT();
     
 
 #endif
