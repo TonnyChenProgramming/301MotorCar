@@ -16,6 +16,7 @@
 void TURN_LEFT()
 {
     PWM_2_WriteCompare(255);
+    PWM_1_WriteCompare(0);
     CyDelay(260);
     PWM_2_WriteCompare(127);
 

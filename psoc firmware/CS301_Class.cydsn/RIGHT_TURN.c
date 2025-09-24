@@ -17,6 +17,7 @@
 void TURN_RIGHT()
 {
     PWM_1_WriteCompare(255);
+    PWM_2_WriteCompare(0);
     CyDelay(250);
     PWM_1_WriteCompare(127);
 
