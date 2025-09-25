@@ -30,11 +30,12 @@ typedef enum {
     RIGHT_TURN,
     DRIFTED_LEFT,
     DRIFTED_RIGHT,
-    STOP
+    STOP,
+    KEEP_RUNNING,
 } MovementState;
 
 // Prototype
 uint8 ReadSensors(void);
 MovementState GetMovement(void);
-
+extern uint8 sensorValues;
 #endif

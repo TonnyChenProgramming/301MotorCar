@@ -103,37 +103,42 @@ int main(void)
 
     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
     Timer_TS_Start();                      // then start
+    //MOVE_STRAIGHT();
 
     for(;;) {
       //MOVE_STRAIGHT();
       //if (Output_6_Read() == 0){ TURN_LEFT();}
       //if (Output_3_Read() == 0) {TURN_RIGHT();}
-      MOVE_STRAIGHT();
-      //move(GetMovement());
-    
+      MovementState movement = GetMovement();
+      move(movement);
+ 
+    /*
         if (flag_ts_display) {
             flag_ts_display = 0;
 
             // if float printf isn’t enabled, convert to fixed point (see note below)
             char buf[64];
+            
             snprintf(buf, sizeof(buf),
                      "pos:%ld cps:%.0f rpm:%.1f rps:%.2f\r\n",
                      (long)enc_pos, (double)spd_cps, (double)spd_rpm, (double)spd_rps);
             usbPutString(buf);
             
-        
+    */
+
           }
     
-
-         // MovementState move = GetMovement();
-        //  switch(move) {
-        //    case STRAIGHT:          MOVE_STRAIGHT();    break;
-        //    case LEFT_TURN:         TURN_LEFT();        break;
-          //  case RIGHT_TURN:        TURN_RIGHT();       break;
-           // case DRIFTED_LEFT:      DRIFT_RIGHT();      break;
-            //case DRIFTED_RIGHT:     DRIFT_LEFT();       break;
-            //case STOP:              STOP_MOVING();      break;
-        
+/*
+          MovementState move = GetMovement();
+          switch(move) {
+            case STRAIGHT:          MOVE_STRAIGHT();    break;
+            case LEFT_TURN:         TURN_LEFT();        break;
+            case RIGHT_TURN:        TURN_RIGHT();       break;
+            case DRIFTED_LEFT:      DRIFT_RIGHT();      break;
+            case DRIFTED_RIGHT:     DRIFT_LEFT();       break;
+            case STOP:              STOP_MOVING();      break;
+        }
+*/       
         
         handle_usb();
         if (flag_KB_string) { usbPutString(line); flag_KB_string = 0; }
@@ -154,7 +159,7 @@ int main(void)
     usbPutString(buf);
 }
 */
-}
+//}
 void usbPutString(char *s)
 {
 #ifdef USE_USB
