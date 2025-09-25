@@ -30,6 +30,7 @@
 #include "DRIFTED_RIGHT.h"
 #include "DRIFTED_LEFT.h"
 #include "SENSORS_READ.h"
+#include "STOP.h"
 
 #define ENCODER_CPR 500
 #define QUAD_MULT 4        
@@ -71,7 +72,7 @@ CY_ISR(Timer_TS_ISR_Handler)
         float cps = (float)delta * ((float)TIMER_BASE_HZ / (float)DECIMATE_TS_SPEED);
         spd_cps = cps;
 
-        float rev_per_sec = spd_cps / (float)(/* CPR × 4 */ 3 * 4 * 19); // = 228 if your PDF motor (3 CPR, 19:1, x4)
+        float rev_per_sec = spd_cps / (float)(/* CPR × 4 */ 3 * 4 * 19); // = 228 if PDF motor (3 CPR, 19:1, x4)
         spd_rps = rev_per_sec * 2.0f * 3.14159265358979323846f;
         spd_rpm = rev_per_sec * 60.0f;
     }
@@ -90,6 +91,7 @@ int main(void)
     CyGlobalIntEnable;
     PWM_1_Start();
     PWM_2_Start();
+    TURN_LEFT();
     QuadDec_M1_Start();
     QuadDec_M1_SetCounter(0);
     enc_last = QuadDec_M1_GetCounter();
@@ -112,16 +114,17 @@ int main(void)
                      (long)enc_pos, (double)spd_cps, (double)spd_rpm, (double)spd_rps);
             usbPutString(buf);
         }
-           
-        MovementState move = GetMovement();
-        switch(move) {
+         /*  
+          MovementState move = GetMovement();
+          switch(move) {
             case STRAIGHT:          MOVE_STRAIGHT();    break;
             case LEFT_TURN:         TURN_LEFT();        break;
             case RIGHT_TURN:        TURN_RIGHT();       break;
             case DRIFTED_LEFT:      DRIFT_RIGHT();      break;
-            case DRIFTED_RIGHT:     DRIFT_LEFT();       break; 
+            case DRIFTED_RIGHT:     DRIFT_LEFT();       break;
+            case STOP:              STOP_MOVING();      break;
         }
-        
+        */
         handle_usb();
         if (flag_KB_string) { usbPutString(line); flag_KB_string = 0; }
     }

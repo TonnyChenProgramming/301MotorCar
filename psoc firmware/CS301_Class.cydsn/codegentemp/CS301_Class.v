@@ -1,6 +1,6 @@
 // ======================================================================
 // CS301_Class.v generated from TopDesign.cysch
-// 09/25/2025 at 04:06
+// 09/25/2025 at 15:04
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -1485,12 +1485,12 @@ module top ;
           wire  Net_3247;
           wire  Net_3246;
           wire  Net_1849;
-          wire  Net_4385;
-          wire  Net_4386;
-          wire  Net_4387;
-          wire  Net_4388;
-          wire  Net_4389;
           wire  Net_4390;
+          wire  Net_4389;
+          wire  Net_4388;
+          wire  Net_4387;
+          wire  Net_4386;
+          wire  Net_4385;
     electrical  Net_4393;
           wire  Net_1619;
           wire  Net_4365;
@@ -3829,7 +3829,7 @@ module top ;
 		  .input_buffer_sel(2'b00))
 		LED4
 		 (.oe(tmpOE__LED4_net),
-		  .y({Net_4386}),
+		  .y({Net_4387}),
 		  .fb({tmpFB_0__LED4_net[0:0]}),
 		  .io({tmpIO_0__LED4_net[0:0]}),
 		  .siovref(tmpSIOVREF__LED4_net),
@@ -3904,7 +3904,7 @@ module top ;
 		  .input_buffer_sel(2'b00))
 		LED5
 		 (.oe(tmpOE__LED5_net),
-		  .y({Net_4387}),
+		  .y({Net_4386}),
 		  .fb({tmpFB_0__LED5_net[0:0]}),
 		  .io({tmpIO_0__LED5_net[0:0]}),
 		  .siovref(tmpSIOVREF__LED5_net),

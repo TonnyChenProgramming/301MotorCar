@@ -12,13 +12,9 @@
 
 /* [] END OF FILE */
 
-#include <project.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+#include "STOP.h"
 
-void STOP()
+void STOP_MOVING()
 {
     PWM_1_WriteCompare(127);
     PWM_2_WriteCompare(127);

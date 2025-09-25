@@ -12,14 +12,15 @@
 
 /* [] END OF FILE */
 
-#include "RIGHT_TURN.h"
+#ifndef STOP_H
+#define STOP_H
+    
+#include <project.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
 
-void TURN_RIGHT()
-{
-    PWM_1_WriteCompare(255);
-    PWM_2_WriteCompare(0);
-    CyDelay(250);
-    PWM_1_WriteCompare(127);
-    PWM_2_WriteCompare(127);
+void STOP_MOVING();
 
-}
+#endif
