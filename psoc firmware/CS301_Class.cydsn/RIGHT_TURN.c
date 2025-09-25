@@ -20,7 +20,5 @@ void TURN_RIGHT()
     PWM_1_WriteCompare(167);
     PWM_2_WriteCompare(87);
     }
-    PWM_2_WriteCompare(127);
-    PWM_1_WriteCompare(127);
 
 }

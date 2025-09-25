@@ -10,15 +10,13 @@
  * ========================================
 */
 
+#ifndef MOVEMENT_H
+#define MOVEMENT_H
+
+#include "SENSORS_READ.h"
+    
+void move(MovementState movement);
+    
+
+#endif
 /* [] END OF FILE */
-#include "LEFT_TURN.h"
-
-void TURN_LEFT()
-{
-    while (Output_5_Read() == 1) {
-    PWM_2_WriteCompare(167);
-    PWM_1_WriteCompare(87);
-    }
- 
-
-}

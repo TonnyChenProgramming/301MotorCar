@@ -31,6 +31,7 @@
 #include "DRIFTED_LEFT.h"
 #include "SENSORS_READ.h"
 #include "STOP.h"
+#include "MOVEMENT.h"
 
 #define ENCODER_CPR 500
 #define QUAD_MULT 4        
@@ -104,9 +105,11 @@ int main(void)
     Timer_TS_Start();                      // then start
 
     for(;;) {
-        MOVE_STRAIGHT();
-        if (Output_6_Read() == 0){ TURN_LEFT();}
-        if (Output_3_Read() == 0) {TURN_RIGHT();}
+      //MOVE_STRAIGHT();
+      //if (Output_6_Read() == 0){ TURN_LEFT();}
+      //if (Output_3_Read() == 0) {TURN_RIGHT();}
+      MOVE_STRAIGHT();
+      //move(GetMovement());
     
         if (flag_ts_display) {
             flag_ts_display = 0;
