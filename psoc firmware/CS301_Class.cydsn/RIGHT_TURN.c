@@ -16,10 +16,11 @@
 
 void TURN_RIGHT()
 {
-    PWM_1_WriteCompare(255);
-    PWM_2_WriteCompare(0);
-    CyDelay(250);
-    PWM_1_WriteCompare(127);
+   while (Output_4_Read() == 1) {
+    PWM_1_WriteCompare(167);
+    PWM_2_WriteCompare(87);
+    }
     PWM_2_WriteCompare(127);
+    PWM_1_WriteCompare(127);
 
 }

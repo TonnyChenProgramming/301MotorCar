@@ -33,11 +33,11 @@ MovementState GetMovement(void) {
     uint8 sensors = ReadSensors();
     
     switch(sensors) {
-        case 0b100001: return STRAIGHT;
-        case 0b010000: return LEFT_TURN;
-        case 0b000100: return RIGHT_TURN;
-        case 0b000011: return DRIFTED_RIGHT;
-        case 0b110000: return DRIFTED_LEFT;
+        case 0b011110: return STRAIGHT;
+        case 0b101111: return LEFT_TURN;
+        case 0b111011: return RIGHT_TURN;
+        case 0b111100: return DRIFTED_RIGHT;
+        case 0b001111: return DRIFTED_LEFT;
         default:       return STOP;
     }
 }

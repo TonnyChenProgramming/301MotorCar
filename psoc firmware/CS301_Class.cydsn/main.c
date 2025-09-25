@@ -91,7 +91,7 @@ int main(void)
     CyGlobalIntEnable;
     PWM_1_Start();
     PWM_2_Start();
-    TURN_LEFT();
+    
     QuadDec_M1_Start();
     QuadDec_M1_SetCounter(0);
     enc_last = QuadDec_M1_GetCounter();
@@ -104,6 +104,10 @@ int main(void)
     Timer_TS_Start();                      // then start
 
     for(;;) {
+        MOVE_STRAIGHT();
+        if (Output_6_Read() == 0){ TURN_LEFT();}
+        if (Output_3_Read() == 0) {TURN_RIGHT();}
+    
         if (flag_ts_display) {
             flag_ts_display = 0;
 
@@ -113,23 +117,25 @@ int main(void)
                      "pos:%ld cps:%.0f rpm:%.1f rps:%.2f\r\n",
                      (long)enc_pos, (double)spd_cps, (double)spd_rpm, (double)spd_rps);
             usbPutString(buf);
-        }
-         /*  
-          MovementState move = GetMovement();
-          switch(move) {
-            case STRAIGHT:          MOVE_STRAIGHT();    break;
-            case LEFT_TURN:         TURN_LEFT();        break;
-            case RIGHT_TURN:        TURN_RIGHT();       break;
-            case DRIFTED_LEFT:      DRIFT_RIGHT();      break;
-            case DRIFTED_RIGHT:     DRIFT_LEFT();       break;
-            case STOP:              STOP_MOVING();      break;
-        }
-        */
+            
+        
+          }
+    
+
+         // MovementState move = GetMovement();
+        //  switch(move) {
+        //    case STRAIGHT:          MOVE_STRAIGHT();    break;
+        //    case LEFT_TURN:         TURN_LEFT();        break;
+          //  case RIGHT_TURN:        TURN_RIGHT();       break;
+           // case DRIFTED_LEFT:      DRIFT_RIGHT();      break;
+            //case DRIFTED_RIGHT:     DRIFT_LEFT();       break;
+            //case STOP:              STOP_MOVING();      break;
+        
+        
         handle_usb();
         if (flag_KB_string) { usbPutString(line); flag_KB_string = 0; }
     }
-}
-
+    
 /* static void print_telemetry(void)
 {
     uint8 intr = CyEnterCriticalSection();
@@ -145,7 +151,7 @@ int main(void)
     usbPutString(buf);
 }
 */
-
+}
 void usbPutString(char *s)
 {
 #ifdef USE_USB
