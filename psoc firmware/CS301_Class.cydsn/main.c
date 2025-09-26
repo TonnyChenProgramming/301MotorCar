@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "main.h"
 #include "defines.h"     
 #include "vars.h"
 #include "isr_1.h"
@@ -32,6 +33,7 @@
 #include "SENSORS_READ.h"
 #include "STOP.h"
 #include "MOVEMENT.h"
+#include "manoeuvre.h"
 
 #define ENCODER_CPR 500
 #define QUAD_MULT 4        
@@ -46,6 +48,8 @@ static volatile float   spd_rps  = 0.0f;
 static volatile float   spd_rpm  = 0.0f;   
 
 static volatile uint8_t flag_print = 0;
+
+edge_pack_t edges = {0,0,0,0};
 
 // static void print_telemetry(void);
 void usbPutString(char *s);
@@ -104,14 +108,38 @@ int main(void)
     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
     Timer_TS_Start();                      // then start
     //MOVE_STRAIGHT();
-
+    // enable isr for edge detection
+    front_left_Start();
+    front_right_Start();
+    mid_left_Start();
+    mid_right_Start();
     for(;;) {
       //MOVE_STRAIGHT();
       //if (Output_6_Read() == 0){ TURN_LEFT();}
       //if (Output_3_Read() == 0) {TURN_RIGHT();}
       MovementState movement = GetMovement();
       move(movement);
- 
+      if (edges.front_left_edge)
+    {
+        edges.front_left_edge = 0;
+        edge_front_left_manoeuvre();
+        
+    } 
+    else if (edges.front_right_edge)
+    {
+        edges.front_right_edge = 0;
+        edge_front_right_manoeuvre();
+    } 
+    else if (edges.mid_left_edge)
+    {
+        edges.mid_left_edge = 0;
+        edge_mid_left_manoeuvre();        
+    } 
+    else if (edges.mid_right_edge)
+    {
+        edges.mid_right_edge = 0;
+        edge_mid_right_manoeuvre();        
+    }
     /*
         if (flag_ts_display) {
             flag_ts_display = 0;

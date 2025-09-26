@@ -1,0 +1,2186 @@
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"front_right.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.front_right_Start,"ax",%progbits
+  20              		.align	2
+  21              		.global	front_right_Start
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	front_right_Start, %function
+  25              	front_right_Start:
+  26              	.LFB63:
+  27              		.file 1 "Generated_Source\\PSoC5\\front_right.c"
+   1:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+   2:Generated_Source\PSoC5/front_right.c **** * File Name: front_right.c  
+   3:Generated_Source\PSoC5/front_right.c **** * Version 1.71
+   4:Generated_Source\PSoC5/front_right.c **** *
+   5:Generated_Source\PSoC5/front_right.c **** *  Description:
+   6:Generated_Source\PSoC5/front_right.c **** *   API for controlling the state of an interrupt.
+   7:Generated_Source\PSoC5/front_right.c **** *
+   8:Generated_Source\PSoC5/front_right.c **** *
+   9:Generated_Source\PSoC5/front_right.c **** *  Note:
+  10:Generated_Source\PSoC5/front_right.c **** *
+  11:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+  12:Generated_Source\PSoC5/front_right.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  13:Generated_Source\PSoC5/front_right.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:Generated_Source\PSoC5/front_right.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:Generated_Source\PSoC5/front_right.c **** * the software package with which this file was provided.
+  16:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+  17:Generated_Source\PSoC5/front_right.c **** 
+  18:Generated_Source\PSoC5/front_right.c **** 
+  19:Generated_Source\PSoC5/front_right.c **** #include <cydevice_trm.h>
+  20:Generated_Source\PSoC5/front_right.c **** #include <CyLib.h>
+  21:Generated_Source\PSoC5/front_right.c **** #include <front_right.h>
+  22:Generated_Source\PSoC5/front_right.c **** 
+  23:Generated_Source\PSoC5/front_right.c **** 
+  24:Generated_Source\PSoC5/front_right.c **** #if !defined(front_right__REMOVED) /* Check for removal by optimization */
+  25:Generated_Source\PSoC5/front_right.c **** 
+  26:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+  27:Generated_Source\PSoC5/front_right.c **** *  Place your includes, defines and code here 
+  28:Generated_Source\PSoC5/front_right.c **** ********************************************************************************/
+  29:Generated_Source\PSoC5/front_right.c **** /* `#START front_right_intc` */
+  30:Generated_Source\PSoC5/front_right.c **** #include "main.h"
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 2
+
+
+  31:Generated_Source\PSoC5/front_right.c **** /* `#END` */
+  32:Generated_Source\PSoC5/front_right.c **** 
+  33:Generated_Source\PSoC5/front_right.c **** #ifndef CYINT_IRQ_BASE
+  34:Generated_Source\PSoC5/front_right.c **** #define CYINT_IRQ_BASE      16
+  35:Generated_Source\PSoC5/front_right.c **** #endif /* CYINT_IRQ_BASE */
+  36:Generated_Source\PSoC5/front_right.c **** #ifndef CYINT_VECT_TABLE
+  37:Generated_Source\PSoC5/front_right.c **** #define CYINT_VECT_TABLE    ((cyisraddress **) CYREG_NVIC_VECT_OFFSET)
+  38:Generated_Source\PSoC5/front_right.c **** #endif /* CYINT_VECT_TABLE */
+  39:Generated_Source\PSoC5/front_right.c **** 
+  40:Generated_Source\PSoC5/front_right.c **** /* Declared in startup, used to set unused interrupts to. */
+  41:Generated_Source\PSoC5/front_right.c **** CY_ISR_PROTO(IntDefaultHandler);
+  42:Generated_Source\PSoC5/front_right.c **** 
+  43:Generated_Source\PSoC5/front_right.c **** 
+  44:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+  45:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_Start
+  46:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+  47:Generated_Source\PSoC5/front_right.c **** *
+  48:Generated_Source\PSoC5/front_right.c **** * Summary:
+  49:Generated_Source\PSoC5/front_right.c **** *  Set up the interrupt and enable it. This function disables the interrupt, 
+  50:Generated_Source\PSoC5/front_right.c **** *  sets the default interrupt vector, sets the priority from the value in the
+  51:Generated_Source\PSoC5/front_right.c **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
+  52:Generated_Source\PSoC5/front_right.c **** *  interrupt controller.
+  53:Generated_Source\PSoC5/front_right.c **** *
+  54:Generated_Source\PSoC5/front_right.c **** * Parameters:  
+  55:Generated_Source\PSoC5/front_right.c **** *   None
+  56:Generated_Source\PSoC5/front_right.c **** *
+  57:Generated_Source\PSoC5/front_right.c **** * Return:
+  58:Generated_Source\PSoC5/front_right.c **** *   None
+  59:Generated_Source\PSoC5/front_right.c **** *
+  60:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+  61:Generated_Source\PSoC5/front_right.c **** void front_right_Start(void)
+  62:Generated_Source\PSoC5/front_right.c **** {
+  28              		.loc 1 62 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+  63:Generated_Source\PSoC5/front_right.c ****     /* For all we know the interrupt is active. */
+  64:Generated_Source\PSoC5/front_right.c ****     front_right_Disable();
+  38              		.loc 1 64 0
+  39 0004 FFF7FEFF 		bl	front_right_Disable
+  65:Generated_Source\PSoC5/front_right.c **** 
+  66:Generated_Source\PSoC5/front_right.c ****     /* Set the ISR to point to the front_right Interrupt. */
+  67:Generated_Source\PSoC5/front_right.c ****     front_right_SetVector(&front_right_Interrupt);
+  40              		.loc 1 67 0
+  41 0008 0448     		ldr	r0, .L2
+  42 000a FFF7FEFF 		bl	front_right_SetVector
+  68:Generated_Source\PSoC5/front_right.c **** 
+  69:Generated_Source\PSoC5/front_right.c ****     /* Set the priority. */
+  70:Generated_Source\PSoC5/front_right.c ****     front_right_SetPriority((uint8)front_right_INTC_PRIOR_NUMBER);
+  43              		.loc 1 70 0
+  44 000e 0720     		movs	r0, #7
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 3
+
+
+  45 0010 FFF7FEFF 		bl	front_right_SetPriority
+  71:Generated_Source\PSoC5/front_right.c **** 
+  72:Generated_Source\PSoC5/front_right.c ****     /* Enable it. */
+  73:Generated_Source\PSoC5/front_right.c ****     front_right_Enable();
+  46              		.loc 1 73 0
+  47 0014 FFF7FEFF 		bl	front_right_Enable
+  74:Generated_Source\PSoC5/front_right.c **** }
+  48              		.loc 1 74 0
+  49 0018 00BF     		nop
+  50 001a 80BD     		pop	{r7, pc}
+  51              	.L3:
+  52              		.align	2
+  53              	.L2:
+  54 001c 00000000 		.word	front_right_Interrupt
+  55              		.cfi_endproc
+  56              	.LFE63:
+  57              		.size	front_right_Start, .-front_right_Start
+  58              		.section	.text.front_right_StartEx,"ax",%progbits
+  59              		.align	2
+  60              		.global	front_right_StartEx
+  61              		.thumb
+  62              		.thumb_func
+  63              		.type	front_right_StartEx, %function
+  64              	front_right_StartEx:
+  65              	.LFB64:
+  75:Generated_Source\PSoC5/front_right.c **** 
+  76:Generated_Source\PSoC5/front_right.c **** 
+  77:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+  78:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_StartEx
+  79:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+  80:Generated_Source\PSoC5/front_right.c **** *
+  81:Generated_Source\PSoC5/front_right.c **** * Summary:
+  82:Generated_Source\PSoC5/front_right.c **** *  Sets up the interrupt and enables it. This function disables the interrupt,
+  83:Generated_Source\PSoC5/front_right.c **** *  sets the interrupt vector based on the address passed in, sets the priority 
+  84:Generated_Source\PSoC5/front_right.c **** *  from the value in the Design Wide Resources Interrupt Editor, then enables 
+  85:Generated_Source\PSoC5/front_right.c **** *  the interrupt to the interrupt controller.
+  86:Generated_Source\PSoC5/front_right.c **** *  
+  87:Generated_Source\PSoC5/front_right.c **** *  When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+  88:Generated_Source\PSoC5/front_right.c **** *  used to provide consistent definition across compilers:
+  89:Generated_Source\PSoC5/front_right.c **** *  
+  90:Generated_Source\PSoC5/front_right.c **** *  Function definition example:
+  91:Generated_Source\PSoC5/front_right.c **** *   CY_ISR(MyISR)
+  92:Generated_Source\PSoC5/front_right.c **** *   {
+  93:Generated_Source\PSoC5/front_right.c **** *   }
+  94:Generated_Source\PSoC5/front_right.c **** *   Function prototype example:
+  95:Generated_Source\PSoC5/front_right.c **** *   CY_ISR_PROTO(MyISR);
+  96:Generated_Source\PSoC5/front_right.c **** *
+  97:Generated_Source\PSoC5/front_right.c **** * Parameters:  
+  98:Generated_Source\PSoC5/front_right.c **** *   address: Address of the ISR to set in the interrupt vector table.
+  99:Generated_Source\PSoC5/front_right.c **** *
+ 100:Generated_Source\PSoC5/front_right.c **** * Return:
+ 101:Generated_Source\PSoC5/front_right.c **** *   None
+ 102:Generated_Source\PSoC5/front_right.c **** *
+ 103:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 104:Generated_Source\PSoC5/front_right.c **** void front_right_StartEx(cyisraddress address)
+ 105:Generated_Source\PSoC5/front_right.c **** {
+  66              		.loc 1 105 0
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 4
+
+
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 8
+  69              		@ frame_needed = 1, uses_anonymous_args = 0
+  70 0000 80B5     		push	{r7, lr}
+  71              		.cfi_def_cfa_offset 8
+  72              		.cfi_offset 7, -8
+  73              		.cfi_offset 14, -4
+  74 0002 82B0     		sub	sp, sp, #8
+  75              		.cfi_def_cfa_offset 16
+  76 0004 00AF     		add	r7, sp, #0
+  77              		.cfi_def_cfa_register 7
+  78 0006 7860     		str	r0, [r7, #4]
+ 106:Generated_Source\PSoC5/front_right.c ****     /* For all we know the interrupt is active. */
+ 107:Generated_Source\PSoC5/front_right.c ****     front_right_Disable();
+  79              		.loc 1 107 0
+  80 0008 FFF7FEFF 		bl	front_right_Disable
+ 108:Generated_Source\PSoC5/front_right.c **** 
+ 109:Generated_Source\PSoC5/front_right.c ****     /* Set the ISR to point to the front_right Interrupt. */
+ 110:Generated_Source\PSoC5/front_right.c ****     front_right_SetVector(address);
+  81              		.loc 1 110 0
+  82 000c 7868     		ldr	r0, [r7, #4]
+  83 000e FFF7FEFF 		bl	front_right_SetVector
+ 111:Generated_Source\PSoC5/front_right.c **** 
+ 112:Generated_Source\PSoC5/front_right.c ****     /* Set the priority. */
+ 113:Generated_Source\PSoC5/front_right.c ****     front_right_SetPriority((uint8)front_right_INTC_PRIOR_NUMBER);
+  84              		.loc 1 113 0
+  85 0012 0720     		movs	r0, #7
+  86 0014 FFF7FEFF 		bl	front_right_SetPriority
+ 114:Generated_Source\PSoC5/front_right.c **** 
+ 115:Generated_Source\PSoC5/front_right.c ****     /* Enable it. */
+ 116:Generated_Source\PSoC5/front_right.c ****     front_right_Enable();
+  87              		.loc 1 116 0
+  88 0018 FFF7FEFF 		bl	front_right_Enable
+ 117:Generated_Source\PSoC5/front_right.c **** }
+  89              		.loc 1 117 0
+  90 001c 00BF     		nop
+  91 001e 0837     		adds	r7, r7, #8
+  92              		.cfi_def_cfa_offset 8
+  93 0020 BD46     		mov	sp, r7
+  94              		.cfi_def_cfa_register 13
+  95              		@ sp needed
+  96 0022 80BD     		pop	{r7, pc}
+  97              		.cfi_endproc
+  98              	.LFE64:
+  99              		.size	front_right_StartEx, .-front_right_StartEx
+ 100              		.section	.text.front_right_Stop,"ax",%progbits
+ 101              		.align	2
+ 102              		.global	front_right_Stop
+ 103              		.thumb
+ 104              		.thumb_func
+ 105              		.type	front_right_Stop, %function
+ 106              	front_right_Stop:
+ 107              	.LFB65:
+ 118:Generated_Source\PSoC5/front_right.c **** 
+ 119:Generated_Source\PSoC5/front_right.c **** 
+ 120:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 121:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_Stop
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 5
+
+
+ 122:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 123:Generated_Source\PSoC5/front_right.c **** *
+ 124:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 125:Generated_Source\PSoC5/front_right.c **** *   Disables and removes the interrupt.
+ 126:Generated_Source\PSoC5/front_right.c **** *
+ 127:Generated_Source\PSoC5/front_right.c **** * Parameters:  
+ 128:Generated_Source\PSoC5/front_right.c **** *   None
+ 129:Generated_Source\PSoC5/front_right.c **** *
+ 130:Generated_Source\PSoC5/front_right.c **** * Return:
+ 131:Generated_Source\PSoC5/front_right.c **** *   None
+ 132:Generated_Source\PSoC5/front_right.c **** *
+ 133:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 134:Generated_Source\PSoC5/front_right.c **** void front_right_Stop(void)
+ 135:Generated_Source\PSoC5/front_right.c **** {
+ 108              		.loc 1 135 0
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 1, uses_anonymous_args = 0
+ 112 0000 80B5     		push	{r7, lr}
+ 113              		.cfi_def_cfa_offset 8
+ 114              		.cfi_offset 7, -8
+ 115              		.cfi_offset 14, -4
+ 116 0002 00AF     		add	r7, sp, #0
+ 117              		.cfi_def_cfa_register 7
+ 136:Generated_Source\PSoC5/front_right.c ****     /* Disable this interrupt. */
+ 137:Generated_Source\PSoC5/front_right.c ****     front_right_Disable();
+ 118              		.loc 1 137 0
+ 119 0004 FFF7FEFF 		bl	front_right_Disable
+ 138:Generated_Source\PSoC5/front_right.c **** 
+ 139:Generated_Source\PSoC5/front_right.c ****     /* Set the ISR to point to the passive one. */
+ 140:Generated_Source\PSoC5/front_right.c ****     front_right_SetVector(&IntDefaultHandler);
+ 120              		.loc 1 140 0
+ 121 0008 0248     		ldr	r0, .L6
+ 122 000a FFF7FEFF 		bl	front_right_SetVector
+ 141:Generated_Source\PSoC5/front_right.c **** }
+ 123              		.loc 1 141 0
+ 124 000e 00BF     		nop
+ 125 0010 80BD     		pop	{r7, pc}
+ 126              	.L7:
+ 127 0012 00BF     		.align	2
+ 128              	.L6:
+ 129 0014 00000000 		.word	IntDefaultHandler
+ 130              		.cfi_endproc
+ 131              	.LFE65:
+ 132              		.size	front_right_Stop, .-front_right_Stop
+ 133              		.section	.text.front_right_Interrupt,"ax",%progbits
+ 134              		.align	2
+ 135              		.global	front_right_Interrupt
+ 136              		.thumb
+ 137              		.thumb_func
+ 138              		.type	front_right_Interrupt, %function
+ 139              	front_right_Interrupt:
+ 140              	.LFB66:
+ 142:Generated_Source\PSoC5/front_right.c **** 
+ 143:Generated_Source\PSoC5/front_right.c **** 
+ 144:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 145:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_Interrupt
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 6
+
+
+ 146:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 147:Generated_Source\PSoC5/front_right.c **** *
+ 148:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 149:Generated_Source\PSoC5/front_right.c **** *   The default Interrupt Service Routine for front_right.
+ 150:Generated_Source\PSoC5/front_right.c **** *
+ 151:Generated_Source\PSoC5/front_right.c **** *   Add custom code between the coments to keep the next version of this file
+ 152:Generated_Source\PSoC5/front_right.c **** *   from over writting your code.
+ 153:Generated_Source\PSoC5/front_right.c **** *
+ 154:Generated_Source\PSoC5/front_right.c **** * Parameters:  
+ 155:Generated_Source\PSoC5/front_right.c **** *
+ 156:Generated_Source\PSoC5/front_right.c **** * Return:
+ 157:Generated_Source\PSoC5/front_right.c **** *   None
+ 158:Generated_Source\PSoC5/front_right.c **** *
+ 159:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 160:Generated_Source\PSoC5/front_right.c **** CY_ISR(front_right_Interrupt)
+ 161:Generated_Source\PSoC5/front_right.c **** {
+ 141              		.loc 1 161 0
+ 142              		.cfi_startproc
+ 143              		@ args = 0, pretend = 0, frame = 0
+ 144              		@ frame_needed = 1, uses_anonymous_args = 0
+ 145              		@ link register save eliminated.
+ 146 0000 80B4     		push	{r7}
+ 147              		.cfi_def_cfa_offset 4
+ 148              		.cfi_offset 7, -4
+ 149 0002 00AF     		add	r7, sp, #0
+ 150              		.cfi_def_cfa_register 7
+ 162:Generated_Source\PSoC5/front_right.c ****     #ifdef front_right_INTERRUPT_INTERRUPT_CALLBACK
+ 163:Generated_Source\PSoC5/front_right.c ****         front_right_Interrupt_InterruptCallback();
+ 164:Generated_Source\PSoC5/front_right.c ****     #endif /* front_right_INTERRUPT_INTERRUPT_CALLBACK */ 
+ 165:Generated_Source\PSoC5/front_right.c **** 
+ 166:Generated_Source\PSoC5/front_right.c ****     /*  Place your Interrupt code here. */
+ 167:Generated_Source\PSoC5/front_right.c ****     /* `#START front_right_Interrupt` */
+ 168:Generated_Source\PSoC5/front_right.c ****     edges.front_right_edge = 1;
+ 151              		.loc 1 168 0
+ 152 0004 034B     		ldr	r3, .L9
+ 153 0006 0122     		movs	r2, #1
+ 154 0008 5A70     		strb	r2, [r3, #1]
+ 169:Generated_Source\PSoC5/front_right.c **** 
+ 170:Generated_Source\PSoC5/front_right.c ****     /* `#END` */
+ 171:Generated_Source\PSoC5/front_right.c **** }
+ 155              		.loc 1 171 0
+ 156 000a 00BF     		nop
+ 157 000c BD46     		mov	sp, r7
+ 158              		.cfi_def_cfa_register 13
+ 159              		@ sp needed
+ 160 000e 80BC     		pop	{r7}
+ 161              		.cfi_restore 7
+ 162              		.cfi_def_cfa_offset 0
+ 163 0010 7047     		bx	lr
+ 164              	.L10:
+ 165 0012 00BF     		.align	2
+ 166              	.L9:
+ 167 0014 00000000 		.word	edges
+ 168              		.cfi_endproc
+ 169              	.LFE66:
+ 170              		.size	front_right_Interrupt, .-front_right_Interrupt
+ 171              		.section	.text.front_right_SetVector,"ax",%progbits
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 7
+
+
+ 172              		.align	2
+ 173              		.global	front_right_SetVector
+ 174              		.thumb
+ 175              		.thumb_func
+ 176              		.type	front_right_SetVector, %function
+ 177              	front_right_SetVector:
+ 178              	.LFB67:
+ 172:Generated_Source\PSoC5/front_right.c **** 
+ 173:Generated_Source\PSoC5/front_right.c **** 
+ 174:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 175:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_SetVector
+ 176:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 177:Generated_Source\PSoC5/front_right.c **** *
+ 178:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 179:Generated_Source\PSoC5/front_right.c **** *   Change the ISR vector for the Interrupt. Note calling front_right_Start
+ 180:Generated_Source\PSoC5/front_right.c **** *   will override any effect this method would have had. To set the vector 
+ 181:Generated_Source\PSoC5/front_right.c **** *   before the component has been started use front_right_StartEx instead.
+ 182:Generated_Source\PSoC5/front_right.c **** * 
+ 183:Generated_Source\PSoC5/front_right.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 184:Generated_Source\PSoC5/front_right.c **** *   used to provide consistent definition across compilers:
+ 185:Generated_Source\PSoC5/front_right.c **** *
+ 186:Generated_Source\PSoC5/front_right.c **** *   Function definition example:
+ 187:Generated_Source\PSoC5/front_right.c **** *   CY_ISR(MyISR)
+ 188:Generated_Source\PSoC5/front_right.c **** *   {
+ 189:Generated_Source\PSoC5/front_right.c **** *   }
+ 190:Generated_Source\PSoC5/front_right.c **** *
+ 191:Generated_Source\PSoC5/front_right.c **** *   Function prototype example:
+ 192:Generated_Source\PSoC5/front_right.c **** *     CY_ISR_PROTO(MyISR);
+ 193:Generated_Source\PSoC5/front_right.c **** *
+ 194:Generated_Source\PSoC5/front_right.c **** * Parameters:
+ 195:Generated_Source\PSoC5/front_right.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 196:Generated_Source\PSoC5/front_right.c **** *
+ 197:Generated_Source\PSoC5/front_right.c **** * Return:
+ 198:Generated_Source\PSoC5/front_right.c **** *   None
+ 199:Generated_Source\PSoC5/front_right.c **** *
+ 200:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 201:Generated_Source\PSoC5/front_right.c **** void front_right_SetVector(cyisraddress address)
+ 202:Generated_Source\PSoC5/front_right.c **** {
+ 179              		.loc 1 202 0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 16
+ 182              		@ frame_needed = 1, uses_anonymous_args = 0
+ 183              		@ link register save eliminated.
+ 184 0000 80B4     		push	{r7}
+ 185              		.cfi_def_cfa_offset 4
+ 186              		.cfi_offset 7, -4
+ 187 0002 85B0     		sub	sp, sp, #20
+ 188              		.cfi_def_cfa_offset 24
+ 189 0004 00AF     		add	r7, sp, #0
+ 190              		.cfi_def_cfa_register 7
+ 191 0006 7860     		str	r0, [r7, #4]
+ 203:Generated_Source\PSoC5/front_right.c ****     cyisraddress * ramVectorTable;
+ 204:Generated_Source\PSoC5/front_right.c **** 
+ 205:Generated_Source\PSoC5/front_right.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 192              		.loc 1 205 0
+ 193 0008 054B     		ldr	r3, .L12
+ 194 000a 1B68     		ldr	r3, [r3]
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 8
+
+
+ 195 000c FB60     		str	r3, [r7, #12]
+ 206:Generated_Source\PSoC5/front_right.c **** 
+ 207:Generated_Source\PSoC5/front_right.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)front_right__INTC_NUMBER] = address;
+ 196              		.loc 1 207 0
+ 197 000e FB68     		ldr	r3, [r7, #12]
+ 198 0010 5033     		adds	r3, r3, #80
+ 199 0012 7A68     		ldr	r2, [r7, #4]
+ 200 0014 1A60     		str	r2, [r3]
+ 208:Generated_Source\PSoC5/front_right.c **** }
+ 201              		.loc 1 208 0
+ 202 0016 00BF     		nop
+ 203 0018 1437     		adds	r7, r7, #20
+ 204              		.cfi_def_cfa_offset 4
+ 205 001a BD46     		mov	sp, r7
+ 206              		.cfi_def_cfa_register 13
+ 207              		@ sp needed
+ 208 001c 80BC     		pop	{r7}
+ 209              		.cfi_restore 7
+ 210              		.cfi_def_cfa_offset 0
+ 211 001e 7047     		bx	lr
+ 212              	.L13:
+ 213              		.align	2
+ 214              	.L12:
+ 215 0020 08ED00E0 		.word	-536810232
+ 216              		.cfi_endproc
+ 217              	.LFE67:
+ 218              		.size	front_right_SetVector, .-front_right_SetVector
+ 219              		.section	.text.front_right_GetVector,"ax",%progbits
+ 220              		.align	2
+ 221              		.global	front_right_GetVector
+ 222              		.thumb
+ 223              		.thumb_func
+ 224              		.type	front_right_GetVector, %function
+ 225              	front_right_GetVector:
+ 226              	.LFB68:
+ 209:Generated_Source\PSoC5/front_right.c **** 
+ 210:Generated_Source\PSoC5/front_right.c **** 
+ 211:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 212:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_GetVector
+ 213:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 214:Generated_Source\PSoC5/front_right.c **** *
+ 215:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 216:Generated_Source\PSoC5/front_right.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 217:Generated_Source\PSoC5/front_right.c **** *
+ 218:Generated_Source\PSoC5/front_right.c **** * Parameters:
+ 219:Generated_Source\PSoC5/front_right.c **** *   None
+ 220:Generated_Source\PSoC5/front_right.c **** *
+ 221:Generated_Source\PSoC5/front_right.c **** * Return:
+ 222:Generated_Source\PSoC5/front_right.c **** *   Address of the ISR in the interrupt vector table.
+ 223:Generated_Source\PSoC5/front_right.c **** *
+ 224:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 225:Generated_Source\PSoC5/front_right.c **** cyisraddress front_right_GetVector(void)
+ 226:Generated_Source\PSoC5/front_right.c **** {
+ 227              		.loc 1 226 0
+ 228              		.cfi_startproc
+ 229              		@ args = 0, pretend = 0, frame = 8
+ 230              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 9
+
+
+ 231              		@ link register save eliminated.
+ 232 0000 80B4     		push	{r7}
+ 233              		.cfi_def_cfa_offset 4
+ 234              		.cfi_offset 7, -4
+ 235 0002 83B0     		sub	sp, sp, #12
+ 236              		.cfi_def_cfa_offset 16
+ 237 0004 00AF     		add	r7, sp, #0
+ 238              		.cfi_def_cfa_register 7
+ 227:Generated_Source\PSoC5/front_right.c ****     cyisraddress * ramVectorTable;
+ 228:Generated_Source\PSoC5/front_right.c **** 
+ 229:Generated_Source\PSoC5/front_right.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 239              		.loc 1 229 0
+ 240 0006 054B     		ldr	r3, .L16
+ 241 0008 1B68     		ldr	r3, [r3]
+ 242 000a 7B60     		str	r3, [r7, #4]
+ 230:Generated_Source\PSoC5/front_right.c **** 
+ 231:Generated_Source\PSoC5/front_right.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)front_right__INTC_NUMBER];
+ 243              		.loc 1 231 0
+ 244 000c 7B68     		ldr	r3, [r7, #4]
+ 245 000e 1B6D     		ldr	r3, [r3, #80]
+ 232:Generated_Source\PSoC5/front_right.c **** }
+ 246              		.loc 1 232 0
+ 247 0010 1846     		mov	r0, r3
+ 248 0012 0C37     		adds	r7, r7, #12
+ 249              		.cfi_def_cfa_offset 4
+ 250 0014 BD46     		mov	sp, r7
+ 251              		.cfi_def_cfa_register 13
+ 252              		@ sp needed
+ 253 0016 80BC     		pop	{r7}
+ 254              		.cfi_restore 7
+ 255              		.cfi_def_cfa_offset 0
+ 256 0018 7047     		bx	lr
+ 257              	.L17:
+ 258 001a 00BF     		.align	2
+ 259              	.L16:
+ 260 001c 08ED00E0 		.word	-536810232
+ 261              		.cfi_endproc
+ 262              	.LFE68:
+ 263              		.size	front_right_GetVector, .-front_right_GetVector
+ 264              		.section	.text.front_right_SetPriority,"ax",%progbits
+ 265              		.align	2
+ 266              		.global	front_right_SetPriority
+ 267              		.thumb
+ 268              		.thumb_func
+ 269              		.type	front_right_SetPriority, %function
+ 270              	front_right_SetPriority:
+ 271              	.LFB69:
+ 233:Generated_Source\PSoC5/front_right.c **** 
+ 234:Generated_Source\PSoC5/front_right.c **** 
+ 235:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 236:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_SetPriority
+ 237:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 238:Generated_Source\PSoC5/front_right.c **** *
+ 239:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 240:Generated_Source\PSoC5/front_right.c **** *   Sets the Priority of the Interrupt. 
+ 241:Generated_Source\PSoC5/front_right.c **** *
+ 242:Generated_Source\PSoC5/front_right.c **** *   Note calling front_right_Start or front_right_StartEx will 
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 10
+
+
+ 243:Generated_Source\PSoC5/front_right.c **** *   override any effect this API would have had. This API should only be called
+ 244:Generated_Source\PSoC5/front_right.c **** *   after front_right_Start or front_right_StartEx has been called. 
+ 245:Generated_Source\PSoC5/front_right.c **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 246:Generated_Source\PSoC5/front_right.c **** *   Interrupt Editor.
+ 247:Generated_Source\PSoC5/front_right.c **** *
+ 248:Generated_Source\PSoC5/front_right.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 249:Generated_Source\PSoC5/front_right.c **** *
+ 250:Generated_Source\PSoC5/front_right.c **** * Parameters:
+ 251:Generated_Source\PSoC5/front_right.c **** *   priority: Priority of the interrupt, 0 being the highest priority
+ 252:Generated_Source\PSoC5/front_right.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 253:Generated_Source\PSoC5/front_right.c **** *             PSoC 4: Priority is from 0 to 3.
+ 254:Generated_Source\PSoC5/front_right.c **** *
+ 255:Generated_Source\PSoC5/front_right.c **** * Return:
+ 256:Generated_Source\PSoC5/front_right.c **** *   None
+ 257:Generated_Source\PSoC5/front_right.c **** *
+ 258:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 259:Generated_Source\PSoC5/front_right.c **** void front_right_SetPriority(uint8 priority)
+ 260:Generated_Source\PSoC5/front_right.c **** {
+ 272              		.loc 1 260 0
+ 273              		.cfi_startproc
+ 274              		@ args = 0, pretend = 0, frame = 8
+ 275              		@ frame_needed = 1, uses_anonymous_args = 0
+ 276              		@ link register save eliminated.
+ 277 0000 80B4     		push	{r7}
+ 278              		.cfi_def_cfa_offset 4
+ 279              		.cfi_offset 7, -4
+ 280 0002 83B0     		sub	sp, sp, #12
+ 281              		.cfi_def_cfa_offset 16
+ 282 0004 00AF     		add	r7, sp, #0
+ 283              		.cfi_def_cfa_register 7
+ 284 0006 0346     		mov	r3, r0
+ 285 0008 FB71     		strb	r3, [r7, #7]
+ 261:Generated_Source\PSoC5/front_right.c ****     *front_right_INTC_PRIOR = priority << 5;
+ 286              		.loc 1 261 0
+ 287 000a 054A     		ldr	r2, .L19
+ 288 000c FB79     		ldrb	r3, [r7, #7]
+ 289 000e 5B01     		lsls	r3, r3, #5
+ 290 0010 DBB2     		uxtb	r3, r3
+ 291 0012 1370     		strb	r3, [r2]
+ 262:Generated_Source\PSoC5/front_right.c **** }
+ 292              		.loc 1 262 0
+ 293 0014 00BF     		nop
+ 294 0016 0C37     		adds	r7, r7, #12
+ 295              		.cfi_def_cfa_offset 4
+ 296 0018 BD46     		mov	sp, r7
+ 297              		.cfi_def_cfa_register 13
+ 298              		@ sp needed
+ 299 001a 80BC     		pop	{r7}
+ 300              		.cfi_restore 7
+ 301              		.cfi_def_cfa_offset 0
+ 302 001c 7047     		bx	lr
+ 303              	.L20:
+ 304 001e 00BF     		.align	2
+ 305              	.L19:
+ 306 0020 04E400E0 		.word	-536812540
+ 307              		.cfi_endproc
+ 308              	.LFE69:
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 11
+
+
+ 309              		.size	front_right_SetPriority, .-front_right_SetPriority
+ 310              		.section	.text.front_right_GetPriority,"ax",%progbits
+ 311              		.align	2
+ 312              		.global	front_right_GetPriority
+ 313              		.thumb
+ 314              		.thumb_func
+ 315              		.type	front_right_GetPriority, %function
+ 316              	front_right_GetPriority:
+ 317              	.LFB70:
+ 263:Generated_Source\PSoC5/front_right.c **** 
+ 264:Generated_Source\PSoC5/front_right.c **** 
+ 265:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 266:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_GetPriority
+ 267:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 268:Generated_Source\PSoC5/front_right.c **** *
+ 269:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 270:Generated_Source\PSoC5/front_right.c **** *   Gets the Priority of the Interrupt.
+ 271:Generated_Source\PSoC5/front_right.c **** *
+ 272:Generated_Source\PSoC5/front_right.c **** * Parameters:
+ 273:Generated_Source\PSoC5/front_right.c **** *   None
+ 274:Generated_Source\PSoC5/front_right.c **** *
+ 275:Generated_Source\PSoC5/front_right.c **** * Return:
+ 276:Generated_Source\PSoC5/front_right.c **** *   Priority of the interrupt, 0 being the highest priority
+ 277:Generated_Source\PSoC5/front_right.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 278:Generated_Source\PSoC5/front_right.c **** *    PSoC 4: Priority is from 0 to 3.
+ 279:Generated_Source\PSoC5/front_right.c **** *
+ 280:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 281:Generated_Source\PSoC5/front_right.c **** uint8 front_right_GetPriority(void)
+ 282:Generated_Source\PSoC5/front_right.c **** {
+ 318              		.loc 1 282 0
+ 319              		.cfi_startproc
+ 320              		@ args = 0, pretend = 0, frame = 8
+ 321              		@ frame_needed = 1, uses_anonymous_args = 0
+ 322              		@ link register save eliminated.
+ 323 0000 80B4     		push	{r7}
+ 324              		.cfi_def_cfa_offset 4
+ 325              		.cfi_offset 7, -4
+ 326 0002 83B0     		sub	sp, sp, #12
+ 327              		.cfi_def_cfa_offset 16
+ 328 0004 00AF     		add	r7, sp, #0
+ 329              		.cfi_def_cfa_register 7
+ 283:Generated_Source\PSoC5/front_right.c ****     uint8 priority;
+ 284:Generated_Source\PSoC5/front_right.c **** 
+ 285:Generated_Source\PSoC5/front_right.c **** 
+ 286:Generated_Source\PSoC5/front_right.c ****     priority = *front_right_INTC_PRIOR >> 5;
+ 330              		.loc 1 286 0
+ 331 0006 054B     		ldr	r3, .L23
+ 332 0008 1B78     		ldrb	r3, [r3]
+ 333 000a DBB2     		uxtb	r3, r3
+ 334 000c 5B09     		lsrs	r3, r3, #5
+ 335 000e FB71     		strb	r3, [r7, #7]
+ 287:Generated_Source\PSoC5/front_right.c **** 
+ 288:Generated_Source\PSoC5/front_right.c ****     return priority;
+ 336              		.loc 1 288 0
+ 337 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 289:Generated_Source\PSoC5/front_right.c **** }
+ 338              		.loc 1 289 0
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 12
+
+
+ 339 0012 1846     		mov	r0, r3
+ 340 0014 0C37     		adds	r7, r7, #12
+ 341              		.cfi_def_cfa_offset 4
+ 342 0016 BD46     		mov	sp, r7
+ 343              		.cfi_def_cfa_register 13
+ 344              		@ sp needed
+ 345 0018 80BC     		pop	{r7}
+ 346              		.cfi_restore 7
+ 347              		.cfi_def_cfa_offset 0
+ 348 001a 7047     		bx	lr
+ 349              	.L24:
+ 350              		.align	2
+ 351              	.L23:
+ 352 001c 04E400E0 		.word	-536812540
+ 353              		.cfi_endproc
+ 354              	.LFE70:
+ 355              		.size	front_right_GetPriority, .-front_right_GetPriority
+ 356              		.section	.text.front_right_Enable,"ax",%progbits
+ 357              		.align	2
+ 358              		.global	front_right_Enable
+ 359              		.thumb
+ 360              		.thumb_func
+ 361              		.type	front_right_Enable, %function
+ 362              	front_right_Enable:
+ 363              	.LFB71:
+ 290:Generated_Source\PSoC5/front_right.c **** 
+ 291:Generated_Source\PSoC5/front_right.c **** 
+ 292:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 293:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_Enable
+ 294:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 295:Generated_Source\PSoC5/front_right.c **** *
+ 296:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 297:Generated_Source\PSoC5/front_right.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 298:Generated_Source\PSoC5/front_right.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 299:Generated_Source\PSoC5/front_right.c **** *   function, which sets the vector and the priority, has been called.
+ 300:Generated_Source\PSoC5/front_right.c **** *
+ 301:Generated_Source\PSoC5/front_right.c **** * Parameters:
+ 302:Generated_Source\PSoC5/front_right.c **** *   None
+ 303:Generated_Source\PSoC5/front_right.c **** *
+ 304:Generated_Source\PSoC5/front_right.c **** * Return:
+ 305:Generated_Source\PSoC5/front_right.c **** *   None
+ 306:Generated_Source\PSoC5/front_right.c **** *
+ 307:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 308:Generated_Source\PSoC5/front_right.c **** void front_right_Enable(void)
+ 309:Generated_Source\PSoC5/front_right.c **** {
+ 364              		.loc 1 309 0
+ 365              		.cfi_startproc
+ 366              		@ args = 0, pretend = 0, frame = 0
+ 367              		@ frame_needed = 1, uses_anonymous_args = 0
+ 368              		@ link register save eliminated.
+ 369 0000 80B4     		push	{r7}
+ 370              		.cfi_def_cfa_offset 4
+ 371              		.cfi_offset 7, -4
+ 372 0002 00AF     		add	r7, sp, #0
+ 373              		.cfi_def_cfa_register 7
+ 310:Generated_Source\PSoC5/front_right.c ****     /* Enable the general interrupt. */
+ 311:Generated_Source\PSoC5/front_right.c ****     *front_right_INTC_SET_EN = front_right__INTC_MASK;
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 13
+
+
+ 374              		.loc 1 311 0
+ 375 0004 034B     		ldr	r3, .L26
+ 376 0006 1022     		movs	r2, #16
+ 377 0008 1A60     		str	r2, [r3]
+ 312:Generated_Source\PSoC5/front_right.c **** }
+ 378              		.loc 1 312 0
+ 379 000a 00BF     		nop
+ 380 000c BD46     		mov	sp, r7
+ 381              		.cfi_def_cfa_register 13
+ 382              		@ sp needed
+ 383 000e 80BC     		pop	{r7}
+ 384              		.cfi_restore 7
+ 385              		.cfi_def_cfa_offset 0
+ 386 0010 7047     		bx	lr
+ 387              	.L27:
+ 388 0012 00BF     		.align	2
+ 389              	.L26:
+ 390 0014 00E100E0 		.word	-536813312
+ 391              		.cfi_endproc
+ 392              	.LFE71:
+ 393              		.size	front_right_Enable, .-front_right_Enable
+ 394              		.section	.text.front_right_GetState,"ax",%progbits
+ 395              		.align	2
+ 396              		.global	front_right_GetState
+ 397              		.thumb
+ 398              		.thumb_func
+ 399              		.type	front_right_GetState, %function
+ 400              	front_right_GetState:
+ 401              	.LFB72:
+ 313:Generated_Source\PSoC5/front_right.c **** 
+ 314:Generated_Source\PSoC5/front_right.c **** 
+ 315:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 316:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_GetState
+ 317:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 318:Generated_Source\PSoC5/front_right.c **** *
+ 319:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 320:Generated_Source\PSoC5/front_right.c **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 321:Generated_Source\PSoC5/front_right.c **** *
+ 322:Generated_Source\PSoC5/front_right.c **** * Parameters:
+ 323:Generated_Source\PSoC5/front_right.c **** *   None
+ 324:Generated_Source\PSoC5/front_right.c **** *
+ 325:Generated_Source\PSoC5/front_right.c **** * Return:
+ 326:Generated_Source\PSoC5/front_right.c **** *   1 if enabled, 0 if disabled.
+ 327:Generated_Source\PSoC5/front_right.c **** *
+ 328:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 329:Generated_Source\PSoC5/front_right.c **** uint8 front_right_GetState(void)
+ 330:Generated_Source\PSoC5/front_right.c **** {
+ 402              		.loc 1 330 0
+ 403              		.cfi_startproc
+ 404              		@ args = 0, pretend = 0, frame = 0
+ 405              		@ frame_needed = 1, uses_anonymous_args = 0
+ 406              		@ link register save eliminated.
+ 407 0000 80B4     		push	{r7}
+ 408              		.cfi_def_cfa_offset 4
+ 409              		.cfi_offset 7, -4
+ 410 0002 00AF     		add	r7, sp, #0
+ 411              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 14
+
+
+ 331:Generated_Source\PSoC5/front_right.c ****     /* Get the state of the general interrupt. */
+ 332:Generated_Source\PSoC5/front_right.c ****     return ((*front_right_INTC_SET_EN & (uint32)front_right__INTC_MASK) != 0u) ? 1u:0u;
+ 412              		.loc 1 332 0
+ 413 0004 064B     		ldr	r3, .L32
+ 414 0006 1B68     		ldr	r3, [r3]
+ 415 0008 03F01003 		and	r3, r3, #16
+ 416 000c 002B     		cmp	r3, #0
+ 417 000e 01D0     		beq	.L29
+ 418              		.loc 1 332 0 is_stmt 0 discriminator 1
+ 419 0010 0123     		movs	r3, #1
+ 420 0012 00E0     		b	.L30
+ 421              	.L29:
+ 422              		.loc 1 332 0 discriminator 2
+ 423 0014 0023     		movs	r3, #0
+ 424              	.L30:
+ 333:Generated_Source\PSoC5/front_right.c **** }
+ 425              		.loc 1 333 0 is_stmt 1 discriminator 4
+ 426 0016 1846     		mov	r0, r3
+ 427 0018 BD46     		mov	sp, r7
+ 428              		.cfi_def_cfa_register 13
+ 429              		@ sp needed
+ 430 001a 80BC     		pop	{r7}
+ 431              		.cfi_restore 7
+ 432              		.cfi_def_cfa_offset 0
+ 433 001c 7047     		bx	lr
+ 434              	.L33:
+ 435 001e 00BF     		.align	2
+ 436              	.L32:
+ 437 0020 00E100E0 		.word	-536813312
+ 438              		.cfi_endproc
+ 439              	.LFE72:
+ 440              		.size	front_right_GetState, .-front_right_GetState
+ 441              		.section	.text.front_right_Disable,"ax",%progbits
+ 442              		.align	2
+ 443              		.global	front_right_Disable
+ 444              		.thumb
+ 445              		.thumb_func
+ 446              		.type	front_right_Disable, %function
+ 447              	front_right_Disable:
+ 448              	.LFB73:
+ 334:Generated_Source\PSoC5/front_right.c **** 
+ 335:Generated_Source\PSoC5/front_right.c **** 
+ 336:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 337:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_Disable
+ 338:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 339:Generated_Source\PSoC5/front_right.c **** *
+ 340:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 341:Generated_Source\PSoC5/front_right.c **** *   Disables the Interrupt in the interrupt controller.
+ 342:Generated_Source\PSoC5/front_right.c **** *
+ 343:Generated_Source\PSoC5/front_right.c **** * Parameters:
+ 344:Generated_Source\PSoC5/front_right.c **** *   None
+ 345:Generated_Source\PSoC5/front_right.c **** *
+ 346:Generated_Source\PSoC5/front_right.c **** * Return:
+ 347:Generated_Source\PSoC5/front_right.c **** *   None
+ 348:Generated_Source\PSoC5/front_right.c **** *
+ 349:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 350:Generated_Source\PSoC5/front_right.c **** void front_right_Disable(void)
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 15
+
+
+ 351:Generated_Source\PSoC5/front_right.c **** {
+ 449              		.loc 1 351 0
+ 450              		.cfi_startproc
+ 451              		@ args = 0, pretend = 0, frame = 0
+ 452              		@ frame_needed = 1, uses_anonymous_args = 0
+ 453              		@ link register save eliminated.
+ 454 0000 80B4     		push	{r7}
+ 455              		.cfi_def_cfa_offset 4
+ 456              		.cfi_offset 7, -4
+ 457 0002 00AF     		add	r7, sp, #0
+ 458              		.cfi_def_cfa_register 7
+ 352:Generated_Source\PSoC5/front_right.c ****     /* Disable the general interrupt. */
+ 353:Generated_Source\PSoC5/front_right.c ****     *front_right_INTC_CLR_EN = front_right__INTC_MASK;
+ 459              		.loc 1 353 0
+ 460 0004 034B     		ldr	r3, .L35
+ 461 0006 1022     		movs	r2, #16
+ 462 0008 1A60     		str	r2, [r3]
+ 354:Generated_Source\PSoC5/front_right.c **** }
+ 463              		.loc 1 354 0
+ 464 000a 00BF     		nop
+ 465 000c BD46     		mov	sp, r7
+ 466              		.cfi_def_cfa_register 13
+ 467              		@ sp needed
+ 468 000e 80BC     		pop	{r7}
+ 469              		.cfi_restore 7
+ 470              		.cfi_def_cfa_offset 0
+ 471 0010 7047     		bx	lr
+ 472              	.L36:
+ 473 0012 00BF     		.align	2
+ 474              	.L35:
+ 475 0014 80E100E0 		.word	-536813184
+ 476              		.cfi_endproc
+ 477              	.LFE73:
+ 478              		.size	front_right_Disable, .-front_right_Disable
+ 479              		.section	.text.front_right_SetPending,"ax",%progbits
+ 480              		.align	2
+ 481              		.global	front_right_SetPending
+ 482              		.thumb
+ 483              		.thumb_func
+ 484              		.type	front_right_SetPending, %function
+ 485              	front_right_SetPending:
+ 486              	.LFB74:
+ 355:Generated_Source\PSoC5/front_right.c **** 
+ 356:Generated_Source\PSoC5/front_right.c **** 
+ 357:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 358:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_SetPending
+ 359:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 360:Generated_Source\PSoC5/front_right.c **** *
+ 361:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 362:Generated_Source\PSoC5/front_right.c **** *   Causes the Interrupt to enter the pending state, a software method of
+ 363:Generated_Source\PSoC5/front_right.c **** *   generating the interrupt.
+ 364:Generated_Source\PSoC5/front_right.c **** *
+ 365:Generated_Source\PSoC5/front_right.c **** * Parameters:
+ 366:Generated_Source\PSoC5/front_right.c **** *   None
+ 367:Generated_Source\PSoC5/front_right.c **** *
+ 368:Generated_Source\PSoC5/front_right.c **** * Return:
+ 369:Generated_Source\PSoC5/front_right.c **** *   None
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 16
+
+
+ 370:Generated_Source\PSoC5/front_right.c **** *
+ 371:Generated_Source\PSoC5/front_right.c **** * Side Effects:
+ 372:Generated_Source\PSoC5/front_right.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ 373:Generated_Source\PSoC5/front_right.c **** *   entered (depending on the priority of this interrupt and other pending 
+ 374:Generated_Source\PSoC5/front_right.c **** *   interrupts).
+ 375:Generated_Source\PSoC5/front_right.c **** *
+ 376:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 377:Generated_Source\PSoC5/front_right.c **** void front_right_SetPending(void)
+ 378:Generated_Source\PSoC5/front_right.c **** {
+ 487              		.loc 1 378 0
+ 488              		.cfi_startproc
+ 489              		@ args = 0, pretend = 0, frame = 0
+ 490              		@ frame_needed = 1, uses_anonymous_args = 0
+ 491              		@ link register save eliminated.
+ 492 0000 80B4     		push	{r7}
+ 493              		.cfi_def_cfa_offset 4
+ 494              		.cfi_offset 7, -4
+ 495 0002 00AF     		add	r7, sp, #0
+ 496              		.cfi_def_cfa_register 7
+ 379:Generated_Source\PSoC5/front_right.c ****     *front_right_INTC_SET_PD = front_right__INTC_MASK;
+ 497              		.loc 1 379 0
+ 498 0004 034B     		ldr	r3, .L38
+ 499 0006 1022     		movs	r2, #16
+ 500 0008 1A60     		str	r2, [r3]
+ 380:Generated_Source\PSoC5/front_right.c **** }
+ 501              		.loc 1 380 0
+ 502 000a 00BF     		nop
+ 503 000c BD46     		mov	sp, r7
+ 504              		.cfi_def_cfa_register 13
+ 505              		@ sp needed
+ 506 000e 80BC     		pop	{r7}
+ 507              		.cfi_restore 7
+ 508              		.cfi_def_cfa_offset 0
+ 509 0010 7047     		bx	lr
+ 510              	.L39:
+ 511 0012 00BF     		.align	2
+ 512              	.L38:
+ 513 0014 00E200E0 		.word	-536813056
+ 514              		.cfi_endproc
+ 515              	.LFE74:
+ 516              		.size	front_right_SetPending, .-front_right_SetPending
+ 517              		.section	.text.front_right_ClearPending,"ax",%progbits
+ 518              		.align	2
+ 519              		.global	front_right_ClearPending
+ 520              		.thumb
+ 521              		.thumb_func
+ 522              		.type	front_right_ClearPending, %function
+ 523              	front_right_ClearPending:
+ 524              	.LFB75:
+ 381:Generated_Source\PSoC5/front_right.c **** 
+ 382:Generated_Source\PSoC5/front_right.c **** 
+ 383:Generated_Source\PSoC5/front_right.c **** /*******************************************************************************
+ 384:Generated_Source\PSoC5/front_right.c **** * Function Name: front_right_ClearPending
+ 385:Generated_Source\PSoC5/front_right.c **** ********************************************************************************
+ 386:Generated_Source\PSoC5/front_right.c **** *
+ 387:Generated_Source\PSoC5/front_right.c **** * Summary:
+ 388:Generated_Source\PSoC5/front_right.c **** *   Clears a pending interrupt in the interrupt controller.
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 17
+
+
+ 389:Generated_Source\PSoC5/front_right.c **** *
+ 390:Generated_Source\PSoC5/front_right.c **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 391:Generated_Source\PSoC5/front_right.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 392:Generated_Source\PSoC5/front_right.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 393:Generated_Source\PSoC5/front_right.c **** *   pending state even though the interrupt itself is cleared using this API.
+ 394:Generated_Source\PSoC5/front_right.c **** *
+ 395:Generated_Source\PSoC5/front_right.c **** * Parameters:
+ 396:Generated_Source\PSoC5/front_right.c **** *   None
+ 397:Generated_Source\PSoC5/front_right.c **** *
+ 398:Generated_Source\PSoC5/front_right.c **** * Return:
+ 399:Generated_Source\PSoC5/front_right.c **** *   None
+ 400:Generated_Source\PSoC5/front_right.c **** *
+ 401:Generated_Source\PSoC5/front_right.c **** *******************************************************************************/
+ 402:Generated_Source\PSoC5/front_right.c **** void front_right_ClearPending(void)
+ 403:Generated_Source\PSoC5/front_right.c **** {
+ 525              		.loc 1 403 0
+ 526              		.cfi_startproc
+ 527              		@ args = 0, pretend = 0, frame = 0
+ 528              		@ frame_needed = 1, uses_anonymous_args = 0
+ 529              		@ link register save eliminated.
+ 530 0000 80B4     		push	{r7}
+ 531              		.cfi_def_cfa_offset 4
+ 532              		.cfi_offset 7, -4
+ 533 0002 00AF     		add	r7, sp, #0
+ 534              		.cfi_def_cfa_register 7
+ 404:Generated_Source\PSoC5/front_right.c ****     *front_right_INTC_CLR_PD = front_right__INTC_MASK;
+ 535              		.loc 1 404 0
+ 536 0004 034B     		ldr	r3, .L41
+ 537 0006 1022     		movs	r2, #16
+ 538 0008 1A60     		str	r2, [r3]
+ 405:Generated_Source\PSoC5/front_right.c **** }
+ 539              		.loc 1 405 0
+ 540 000a 00BF     		nop
+ 541 000c BD46     		mov	sp, r7
+ 542              		.cfi_def_cfa_register 13
+ 543              		@ sp needed
+ 544 000e 80BC     		pop	{r7}
+ 545              		.cfi_restore 7
+ 546              		.cfi_def_cfa_offset 0
+ 547 0010 7047     		bx	lr
+ 548              	.L42:
+ 549 0012 00BF     		.align	2
+ 550              	.L41:
+ 551 0014 80E200E0 		.word	-536812928
+ 552              		.cfi_endproc
+ 553              	.LFE75:
+ 554              		.size	front_right_ClearPending, .-front_right_ClearPending
+ 555              		.text
+ 556              	.Letext0:
+ 557              		.file 2 "c:\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.1\\arm-none-eabi\\inc
+ 558              		.file 3 "c:\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.1\\arm-none-eabi\\inc
+ 559              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 560              		.file 5 "./main.h"
+ 561              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 562              		.section	.debug_info,"",%progbits
+ 563              	.Ldebug_info0:
+ 564 0000 CD020000 		.4byte	0x2cd
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 18
+
+
+ 565 0004 0400     		.2byte	0x4
+ 566 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 567 000a 04       		.byte	0x4
+ 568 000b 01       		.uleb128 0x1
+ 569 000c 30000000 		.4byte	.LASF45
+ 570 0010 0C       		.byte	0xc
+ 571 0011 8B020000 		.4byte	.LASF46
+ 572 0015 D7010000 		.4byte	.LASF47
+ 573 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 574 001d 00000000 		.4byte	0
+ 575 0021 00000000 		.4byte	.Ldebug_line0
+ 576 0025 02       		.uleb128 0x2
+ 577 0026 04       		.byte	0x4
+ 578 0027 05       		.byte	0x5
+ 579 0028 696E7400 		.ascii	"int\000"
+ 580 002c 03       		.uleb128 0x3
+ 581 002d 04       		.byte	0x4
+ 582 002e 07       		.byte	0x7
+ 583 002f 57020000 		.4byte	.LASF0
+ 584 0033 03       		.uleb128 0x3
+ 585 0034 08       		.byte	0x8
+ 586 0035 05       		.byte	0x5
+ 587 0036 D3020000 		.4byte	.LASF1
+ 588 003a 03       		.uleb128 0x3
+ 589 003b 08       		.byte	0x8
+ 590 003c 04       		.byte	0x4
+ 591 003d 3E030000 		.4byte	.LASF2
+ 592 0041 03       		.uleb128 0x3
+ 593 0042 01       		.byte	0x1
+ 594 0043 06       		.byte	0x6
+ 595 0044 4A030000 		.4byte	.LASF3
+ 596 0048 04       		.uleb128 0x4
+ 597 0049 BE000000 		.4byte	.LASF7
+ 598 004d 02       		.byte	0x2
+ 599 004e 1D       		.byte	0x1d
+ 600 004f 53000000 		.4byte	0x53
+ 601 0053 03       		.uleb128 0x3
+ 602 0054 01       		.byte	0x1
+ 603 0055 08       		.byte	0x8
+ 604 0056 4A010000 		.4byte	.LASF4
+ 605 005a 03       		.uleb128 0x3
+ 606 005b 02       		.byte	0x2
+ 607 005c 05       		.byte	0x5
+ 608 005d 25030000 		.4byte	.LASF5
+ 609 0061 03       		.uleb128 0x3
+ 610 0062 02       		.byte	0x2
+ 611 0063 07       		.byte	0x7
+ 612 0064 84010000 		.4byte	.LASF6
+ 613 0068 04       		.uleb128 0x4
+ 614 0069 DF000000 		.4byte	.LASF8
+ 615 006d 02       		.byte	0x2
+ 616 006e 3F       		.byte	0x3f
+ 617 006f 73000000 		.4byte	0x73
+ 618 0073 03       		.uleb128 0x3
+ 619 0074 04       		.byte	0x4
+ 620 0075 05       		.byte	0x5
+ 621 0076 35030000 		.4byte	.LASF9
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 19
+
+
+ 622 007a 03       		.uleb128 0x3
+ 623 007b 04       		.byte	0x4
+ 624 007c 07       		.byte	0x7
+ 625 007d 72010000 		.4byte	.LASF10
+ 626 0081 03       		.uleb128 0x3
+ 627 0082 08       		.byte	0x8
+ 628 0083 07       		.byte	0x7
+ 629 0084 6C020000 		.4byte	.LASF11
+ 630 0088 03       		.uleb128 0x3
+ 631 0089 04       		.byte	0x4
+ 632 008a 07       		.byte	0x7
+ 633 008b CA020000 		.4byte	.LASF12
+ 634 008f 03       		.uleb128 0x3
+ 635 0090 01       		.byte	0x1
+ 636 0091 08       		.byte	0x8
+ 637 0092 EB020000 		.4byte	.LASF13
+ 638 0096 05       		.uleb128 0x5
+ 639 0097 04       		.byte	0x4
+ 640 0098 9C000000 		.4byte	0x9c
+ 641 009c 06       		.uleb128 0x6
+ 642 009d 04       		.uleb128 0x4
+ 643 009e 83020000 		.4byte	.LASF14
+ 644 00a2 03       		.byte	0x3
+ 645 00a3 18       		.byte	0x18
+ 646 00a4 48000000 		.4byte	0x48
+ 647 00a8 04       		.uleb128 0x4
+ 648 00a9 C2020000 		.4byte	.LASF15
+ 649 00ad 03       		.byte	0x3
+ 650 00ae 2C       		.byte	0x2c
+ 651 00af 68000000 		.4byte	0x68
+ 652 00b3 07       		.uleb128 0x7
+ 653 00b4 2F030000 		.4byte	.LASF16
+ 654 00b8 04       		.byte	0x4
+ 655 00b9 E901     		.2byte	0x1e9
+ 656 00bb 53000000 		.4byte	0x53
+ 657 00bf 07       		.uleb128 0x7
+ 658 00c0 26020000 		.4byte	.LASF17
+ 659 00c4 04       		.byte	0x4
+ 660 00c5 EB01     		.2byte	0x1eb
+ 661 00c7 7A000000 		.4byte	0x7a
+ 662 00cb 03       		.uleb128 0x3
+ 663 00cc 04       		.byte	0x4
+ 664 00cd 04       		.byte	0x4
+ 665 00ce 33010000 		.4byte	.LASF18
+ 666 00d2 03       		.uleb128 0x3
+ 667 00d3 08       		.byte	0x8
+ 668 00d4 04       		.byte	0x4
+ 669 00d5 B7010000 		.4byte	.LASF19
+ 670 00d9 07       		.uleb128 0x7
+ 671 00da 58010000 		.4byte	.LASF20
+ 672 00de 04       		.byte	0x4
+ 673 00df 9302     		.2byte	0x293
+ 674 00e1 E5000000 		.4byte	0xe5
+ 675 00e5 08       		.uleb128 0x8
+ 676 00e6 B3000000 		.4byte	0xb3
+ 677 00ea 07       		.uleb128 0x7
+ 678 00eb 00000000 		.4byte	.LASF21
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 20
+
+
+ 679 00ef 04       		.byte	0x4
+ 680 00f0 9502     		.2byte	0x295
+ 681 00f2 F6000000 		.4byte	0xf6
+ 682 00f6 08       		.uleb128 0x8
+ 683 00f7 BF000000 		.4byte	0xbf
+ 684 00fb 07       		.uleb128 0x7
+ 685 00fc 19020000 		.4byte	.LASF22
+ 686 0100 04       		.byte	0x4
+ 687 0101 A502     		.2byte	0x2a5
+ 688 0103 96000000 		.4byte	0x96
+ 689 0107 09       		.uleb128 0x9
+ 690 0108 E1020000 		.4byte	.LASF48
+ 691 010c 04       		.byte	0x4
+ 692 010d 05       		.byte	0x5
+ 693 010e 12       		.byte	0x12
+ 694 010f 44010000 		.4byte	0x144
+ 695 0113 0A       		.uleb128 0xa
+ 696 0114 6C030000 		.4byte	.LASF23
+ 697 0118 05       		.byte	0x5
+ 698 0119 13       		.byte	0x13
+ 699 011a 9D000000 		.4byte	0x9d
+ 700 011e 00       		.byte	0
+ 701 011f 0A       		.uleb128 0xa
+ 702 0120 0E010000 		.4byte	.LASF24
+ 703 0124 05       		.byte	0x5
+ 704 0125 14       		.byte	0x14
+ 705 0126 9D000000 		.4byte	0x9d
+ 706 012a 01       		.byte	0x1
+ 707 012b 0A       		.uleb128 0xa
+ 708 012c 17030000 		.4byte	.LASF25
+ 709 0130 05       		.byte	0x5
+ 710 0131 15       		.byte	0x15
+ 711 0132 9D000000 		.4byte	0x9d
+ 712 0136 02       		.byte	0x2
+ 713 0137 0A       		.uleb128 0xa
+ 714 0138 FF000000 		.4byte	.LASF26
+ 715 013c 05       		.byte	0x5
+ 716 013d 16       		.byte	0x16
+ 717 013e 9D000000 		.4byte	0x9d
+ 718 0142 03       		.byte	0x3
+ 719 0143 00       		.byte	0
+ 720 0144 04       		.uleb128 0x4
+ 721 0145 B0020000 		.4byte	.LASF27
+ 722 0149 05       		.byte	0x5
+ 723 014a 17       		.byte	0x17
+ 724 014b 07010000 		.4byte	0x107
+ 725 014f 0B       		.uleb128 0xb
+ 726 0150 06000000 		.4byte	.LASF28
+ 727 0154 01       		.byte	0x1
+ 728 0155 3D       		.byte	0x3d
+ 729 0156 00000000 		.4byte	.LFB63
+ 730 015a 20000000 		.4byte	.LFE63-.LFB63
+ 731 015e 01       		.uleb128 0x1
+ 732 015f 9C       		.byte	0x9c
+ 733 0160 0C       		.uleb128 0xc
+ 734 0161 1F010000 		.4byte	.LASF31
+ 735 0165 01       		.byte	0x1
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 21
+
+
+ 736 0166 68       		.byte	0x68
+ 737 0167 00000000 		.4byte	.LFB64
+ 738 016b 24000000 		.4byte	.LFE64-.LFB64
+ 739 016f 01       		.uleb128 0x1
+ 740 0170 9C       		.byte	0x9c
+ 741 0171 84010000 		.4byte	0x184
+ 742 0175 0D       		.uleb128 0xd
+ 743 0176 64020000 		.4byte	.LASF33
+ 744 017a 01       		.byte	0x1
+ 745 017b 68       		.byte	0x68
+ 746 017c FB000000 		.4byte	0xfb
+ 747 0180 02       		.uleb128 0x2
+ 748 0181 91       		.byte	0x91
+ 749 0182 74       		.sleb128 -12
+ 750 0183 00       		.byte	0
+ 751 0184 0B       		.uleb128 0xb
+ 752 0185 39010000 		.4byte	.LASF29
+ 753 0189 01       		.byte	0x1
+ 754 018a 86       		.byte	0x86
+ 755 018b 00000000 		.4byte	.LFB65
+ 756 018f 18000000 		.4byte	.LFE65-.LFB65
+ 757 0193 01       		.uleb128 0x1
+ 758 0194 9C       		.byte	0x9c
+ 759 0195 0E       		.uleb128 0xe
+ 760 0196 41020000 		.4byte	.LASF30
+ 761 019a 01       		.byte	0x1
+ 762 019b A0       		.byte	0xa0
+ 763 019c 00000000 		.4byte	.LFB66
+ 764 01a0 18000000 		.4byte	.LFE66-.LFB66
+ 765 01a4 01       		.uleb128 0x1
+ 766 01a5 9C       		.byte	0x9c
+ 767 01a6 0F       		.uleb128 0xf
+ 768 01a7 E9000000 		.4byte	.LASF32
+ 769 01ab 01       		.byte	0x1
+ 770 01ac C9       		.byte	0xc9
+ 771 01ad 00000000 		.4byte	.LFB67
+ 772 01b1 24000000 		.4byte	.LFE67-.LFB67
+ 773 01b5 01       		.uleb128 0x1
+ 774 01b6 9C       		.byte	0x9c
+ 775 01b7 D8010000 		.4byte	0x1d8
+ 776 01bb 0D       		.uleb128 0xd
+ 777 01bc 64020000 		.4byte	.LASF33
+ 778 01c0 01       		.byte	0x1
+ 779 01c1 C9       		.byte	0xc9
+ 780 01c2 FB000000 		.4byte	0xfb
+ 781 01c6 02       		.uleb128 0x2
+ 782 01c7 91       		.byte	0x91
+ 783 01c8 6C       		.sleb128 -20
+ 784 01c9 10       		.uleb128 0x10
+ 785 01ca F0020000 		.4byte	.LASF34
+ 786 01ce 01       		.byte	0x1
+ 787 01cf CB       		.byte	0xcb
+ 788 01d0 D8010000 		.4byte	0x1d8
+ 789 01d4 02       		.uleb128 0x2
+ 790 01d5 91       		.byte	0x91
+ 791 01d6 74       		.sleb128 -12
+ 792 01d7 00       		.byte	0
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 22
+
+
+ 793 01d8 05       		.uleb128 0x5
+ 794 01d9 04       		.byte	0x4
+ 795 01da FB000000 		.4byte	0xfb
+ 796 01de 11       		.uleb128 0x11
+ 797 01df 56030000 		.4byte	.LASF37
+ 798 01e3 01       		.byte	0x1
+ 799 01e4 E1       		.byte	0xe1
+ 800 01e5 FB000000 		.4byte	0xfb
+ 801 01e9 00000000 		.4byte	.LFB68
+ 802 01ed 20000000 		.4byte	.LFE68-.LFB68
+ 803 01f1 01       		.uleb128 0x1
+ 804 01f2 9C       		.byte	0x9c
+ 805 01f3 06020000 		.4byte	0x206
+ 806 01f7 10       		.uleb128 0x10
+ 807 01f8 F0020000 		.4byte	.LASF34
+ 808 01fc 01       		.byte	0x1
+ 809 01fd E3       		.byte	0xe3
+ 810 01fe D8010000 		.4byte	0x1d8
+ 811 0202 02       		.uleb128 0x2
+ 812 0203 91       		.byte	0x91
+ 813 0204 74       		.sleb128 -12
+ 814 0205 00       		.byte	0
+ 815 0206 12       		.uleb128 0x12
+ 816 0207 18000000 		.4byte	.LASF35
+ 817 020b 01       		.byte	0x1
+ 818 020c 0301     		.2byte	0x103
+ 819 020e 00000000 		.4byte	.LFB69
+ 820 0212 24000000 		.4byte	.LFE69-.LFB69
+ 821 0216 01       		.uleb128 0x1
+ 822 0217 9C       		.byte	0x9c
+ 823 0218 2C020000 		.4byte	0x22c
+ 824 021c 13       		.uleb128 0x13
+ 825 021d 10020000 		.4byte	.LASF36
+ 826 0221 01       		.byte	0x1
+ 827 0222 0301     		.2byte	0x103
+ 828 0224 B3000000 		.4byte	0xb3
+ 829 0228 02       		.uleb128 0x2
+ 830 0229 91       		.byte	0x91
+ 831 022a 77       		.sleb128 -9
+ 832 022b 00       		.byte	0
+ 833 022c 14       		.uleb128 0x14
+ 834 022d FF020000 		.4byte	.LASF38
+ 835 0231 01       		.byte	0x1
+ 836 0232 1901     		.2byte	0x119
+ 837 0234 B3000000 		.4byte	0xb3
+ 838 0238 00000000 		.4byte	.LFB70
+ 839 023c 20000000 		.4byte	.LFE70-.LFB70
+ 840 0240 01       		.uleb128 0x1
+ 841 0241 9C       		.byte	0x9c
+ 842 0242 56020000 		.4byte	0x256
+ 843 0246 15       		.uleb128 0x15
+ 844 0247 10020000 		.4byte	.LASF36
+ 845 024b 01       		.byte	0x1
+ 846 024c 1B01     		.2byte	0x11b
+ 847 024e B3000000 		.4byte	0xb3
+ 848 0252 02       		.uleb128 0x2
+ 849 0253 91       		.byte	0x91
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 23
+
+
+ 850 0254 77       		.sleb128 -9
+ 851 0255 00       		.byte	0
+ 852 0256 16       		.uleb128 0x16
+ 853 0257 A4010000 		.4byte	.LASF39
+ 854 025b 01       		.byte	0x1
+ 855 025c 3401     		.2byte	0x134
+ 856 025e 00000000 		.4byte	.LFB71
+ 857 0262 18000000 		.4byte	.LFE71-.LFB71
+ 858 0266 01       		.uleb128 0x1
+ 859 0267 9C       		.byte	0x9c
+ 860 0268 17       		.uleb128 0x17
+ 861 0269 5D010000 		.4byte	.LASF49
+ 862 026d 01       		.byte	0x1
+ 863 026e 4901     		.2byte	0x149
+ 864 0270 B3000000 		.4byte	0xb3
+ 865 0274 00000000 		.4byte	.LFB72
+ 866 0278 24000000 		.4byte	.LFE72-.LFB72
+ 867 027c 01       		.uleb128 0x1
+ 868 027d 9C       		.byte	0x9c
+ 869 027e 16       		.uleb128 0x16
+ 870 027f 2D020000 		.4byte	.LASF40
+ 871 0283 01       		.byte	0x1
+ 872 0284 5E01     		.2byte	0x15e
+ 873 0286 00000000 		.4byte	.LFB73
+ 874 028a 18000000 		.4byte	.LFE73-.LFB73
+ 875 028e 01       		.uleb128 0x1
+ 876 028f 9C       		.byte	0x9c
+ 877 0290 16       		.uleb128 0x16
+ 878 0291 C8000000 		.4byte	.LASF41
+ 879 0295 01       		.byte	0x1
+ 880 0296 7901     		.2byte	0x179
+ 881 0298 00000000 		.4byte	.LFB74
+ 882 029c 18000000 		.4byte	.LFE74-.LFB74
+ 883 02a0 01       		.uleb128 0x1
+ 884 02a1 9C       		.byte	0x9c
+ 885 02a2 16       		.uleb128 0x16
+ 886 02a3 BE010000 		.4byte	.LASF42
+ 887 02a7 01       		.byte	0x1
+ 888 02a8 9201     		.2byte	0x192
+ 889 02aa 00000000 		.4byte	.LFB75
+ 890 02ae 18000000 		.4byte	.LFE75-.LFB75
+ 891 02b2 01       		.uleb128 0x1
+ 892 02b3 9C       		.byte	0x9c
+ 893 02b4 18       		.uleb128 0x18
+ 894 02b5 97010000 		.4byte	.LASF43
+ 895 02b9 06       		.byte	0x6
+ 896 02ba 1207     		.2byte	0x712
+ 897 02bc C0020000 		.4byte	0x2c0
+ 898 02c0 08       		.uleb128 0x8
+ 899 02c1 A8000000 		.4byte	0xa8
+ 900 02c5 19       		.uleb128 0x19
+ 901 02c6 BC020000 		.4byte	.LASF44
+ 902 02ca 05       		.byte	0x5
+ 903 02cb 18       		.byte	0x18
+ 904 02cc 44010000 		.4byte	0x144
+ 905 02d0 00       		.byte	0
+ 906              		.section	.debug_abbrev,"",%progbits
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 24
+
+
+ 907              	.Ldebug_abbrev0:
+ 908 0000 01       		.uleb128 0x1
+ 909 0001 11       		.uleb128 0x11
+ 910 0002 01       		.byte	0x1
+ 911 0003 25       		.uleb128 0x25
+ 912 0004 0E       		.uleb128 0xe
+ 913 0005 13       		.uleb128 0x13
+ 914 0006 0B       		.uleb128 0xb
+ 915 0007 03       		.uleb128 0x3
+ 916 0008 0E       		.uleb128 0xe
+ 917 0009 1B       		.uleb128 0x1b
+ 918 000a 0E       		.uleb128 0xe
+ 919 000b 55       		.uleb128 0x55
+ 920 000c 17       		.uleb128 0x17
+ 921 000d 11       		.uleb128 0x11
+ 922 000e 01       		.uleb128 0x1
+ 923 000f 10       		.uleb128 0x10
+ 924 0010 17       		.uleb128 0x17
+ 925 0011 00       		.byte	0
+ 926 0012 00       		.byte	0
+ 927 0013 02       		.uleb128 0x2
+ 928 0014 24       		.uleb128 0x24
+ 929 0015 00       		.byte	0
+ 930 0016 0B       		.uleb128 0xb
+ 931 0017 0B       		.uleb128 0xb
+ 932 0018 3E       		.uleb128 0x3e
+ 933 0019 0B       		.uleb128 0xb
+ 934 001a 03       		.uleb128 0x3
+ 935 001b 08       		.uleb128 0x8
+ 936 001c 00       		.byte	0
+ 937 001d 00       		.byte	0
+ 938 001e 03       		.uleb128 0x3
+ 939 001f 24       		.uleb128 0x24
+ 940 0020 00       		.byte	0
+ 941 0021 0B       		.uleb128 0xb
+ 942 0022 0B       		.uleb128 0xb
+ 943 0023 3E       		.uleb128 0x3e
+ 944 0024 0B       		.uleb128 0xb
+ 945 0025 03       		.uleb128 0x3
+ 946 0026 0E       		.uleb128 0xe
+ 947 0027 00       		.byte	0
+ 948 0028 00       		.byte	0
+ 949 0029 04       		.uleb128 0x4
+ 950 002a 16       		.uleb128 0x16
+ 951 002b 00       		.byte	0
+ 952 002c 03       		.uleb128 0x3
+ 953 002d 0E       		.uleb128 0xe
+ 954 002e 3A       		.uleb128 0x3a
+ 955 002f 0B       		.uleb128 0xb
+ 956 0030 3B       		.uleb128 0x3b
+ 957 0031 0B       		.uleb128 0xb
+ 958 0032 49       		.uleb128 0x49
+ 959 0033 13       		.uleb128 0x13
+ 960 0034 00       		.byte	0
+ 961 0035 00       		.byte	0
+ 962 0036 05       		.uleb128 0x5
+ 963 0037 0F       		.uleb128 0xf
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 25
+
+
+ 964 0038 00       		.byte	0
+ 965 0039 0B       		.uleb128 0xb
+ 966 003a 0B       		.uleb128 0xb
+ 967 003b 49       		.uleb128 0x49
+ 968 003c 13       		.uleb128 0x13
+ 969 003d 00       		.byte	0
+ 970 003e 00       		.byte	0
+ 971 003f 06       		.uleb128 0x6
+ 972 0040 15       		.uleb128 0x15
+ 973 0041 00       		.byte	0
+ 974 0042 27       		.uleb128 0x27
+ 975 0043 19       		.uleb128 0x19
+ 976 0044 00       		.byte	0
+ 977 0045 00       		.byte	0
+ 978 0046 07       		.uleb128 0x7
+ 979 0047 16       		.uleb128 0x16
+ 980 0048 00       		.byte	0
+ 981 0049 03       		.uleb128 0x3
+ 982 004a 0E       		.uleb128 0xe
+ 983 004b 3A       		.uleb128 0x3a
+ 984 004c 0B       		.uleb128 0xb
+ 985 004d 3B       		.uleb128 0x3b
+ 986 004e 05       		.uleb128 0x5
+ 987 004f 49       		.uleb128 0x49
+ 988 0050 13       		.uleb128 0x13
+ 989 0051 00       		.byte	0
+ 990 0052 00       		.byte	0
+ 991 0053 08       		.uleb128 0x8
+ 992 0054 35       		.uleb128 0x35
+ 993 0055 00       		.byte	0
+ 994 0056 49       		.uleb128 0x49
+ 995 0057 13       		.uleb128 0x13
+ 996 0058 00       		.byte	0
+ 997 0059 00       		.byte	0
+ 998 005a 09       		.uleb128 0x9
+ 999 005b 13       		.uleb128 0x13
+ 1000 005c 01       		.byte	0x1
+ 1001 005d 03       		.uleb128 0x3
+ 1002 005e 0E       		.uleb128 0xe
+ 1003 005f 0B       		.uleb128 0xb
+ 1004 0060 0B       		.uleb128 0xb
+ 1005 0061 3A       		.uleb128 0x3a
+ 1006 0062 0B       		.uleb128 0xb
+ 1007 0063 3B       		.uleb128 0x3b
+ 1008 0064 0B       		.uleb128 0xb
+ 1009 0065 01       		.uleb128 0x1
+ 1010 0066 13       		.uleb128 0x13
+ 1011 0067 00       		.byte	0
+ 1012 0068 00       		.byte	0
+ 1013 0069 0A       		.uleb128 0xa
+ 1014 006a 0D       		.uleb128 0xd
+ 1015 006b 00       		.byte	0
+ 1016 006c 03       		.uleb128 0x3
+ 1017 006d 0E       		.uleb128 0xe
+ 1018 006e 3A       		.uleb128 0x3a
+ 1019 006f 0B       		.uleb128 0xb
+ 1020 0070 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 26
+
+
+ 1021 0071 0B       		.uleb128 0xb
+ 1022 0072 49       		.uleb128 0x49
+ 1023 0073 13       		.uleb128 0x13
+ 1024 0074 38       		.uleb128 0x38
+ 1025 0075 0B       		.uleb128 0xb
+ 1026 0076 00       		.byte	0
+ 1027 0077 00       		.byte	0
+ 1028 0078 0B       		.uleb128 0xb
+ 1029 0079 2E       		.uleb128 0x2e
+ 1030 007a 00       		.byte	0
+ 1031 007b 3F       		.uleb128 0x3f
+ 1032 007c 19       		.uleb128 0x19
+ 1033 007d 03       		.uleb128 0x3
+ 1034 007e 0E       		.uleb128 0xe
+ 1035 007f 3A       		.uleb128 0x3a
+ 1036 0080 0B       		.uleb128 0xb
+ 1037 0081 3B       		.uleb128 0x3b
+ 1038 0082 0B       		.uleb128 0xb
+ 1039 0083 27       		.uleb128 0x27
+ 1040 0084 19       		.uleb128 0x19
+ 1041 0085 11       		.uleb128 0x11
+ 1042 0086 01       		.uleb128 0x1
+ 1043 0087 12       		.uleb128 0x12
+ 1044 0088 06       		.uleb128 0x6
+ 1045 0089 40       		.uleb128 0x40
+ 1046 008a 18       		.uleb128 0x18
+ 1047 008b 9642     		.uleb128 0x2116
+ 1048 008d 19       		.uleb128 0x19
+ 1049 008e 00       		.byte	0
+ 1050 008f 00       		.byte	0
+ 1051 0090 0C       		.uleb128 0xc
+ 1052 0091 2E       		.uleb128 0x2e
+ 1053 0092 01       		.byte	0x1
+ 1054 0093 3F       		.uleb128 0x3f
+ 1055 0094 19       		.uleb128 0x19
+ 1056 0095 03       		.uleb128 0x3
+ 1057 0096 0E       		.uleb128 0xe
+ 1058 0097 3A       		.uleb128 0x3a
+ 1059 0098 0B       		.uleb128 0xb
+ 1060 0099 3B       		.uleb128 0x3b
+ 1061 009a 0B       		.uleb128 0xb
+ 1062 009b 27       		.uleb128 0x27
+ 1063 009c 19       		.uleb128 0x19
+ 1064 009d 11       		.uleb128 0x11
+ 1065 009e 01       		.uleb128 0x1
+ 1066 009f 12       		.uleb128 0x12
+ 1067 00a0 06       		.uleb128 0x6
+ 1068 00a1 40       		.uleb128 0x40
+ 1069 00a2 18       		.uleb128 0x18
+ 1070 00a3 9642     		.uleb128 0x2116
+ 1071 00a5 19       		.uleb128 0x19
+ 1072 00a6 01       		.uleb128 0x1
+ 1073 00a7 13       		.uleb128 0x13
+ 1074 00a8 00       		.byte	0
+ 1075 00a9 00       		.byte	0
+ 1076 00aa 0D       		.uleb128 0xd
+ 1077 00ab 05       		.uleb128 0x5
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 27
+
+
+ 1078 00ac 00       		.byte	0
+ 1079 00ad 03       		.uleb128 0x3
+ 1080 00ae 0E       		.uleb128 0xe
+ 1081 00af 3A       		.uleb128 0x3a
+ 1082 00b0 0B       		.uleb128 0xb
+ 1083 00b1 3B       		.uleb128 0x3b
+ 1084 00b2 0B       		.uleb128 0xb
+ 1085 00b3 49       		.uleb128 0x49
+ 1086 00b4 13       		.uleb128 0x13
+ 1087 00b5 02       		.uleb128 0x2
+ 1088 00b6 18       		.uleb128 0x18
+ 1089 00b7 00       		.byte	0
+ 1090 00b8 00       		.byte	0
+ 1091 00b9 0E       		.uleb128 0xe
+ 1092 00ba 2E       		.uleb128 0x2e
+ 1093 00bb 00       		.byte	0
+ 1094 00bc 3F       		.uleb128 0x3f
+ 1095 00bd 19       		.uleb128 0x19
+ 1096 00be 03       		.uleb128 0x3
+ 1097 00bf 0E       		.uleb128 0xe
+ 1098 00c0 3A       		.uleb128 0x3a
+ 1099 00c1 0B       		.uleb128 0xb
+ 1100 00c2 3B       		.uleb128 0x3b
+ 1101 00c3 0B       		.uleb128 0xb
+ 1102 00c4 27       		.uleb128 0x27
+ 1103 00c5 19       		.uleb128 0x19
+ 1104 00c6 11       		.uleb128 0x11
+ 1105 00c7 01       		.uleb128 0x1
+ 1106 00c8 12       		.uleb128 0x12
+ 1107 00c9 06       		.uleb128 0x6
+ 1108 00ca 40       		.uleb128 0x40
+ 1109 00cb 18       		.uleb128 0x18
+ 1110 00cc 9742     		.uleb128 0x2117
+ 1111 00ce 19       		.uleb128 0x19
+ 1112 00cf 00       		.byte	0
+ 1113 00d0 00       		.byte	0
+ 1114 00d1 0F       		.uleb128 0xf
+ 1115 00d2 2E       		.uleb128 0x2e
+ 1116 00d3 01       		.byte	0x1
+ 1117 00d4 3F       		.uleb128 0x3f
+ 1118 00d5 19       		.uleb128 0x19
+ 1119 00d6 03       		.uleb128 0x3
+ 1120 00d7 0E       		.uleb128 0xe
+ 1121 00d8 3A       		.uleb128 0x3a
+ 1122 00d9 0B       		.uleb128 0xb
+ 1123 00da 3B       		.uleb128 0x3b
+ 1124 00db 0B       		.uleb128 0xb
+ 1125 00dc 27       		.uleb128 0x27
+ 1126 00dd 19       		.uleb128 0x19
+ 1127 00de 11       		.uleb128 0x11
+ 1128 00df 01       		.uleb128 0x1
+ 1129 00e0 12       		.uleb128 0x12
+ 1130 00e1 06       		.uleb128 0x6
+ 1131 00e2 40       		.uleb128 0x40
+ 1132 00e3 18       		.uleb128 0x18
+ 1133 00e4 9742     		.uleb128 0x2117
+ 1134 00e6 19       		.uleb128 0x19
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 28
+
+
+ 1135 00e7 01       		.uleb128 0x1
+ 1136 00e8 13       		.uleb128 0x13
+ 1137 00e9 00       		.byte	0
+ 1138 00ea 00       		.byte	0
+ 1139 00eb 10       		.uleb128 0x10
+ 1140 00ec 34       		.uleb128 0x34
+ 1141 00ed 00       		.byte	0
+ 1142 00ee 03       		.uleb128 0x3
+ 1143 00ef 0E       		.uleb128 0xe
+ 1144 00f0 3A       		.uleb128 0x3a
+ 1145 00f1 0B       		.uleb128 0xb
+ 1146 00f2 3B       		.uleb128 0x3b
+ 1147 00f3 0B       		.uleb128 0xb
+ 1148 00f4 49       		.uleb128 0x49
+ 1149 00f5 13       		.uleb128 0x13
+ 1150 00f6 02       		.uleb128 0x2
+ 1151 00f7 18       		.uleb128 0x18
+ 1152 00f8 00       		.byte	0
+ 1153 00f9 00       		.byte	0
+ 1154 00fa 11       		.uleb128 0x11
+ 1155 00fb 2E       		.uleb128 0x2e
+ 1156 00fc 01       		.byte	0x1
+ 1157 00fd 3F       		.uleb128 0x3f
+ 1158 00fe 19       		.uleb128 0x19
+ 1159 00ff 03       		.uleb128 0x3
+ 1160 0100 0E       		.uleb128 0xe
+ 1161 0101 3A       		.uleb128 0x3a
+ 1162 0102 0B       		.uleb128 0xb
+ 1163 0103 3B       		.uleb128 0x3b
+ 1164 0104 0B       		.uleb128 0xb
+ 1165 0105 27       		.uleb128 0x27
+ 1166 0106 19       		.uleb128 0x19
+ 1167 0107 49       		.uleb128 0x49
+ 1168 0108 13       		.uleb128 0x13
+ 1169 0109 11       		.uleb128 0x11
+ 1170 010a 01       		.uleb128 0x1
+ 1171 010b 12       		.uleb128 0x12
+ 1172 010c 06       		.uleb128 0x6
+ 1173 010d 40       		.uleb128 0x40
+ 1174 010e 18       		.uleb128 0x18
+ 1175 010f 9742     		.uleb128 0x2117
+ 1176 0111 19       		.uleb128 0x19
+ 1177 0112 01       		.uleb128 0x1
+ 1178 0113 13       		.uleb128 0x13
+ 1179 0114 00       		.byte	0
+ 1180 0115 00       		.byte	0
+ 1181 0116 12       		.uleb128 0x12
+ 1182 0117 2E       		.uleb128 0x2e
+ 1183 0118 01       		.byte	0x1
+ 1184 0119 3F       		.uleb128 0x3f
+ 1185 011a 19       		.uleb128 0x19
+ 1186 011b 03       		.uleb128 0x3
+ 1187 011c 0E       		.uleb128 0xe
+ 1188 011d 3A       		.uleb128 0x3a
+ 1189 011e 0B       		.uleb128 0xb
+ 1190 011f 3B       		.uleb128 0x3b
+ 1191 0120 05       		.uleb128 0x5
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 29
+
+
+ 1192 0121 27       		.uleb128 0x27
+ 1193 0122 19       		.uleb128 0x19
+ 1194 0123 11       		.uleb128 0x11
+ 1195 0124 01       		.uleb128 0x1
+ 1196 0125 12       		.uleb128 0x12
+ 1197 0126 06       		.uleb128 0x6
+ 1198 0127 40       		.uleb128 0x40
+ 1199 0128 18       		.uleb128 0x18
+ 1200 0129 9742     		.uleb128 0x2117
+ 1201 012b 19       		.uleb128 0x19
+ 1202 012c 01       		.uleb128 0x1
+ 1203 012d 13       		.uleb128 0x13
+ 1204 012e 00       		.byte	0
+ 1205 012f 00       		.byte	0
+ 1206 0130 13       		.uleb128 0x13
+ 1207 0131 05       		.uleb128 0x5
+ 1208 0132 00       		.byte	0
+ 1209 0133 03       		.uleb128 0x3
+ 1210 0134 0E       		.uleb128 0xe
+ 1211 0135 3A       		.uleb128 0x3a
+ 1212 0136 0B       		.uleb128 0xb
+ 1213 0137 3B       		.uleb128 0x3b
+ 1214 0138 05       		.uleb128 0x5
+ 1215 0139 49       		.uleb128 0x49
+ 1216 013a 13       		.uleb128 0x13
+ 1217 013b 02       		.uleb128 0x2
+ 1218 013c 18       		.uleb128 0x18
+ 1219 013d 00       		.byte	0
+ 1220 013e 00       		.byte	0
+ 1221 013f 14       		.uleb128 0x14
+ 1222 0140 2E       		.uleb128 0x2e
+ 1223 0141 01       		.byte	0x1
+ 1224 0142 3F       		.uleb128 0x3f
+ 1225 0143 19       		.uleb128 0x19
+ 1226 0144 03       		.uleb128 0x3
+ 1227 0145 0E       		.uleb128 0xe
+ 1228 0146 3A       		.uleb128 0x3a
+ 1229 0147 0B       		.uleb128 0xb
+ 1230 0148 3B       		.uleb128 0x3b
+ 1231 0149 05       		.uleb128 0x5
+ 1232 014a 27       		.uleb128 0x27
+ 1233 014b 19       		.uleb128 0x19
+ 1234 014c 49       		.uleb128 0x49
+ 1235 014d 13       		.uleb128 0x13
+ 1236 014e 11       		.uleb128 0x11
+ 1237 014f 01       		.uleb128 0x1
+ 1238 0150 12       		.uleb128 0x12
+ 1239 0151 06       		.uleb128 0x6
+ 1240 0152 40       		.uleb128 0x40
+ 1241 0153 18       		.uleb128 0x18
+ 1242 0154 9742     		.uleb128 0x2117
+ 1243 0156 19       		.uleb128 0x19
+ 1244 0157 01       		.uleb128 0x1
+ 1245 0158 13       		.uleb128 0x13
+ 1246 0159 00       		.byte	0
+ 1247 015a 00       		.byte	0
+ 1248 015b 15       		.uleb128 0x15
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 30
+
+
+ 1249 015c 34       		.uleb128 0x34
+ 1250 015d 00       		.byte	0
+ 1251 015e 03       		.uleb128 0x3
+ 1252 015f 0E       		.uleb128 0xe
+ 1253 0160 3A       		.uleb128 0x3a
+ 1254 0161 0B       		.uleb128 0xb
+ 1255 0162 3B       		.uleb128 0x3b
+ 1256 0163 05       		.uleb128 0x5
+ 1257 0164 49       		.uleb128 0x49
+ 1258 0165 13       		.uleb128 0x13
+ 1259 0166 02       		.uleb128 0x2
+ 1260 0167 18       		.uleb128 0x18
+ 1261 0168 00       		.byte	0
+ 1262 0169 00       		.byte	0
+ 1263 016a 16       		.uleb128 0x16
+ 1264 016b 2E       		.uleb128 0x2e
+ 1265 016c 00       		.byte	0
+ 1266 016d 3F       		.uleb128 0x3f
+ 1267 016e 19       		.uleb128 0x19
+ 1268 016f 03       		.uleb128 0x3
+ 1269 0170 0E       		.uleb128 0xe
+ 1270 0171 3A       		.uleb128 0x3a
+ 1271 0172 0B       		.uleb128 0xb
+ 1272 0173 3B       		.uleb128 0x3b
+ 1273 0174 05       		.uleb128 0x5
+ 1274 0175 27       		.uleb128 0x27
+ 1275 0176 19       		.uleb128 0x19
+ 1276 0177 11       		.uleb128 0x11
+ 1277 0178 01       		.uleb128 0x1
+ 1278 0179 12       		.uleb128 0x12
+ 1279 017a 06       		.uleb128 0x6
+ 1280 017b 40       		.uleb128 0x40
+ 1281 017c 18       		.uleb128 0x18
+ 1282 017d 9742     		.uleb128 0x2117
+ 1283 017f 19       		.uleb128 0x19
+ 1284 0180 00       		.byte	0
+ 1285 0181 00       		.byte	0
+ 1286 0182 17       		.uleb128 0x17
+ 1287 0183 2E       		.uleb128 0x2e
+ 1288 0184 00       		.byte	0
+ 1289 0185 3F       		.uleb128 0x3f
+ 1290 0186 19       		.uleb128 0x19
+ 1291 0187 03       		.uleb128 0x3
+ 1292 0188 0E       		.uleb128 0xe
+ 1293 0189 3A       		.uleb128 0x3a
+ 1294 018a 0B       		.uleb128 0xb
+ 1295 018b 3B       		.uleb128 0x3b
+ 1296 018c 05       		.uleb128 0x5
+ 1297 018d 27       		.uleb128 0x27
+ 1298 018e 19       		.uleb128 0x19
+ 1299 018f 49       		.uleb128 0x49
+ 1300 0190 13       		.uleb128 0x13
+ 1301 0191 11       		.uleb128 0x11
+ 1302 0192 01       		.uleb128 0x1
+ 1303 0193 12       		.uleb128 0x12
+ 1304 0194 06       		.uleb128 0x6
+ 1305 0195 40       		.uleb128 0x40
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 31
+
+
+ 1306 0196 18       		.uleb128 0x18
+ 1307 0197 9742     		.uleb128 0x2117
+ 1308 0199 19       		.uleb128 0x19
+ 1309 019a 00       		.byte	0
+ 1310 019b 00       		.byte	0
+ 1311 019c 18       		.uleb128 0x18
+ 1312 019d 34       		.uleb128 0x34
+ 1313 019e 00       		.byte	0
+ 1314 019f 03       		.uleb128 0x3
+ 1315 01a0 0E       		.uleb128 0xe
+ 1316 01a1 3A       		.uleb128 0x3a
+ 1317 01a2 0B       		.uleb128 0xb
+ 1318 01a3 3B       		.uleb128 0x3b
+ 1319 01a4 05       		.uleb128 0x5
+ 1320 01a5 49       		.uleb128 0x49
+ 1321 01a6 13       		.uleb128 0x13
+ 1322 01a7 3F       		.uleb128 0x3f
+ 1323 01a8 19       		.uleb128 0x19
+ 1324 01a9 3C       		.uleb128 0x3c
+ 1325 01aa 19       		.uleb128 0x19
+ 1326 01ab 00       		.byte	0
+ 1327 01ac 00       		.byte	0
+ 1328 01ad 19       		.uleb128 0x19
+ 1329 01ae 34       		.uleb128 0x34
+ 1330 01af 00       		.byte	0
+ 1331 01b0 03       		.uleb128 0x3
+ 1332 01b1 0E       		.uleb128 0xe
+ 1333 01b2 3A       		.uleb128 0x3a
+ 1334 01b3 0B       		.uleb128 0xb
+ 1335 01b4 3B       		.uleb128 0x3b
+ 1336 01b5 0B       		.uleb128 0xb
+ 1337 01b6 49       		.uleb128 0x49
+ 1338 01b7 13       		.uleb128 0x13
+ 1339 01b8 3F       		.uleb128 0x3f
+ 1340 01b9 19       		.uleb128 0x19
+ 1341 01ba 3C       		.uleb128 0x3c
+ 1342 01bb 19       		.uleb128 0x19
+ 1343 01bc 00       		.byte	0
+ 1344 01bd 00       		.byte	0
+ 1345 01be 00       		.byte	0
+ 1346              		.section	.debug_aranges,"",%progbits
+ 1347 0000 7C000000 		.4byte	0x7c
+ 1348 0004 0200     		.2byte	0x2
+ 1349 0006 00000000 		.4byte	.Ldebug_info0
+ 1350 000a 04       		.byte	0x4
+ 1351 000b 00       		.byte	0
+ 1352 000c 0000     		.2byte	0
+ 1353 000e 0000     		.2byte	0
+ 1354 0010 00000000 		.4byte	.LFB63
+ 1355 0014 20000000 		.4byte	.LFE63-.LFB63
+ 1356 0018 00000000 		.4byte	.LFB64
+ 1357 001c 24000000 		.4byte	.LFE64-.LFB64
+ 1358 0020 00000000 		.4byte	.LFB65
+ 1359 0024 18000000 		.4byte	.LFE65-.LFB65
+ 1360 0028 00000000 		.4byte	.LFB66
+ 1361 002c 18000000 		.4byte	.LFE66-.LFB66
+ 1362 0030 00000000 		.4byte	.LFB67
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 32
+
+
+ 1363 0034 24000000 		.4byte	.LFE67-.LFB67
+ 1364 0038 00000000 		.4byte	.LFB68
+ 1365 003c 20000000 		.4byte	.LFE68-.LFB68
+ 1366 0040 00000000 		.4byte	.LFB69
+ 1367 0044 24000000 		.4byte	.LFE69-.LFB69
+ 1368 0048 00000000 		.4byte	.LFB70
+ 1369 004c 20000000 		.4byte	.LFE70-.LFB70
+ 1370 0050 00000000 		.4byte	.LFB71
+ 1371 0054 18000000 		.4byte	.LFE71-.LFB71
+ 1372 0058 00000000 		.4byte	.LFB72
+ 1373 005c 24000000 		.4byte	.LFE72-.LFB72
+ 1374 0060 00000000 		.4byte	.LFB73
+ 1375 0064 18000000 		.4byte	.LFE73-.LFB73
+ 1376 0068 00000000 		.4byte	.LFB74
+ 1377 006c 18000000 		.4byte	.LFE74-.LFB74
+ 1378 0070 00000000 		.4byte	.LFB75
+ 1379 0074 18000000 		.4byte	.LFE75-.LFB75
+ 1380 0078 00000000 		.4byte	0
+ 1381 007c 00000000 		.4byte	0
+ 1382              		.section	.debug_ranges,"",%progbits
+ 1383              	.Ldebug_ranges0:
+ 1384 0000 00000000 		.4byte	.LFB63
+ 1385 0004 20000000 		.4byte	.LFE63
+ 1386 0008 00000000 		.4byte	.LFB64
+ 1387 000c 24000000 		.4byte	.LFE64
+ 1388 0010 00000000 		.4byte	.LFB65
+ 1389 0014 18000000 		.4byte	.LFE65
+ 1390 0018 00000000 		.4byte	.LFB66
+ 1391 001c 18000000 		.4byte	.LFE66
+ 1392 0020 00000000 		.4byte	.LFB67
+ 1393 0024 24000000 		.4byte	.LFE67
+ 1394 0028 00000000 		.4byte	.LFB68
+ 1395 002c 20000000 		.4byte	.LFE68
+ 1396 0030 00000000 		.4byte	.LFB69
+ 1397 0034 24000000 		.4byte	.LFE69
+ 1398 0038 00000000 		.4byte	.LFB70
+ 1399 003c 20000000 		.4byte	.LFE70
+ 1400 0040 00000000 		.4byte	.LFB71
+ 1401 0044 18000000 		.4byte	.LFE71
+ 1402 0048 00000000 		.4byte	.LFB72
+ 1403 004c 24000000 		.4byte	.LFE72
+ 1404 0050 00000000 		.4byte	.LFB73
+ 1405 0054 18000000 		.4byte	.LFE73
+ 1406 0058 00000000 		.4byte	.LFB74
+ 1407 005c 18000000 		.4byte	.LFE74
+ 1408 0060 00000000 		.4byte	.LFB75
+ 1409 0064 18000000 		.4byte	.LFE75
+ 1410 0068 00000000 		.4byte	0
+ 1411 006c 00000000 		.4byte	0
+ 1412              		.section	.debug_line,"",%progbits
+ 1413              	.Ldebug_line0:
+ 1414 0000 40020000 		.section	.debug_str,"MS",%progbits,1
+ 1414      02003701 
+ 1414      00000201 
+ 1414      FB0E0D00 
+ 1414      01010101 
+ 1415              	.LASF21:
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 33
+
+
+ 1416 0000 72656733 		.ascii	"reg32\000"
+ 1416      3200
+ 1417              	.LASF28:
+ 1418 0006 66726F6E 		.ascii	"front_right_Start\000"
+ 1418      745F7269 
+ 1418      6768745F 
+ 1418      53746172 
+ 1418      7400
+ 1419              	.LASF35:
+ 1420 0018 66726F6E 		.ascii	"front_right_SetPriority\000"
+ 1420      745F7269 
+ 1420      6768745F 
+ 1420      53657450 
+ 1420      72696F72 
+ 1421              	.LASF45:
+ 1422 0030 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1422      43313120 
+ 1422      352E342E 
+ 1422      31203230 
+ 1422      31363036 
+ 1423 0063 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1423      20726576 
+ 1423      6973696F 
+ 1423      6E203233 
+ 1423      37373135 
+ 1424 0096 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1424      66756E63 
+ 1424      74696F6E 
+ 1424      2D736563 
+ 1424      74696F6E 
+ 1425              	.LASF7:
+ 1426 00be 5F5F7569 		.ascii	"__uint8_t\000"
+ 1426      6E74385F 
+ 1426      7400
+ 1427              	.LASF41:
+ 1428 00c8 66726F6E 		.ascii	"front_right_SetPending\000"
+ 1428      745F7269 
+ 1428      6768745F 
+ 1428      53657450 
+ 1428      656E6469 
+ 1429              	.LASF8:
+ 1430 00df 5F5F696E 		.ascii	"__int32_t\000"
+ 1430      7433325F 
+ 1430      7400
+ 1431              	.LASF32:
+ 1432 00e9 66726F6E 		.ascii	"front_right_SetVector\000"
+ 1432      745F7269 
+ 1432      6768745F 
+ 1432      53657456 
+ 1432      6563746F 
+ 1433              	.LASF26:
+ 1434 00ff 6D69645F 		.ascii	"mid_right_edge\000"
+ 1434      72696768 
+ 1434      745F6564 
+ 1434      676500
+ 1435              	.LASF24:
+ 1436 010e 66726F6E 		.ascii	"front_right_edge\000"
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 34
+
+
+ 1436      745F7269 
+ 1436      6768745F 
+ 1436      65646765 
+ 1436      00
+ 1437              	.LASF31:
+ 1438 011f 66726F6E 		.ascii	"front_right_StartEx\000"
+ 1438      745F7269 
+ 1438      6768745F 
+ 1438      53746172 
+ 1438      74457800 
+ 1439              	.LASF18:
+ 1440 0133 666C6F61 		.ascii	"float\000"
+ 1440      7400
+ 1441              	.LASF29:
+ 1442 0139 66726F6E 		.ascii	"front_right_Stop\000"
+ 1442      745F7269 
+ 1442      6768745F 
+ 1442      53746F70 
+ 1442      00
+ 1443              	.LASF4:
+ 1444 014a 756E7369 		.ascii	"unsigned char\000"
+ 1444      676E6564 
+ 1444      20636861 
+ 1444      7200
+ 1445              	.LASF20:
+ 1446 0158 72656738 		.ascii	"reg8\000"
+ 1446      00
+ 1447              	.LASF49:
+ 1448 015d 66726F6E 		.ascii	"front_right_GetState\000"
+ 1448      745F7269 
+ 1448      6768745F 
+ 1448      47657453 
+ 1448      74617465 
+ 1449              	.LASF10:
+ 1450 0172 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1450      20756E73 
+ 1450      69676E65 
+ 1450      6420696E 
+ 1450      7400
+ 1451              	.LASF6:
+ 1452 0184 73686F72 		.ascii	"short unsigned int\000"
+ 1452      7420756E 
+ 1452      7369676E 
+ 1452      65642069 
+ 1452      6E7400
+ 1453              	.LASF43:
+ 1454 0197 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1454      52784275 
+ 1454      66666572 
+ 1454      00
+ 1455              	.LASF39:
+ 1456 01a4 66726F6E 		.ascii	"front_right_Enable\000"
+ 1456      745F7269 
+ 1456      6768745F 
+ 1456      456E6162 
+ 1456      6C6500
+ 1457              	.LASF19:
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 35
+
+
+ 1458 01b7 646F7562 		.ascii	"double\000"
+ 1458      6C6500
+ 1459              	.LASF42:
+ 1460 01be 66726F6E 		.ascii	"front_right_ClearPending\000"
+ 1460      745F7269 
+ 1460      6768745F 
+ 1460      436C6561 
+ 1460      7250656E 
+ 1461              	.LASF47:
+ 1462 01d7 433A5C4C 		.ascii	"C:\\LocalCode\\301MotorCar\\psoc firmware\\CS301_Cl"
+ 1462      6F63616C 
+ 1462      436F6465 
+ 1462      5C333031 
+ 1462      4D6F746F 
+ 1463 0206 6173732E 		.ascii	"ass.cydsn\000"
+ 1463      63796473 
+ 1463      6E00
+ 1464              	.LASF36:
+ 1465 0210 7072696F 		.ascii	"priority\000"
+ 1465      72697479 
+ 1465      00
+ 1466              	.LASF22:
+ 1467 0219 63796973 		.ascii	"cyisraddress\000"
+ 1467      72616464 
+ 1467      72657373 
+ 1467      00
+ 1468              	.LASF17:
+ 1469 0226 75696E74 		.ascii	"uint32\000"
+ 1469      333200
+ 1470              	.LASF40:
+ 1471 022d 66726F6E 		.ascii	"front_right_Disable\000"
+ 1471      745F7269 
+ 1471      6768745F 
+ 1471      44697361 
+ 1471      626C6500 
+ 1472              	.LASF30:
+ 1473 0241 66726F6E 		.ascii	"front_right_Interrupt\000"
+ 1473      745F7269 
+ 1473      6768745F 
+ 1473      496E7465 
+ 1473      72727570 
+ 1474              	.LASF0:
+ 1475 0257 756E7369 		.ascii	"unsigned int\000"
+ 1475      676E6564 
+ 1475      20696E74 
+ 1475      00
+ 1476              	.LASF33:
+ 1477 0264 61646472 		.ascii	"address\000"
+ 1477      65737300 
+ 1478              	.LASF11:
+ 1479 026c 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1479      206C6F6E 
+ 1479      6720756E 
+ 1479      7369676E 
+ 1479      65642069 
+ 1480              	.LASF14:
+ 1481 0283 75696E74 		.ascii	"uint8_t\000"
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 36
+
+
+ 1481      385F7400 
+ 1482              	.LASF46:
+ 1483 028b 47656E65 		.ascii	"Generated_Source\\PSoC5\\front_right.c\000"
+ 1483      72617465 
+ 1483      645F536F 
+ 1483      75726365 
+ 1483      5C50536F 
+ 1484              	.LASF27:
+ 1485 02b0 65646765 		.ascii	"edge_pack_t\000"
+ 1485      5F706163 
+ 1485      6B5F7400 
+ 1486              	.LASF44:
+ 1487 02bc 65646765 		.ascii	"edges\000"
+ 1487      7300
+ 1488              	.LASF15:
+ 1489 02c2 696E7433 		.ascii	"int32_t\000"
+ 1489      325F7400 
+ 1490              	.LASF12:
+ 1491 02ca 73697A65 		.ascii	"sizetype\000"
+ 1491      74797065 
+ 1491      00
+ 1492              	.LASF1:
+ 1493 02d3 6C6F6E67 		.ascii	"long long int\000"
+ 1493      206C6F6E 
+ 1493      6720696E 
+ 1493      7400
+ 1494              	.LASF48:
+ 1495 02e1 65646765 		.ascii	"edge_pack\000"
+ 1495      5F706163 
+ 1495      6B00
+ 1496              	.LASF13:
+ 1497 02eb 63686172 		.ascii	"char\000"
+ 1497      00
+ 1498              	.LASF34:
+ 1499 02f0 72616D56 		.ascii	"ramVectorTable\000"
+ 1499      6563746F 
+ 1499      72546162 
+ 1499      6C6500
+ 1500              	.LASF38:
+ 1501 02ff 66726F6E 		.ascii	"front_right_GetPriority\000"
+ 1501      745F7269 
+ 1501      6768745F 
+ 1501      47657450 
+ 1501      72696F72 
+ 1502              	.LASF25:
+ 1503 0317 6D69645F 		.ascii	"mid_left_edge\000"
+ 1503      6C656674 
+ 1503      5F656467 
+ 1503      6500
+ 1504              	.LASF5:
+ 1505 0325 73686F72 		.ascii	"short int\000"
+ 1505      7420696E 
+ 1505      7400
+ 1506              	.LASF16:
+ 1507 032f 75696E74 		.ascii	"uint8\000"
+ 1507      3800
+ 1508              	.LASF9:
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccmEz0yb.s 			page 37
+
+
+ 1509 0335 6C6F6E67 		.ascii	"long int\000"
+ 1509      20696E74 
+ 1509      00
+ 1510              	.LASF2:
+ 1511 033e 6C6F6E67 		.ascii	"long double\000"
+ 1511      20646F75 
+ 1511      626C6500 
+ 1512              	.LASF3:
+ 1513 034a 7369676E 		.ascii	"signed char\000"
+ 1513      65642063 
+ 1513      68617200 
+ 1514              	.LASF37:
+ 1515 0356 66726F6E 		.ascii	"front_right_GetVector\000"
+ 1515      745F7269 
+ 1515      6768745F 
+ 1515      47657456 
+ 1515      6563746F 
+ 1516              	.LASF23:
+ 1517 036c 66726F6E 		.ascii	"front_left_edge\000"
+ 1517      745F6C65 
+ 1517      66745F65 
+ 1517      64676500 
+ 1518              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

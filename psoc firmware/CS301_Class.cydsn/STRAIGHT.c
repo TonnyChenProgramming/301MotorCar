@@ -17,7 +17,7 @@
 #include "LEFT_TURN.h"
 void MOVE_STRAIGHT()
 {
-     
+    //176 & 181
     PWM_1_WriteCompare(176);
     PWM_2_WriteCompare(181);
     //CyDelay(100);

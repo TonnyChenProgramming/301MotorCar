@@ -60,6 +60,7 @@ typedef struct data_main {
     int16		g2_direction;	//
 } vtype1;    
 struct data_main system_state;
+
 //* ========================================
 
 

@@ -62,6 +62,7 @@ void move(MovementState movement)
         MOVE_STRAIGHT();
         last_memeory = 0;
     }
+/*
     else if (movement == KEEP_RUNNING)
     {
         if (last_memeory == 0)
@@ -76,5 +77,6 @@ void move(MovementState movement)
             DRIFT_LEFT();
         }
     }
+    */
     
 }
