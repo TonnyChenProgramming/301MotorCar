@@ -27,7 +27,7 @@
 *  Place your includes, defines and code here 
 ********************************************************************************/
 /* `#START front_left_intc` */
-
+#include "main.h"
 /* `#END` */
 
 #ifndef CYINT_IRQ_BASE

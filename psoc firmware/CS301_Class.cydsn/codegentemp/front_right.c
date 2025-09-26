@@ -27,7 +27,7 @@
 *  Place your includes, defines and code here 
 ********************************************************************************/
 /* `#START front_right_intc` */
-
+#include "main.h"
 /* `#END` */
 
 #ifndef CYINT_IRQ_BASE
@@ -165,6 +165,7 @@ CY_ISR(front_right_Interrupt)
 
     /*  Place your Interrupt code here. */
     /* `#START front_right_Interrupt` */
+    edges.front_right_edge = 1;
 
     /* `#END` */
 }

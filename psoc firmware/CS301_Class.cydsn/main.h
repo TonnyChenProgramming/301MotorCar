@@ -20,6 +20,9 @@ typedef struct edge_pack {
     uint8_t front_right_edge;
     uint8_t mid_left_edge;
     uint8_t mid_right_edge;
+    uint8_t right_wing_edge;
+    uint8_t left_wing_edge;
+    
 } edge_pack_t;
 extern edge_pack_t edges;
 /* [] END OF FILE */

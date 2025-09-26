@@ -164,7 +164,6 @@ CY_ISR(front_left_Interrupt)
     #endif /* front_left_INTERRUPT_INTERRUPT_CALLBACK */ 
 
     /*  Place your Interrupt code here. */
-    edges.front_left_edge = 1;
     /* `#START front_left_Interrupt` */
 
     /* `#END` */

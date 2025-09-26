@@ -97,6 +97,8 @@
 #include "LED6.h"
 #include "front_right.h"
 #include "front_left.h"
+#include "left_wing.h"
+#include "right_wing.h"
 #include "QuadDec_M1_Cnt16.h"
 #include "QuadDec_M2_Cnt16.h"
 #include "USBUART_Dm_aliases.h"

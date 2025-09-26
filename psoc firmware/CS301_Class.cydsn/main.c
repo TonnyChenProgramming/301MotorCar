@@ -49,7 +49,7 @@ static volatile float   spd_rpm  = 0.0f;
 
 static volatile uint8_t flag_print = 0;
 
-edge_pack_t edges = {0,0,0,0};
+edge_pack_t edges = {0,0,0,0, 0, 0};
 
 // static void print_telemetry(void);
 void usbPutString(char *s);
@@ -119,7 +119,7 @@ int main(void)
       //if (Output_3_Read() == 0) {TURN_RIGHT();}
       MovementState movement = GetMovement();
       move(movement);
-    if (movement == KEEP_RUNNING)
+    if (movement)
     {
       if (edges.front_left_edge)
     {
@@ -142,7 +142,18 @@ int main(void)
         edges.mid_right_edge = 0;
         edge_mid_right_manoeuvre();        
     }
+    
+        else if (edges.left_wing_edge)
+    {
+        edges.left_wing_edge = 0;
+        edge_left_wing_manoeuvre();
     }
+    else if (edges.right_wing_edge)
+    {
+        edges.right_wing_edge = 0;
+        edge_right_wing_manoeuvre();
+    }
+   }
 
     /*
         if (flag_ts_display) {

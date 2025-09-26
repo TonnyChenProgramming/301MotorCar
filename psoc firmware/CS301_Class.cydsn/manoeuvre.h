@@ -24,4 +24,6 @@ void edge_front_left_manoeuvre();
 void edge_front_right_manoeuvre();
 void edge_mid_left_manoeuvre();
 void edge_mid_right_manoeuvre();
+void edge_left_wing_manoeuvre();
+void edge_right_wing_manoeuvre();
 #endif
