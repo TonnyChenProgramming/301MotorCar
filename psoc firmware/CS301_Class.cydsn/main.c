@@ -113,6 +113,8 @@ int main(void)
     front_right_Start();
     mid_left_Start();
     mid_right_Start();
+    left_wing_Start();
+    right_wing_Start();
     for(;;) {
       //MOVE_STRAIGHT();
       //if (Output_6_Read() == 0){ TURN_LEFT();}

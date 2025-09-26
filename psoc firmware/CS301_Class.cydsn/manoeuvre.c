@@ -40,13 +40,17 @@ void edge_mid_right_manoeuvre()
 void edge_left_wing_manoeuvre()
 {
     // Hard left turn
-    PWM_1_WriteCompare(127); 
-    PWM_2_WriteCompare(127);  
+    while (Output_5_Read() == 1 || Output_4_Read() == 1) {
+        PWM_2_WriteCompare(157);
+        PWM_1_WriteCompare(67);
+    } 
+
 }
 
 void edge_right_wing_manoeuvre()
 {
-    // Hard right turn
-    PWM_1_WriteCompare(127);  // left motor faster
-    PWM_2_WriteCompare(127);  // right motor slower
+    while (Output_5_Read() == 1 || Output_4_Read() == 1)  {
+        PWM_1_WriteCompare(150);
+        PWM_2_WriteCompare(55);
+    }
 }
