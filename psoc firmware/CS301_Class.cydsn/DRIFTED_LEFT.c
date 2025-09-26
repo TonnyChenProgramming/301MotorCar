@@ -17,7 +17,6 @@
 void DRIFT_RIGHT()
 {
     PWM_2_WriteCompare(145);
-    CyDelay(260);
     PWM_2_WriteCompare(12);
 
 }

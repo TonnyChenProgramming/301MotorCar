@@ -16,9 +16,9 @@
 
 void TURN_RIGHT()
 {
-   while (Output_4_Read() == 1) {
-    PWM_1_WriteCompare(167);
-    PWM_2_WriteCompare(87);
+   while (Output_5_Read() == 1 || Output_4_Read() == 1)  {
+    PWM_1_WriteCompare(160);
+    PWM_2_WriteCompare(45);
     }
-
+    
 }

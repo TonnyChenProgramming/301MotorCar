@@ -15,10 +15,10 @@
 
 void TURN_LEFT()
 {
-    while (Output_5_Read() == 1) {
+    while (Output_5_Read() == 1 || Output_4_Read() == 1) {
     PWM_2_WriteCompare(167);
-    PWM_1_WriteCompare(87);
+    PWM_1_WriteCompare(57);
     }
- 
+    
 
 }

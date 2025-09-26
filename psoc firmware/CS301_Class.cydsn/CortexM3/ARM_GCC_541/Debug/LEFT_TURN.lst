@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 1
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccOJABQl.s 			page 1
 
 
    1              		.syntax unified
@@ -55,10 +55,10 @@ ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 1
   35              		.cfi_offset 14, -4
   36 0002 00AF     		add	r7, sp, #0
   37              		.cfi_def_cfa_register 7
-  18:LEFT_TURN.c   ****     while (Output_5_Read() == 1) {
+  18:LEFT_TURN.c   ****     while (Output_5_Read() == 1 || Output_4_Read() == 1) {
   38              		.loc 1 18 0
   39 0004 05E0     		b	.L2
-ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 2
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccOJABQl.s 			page 2
 
 
   40              	.L3:
@@ -66,383 +66,389 @@ ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 1
   41              		.loc 1 19 0
   42 0006 A720     		movs	r0, #167
   43 0008 FFF7FEFF 		bl	PWM_2_WriteCompare
-  20:LEFT_TURN.c   ****     PWM_1_WriteCompare(87);
+  20:LEFT_TURN.c   ****     PWM_1_WriteCompare(57);
   44              		.loc 1 20 0
-  45 000c 5720     		movs	r0, #87
+  45 000c 3920     		movs	r0, #57
   46 000e FFF7FEFF 		bl	PWM_1_WriteCompare
   47              	.L2:
-  18:LEFT_TURN.c   ****     while (Output_5_Read() == 1) {
+  18:LEFT_TURN.c   ****     while (Output_5_Read() == 1 || Output_4_Read() == 1) {
   48              		.loc 1 18 0
   49 0012 FFF7FEFF 		bl	Output_5_Read
   50 0016 0346     		mov	r3, r0
   51 0018 012B     		cmp	r3, #1
   52 001a F4D0     		beq	.L3
+  18:LEFT_TURN.c   ****     while (Output_5_Read() == 1 || Output_4_Read() == 1) {
+  53              		.loc 1 18 0 is_stmt 0 discriminator 1
+  54 001c FFF7FEFF 		bl	Output_4_Read
+  55 0020 0346     		mov	r3, r0
+  56 0022 012B     		cmp	r3, #1
+  57 0024 EFD0     		beq	.L3
   21:LEFT_TURN.c   ****     }
-  22:LEFT_TURN.c   ****  
+  22:LEFT_TURN.c   ****     
   23:LEFT_TURN.c   **** 
   24:LEFT_TURN.c   **** }...
-  53              		.loc 1 24 0
-  54 001c 00BF     		nop
-  55 001e 80BD     		pop	{r7, pc}
-  56              		.cfi_endproc
-  57              	.LFE64:
-  58              		.size	TURN_LEFT, .-TURN_LEFT
-  59              		.text
-  60              	.Letext0:
-  61              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
-  62              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
-  63              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
-  64              		.section	.debug_info,"",%progbits
-  65              	.Ldebug_info0:
-  66 0000 C3000000 		.4byte	0xc3
-  67 0004 0400     		.2byte	0x4
-  68 0006 00000000 		.4byte	.Ldebug_abbrev0
-  69 000a 04       		.byte	0x4
-  70 000b 01       		.uleb128 0x1
-  71 000c 6D000000 		.4byte	.LASF16
-  72 0010 0C       		.byte	0xc
-  73 0011 61000000 		.4byte	.LASF17
-  74 0015 43010000 		.4byte	.LASF18
-  75 0019 00000000 		.4byte	.Ldebug_ranges0+0
-  76 001d 00000000 		.4byte	0
-  77 0021 00000000 		.4byte	.Ldebug_line0
-  78 0025 02       		.uleb128 0x2
-  79 0026 01       		.byte	0x1
-  80 0027 06       		.byte	0x6
-  81 0028 37010000 		.4byte	.LASF0
-  82 002c 02       		.uleb128 0x2
-  83 002d 01       		.byte	0x1
-  84 002e 08       		.byte	0x8
-  85 002f FB000000 		.4byte	.LASF1
-  86 0033 02       		.uleb128 0x2
-  87 0034 02       		.byte	0x2
-  88 0035 05       		.byte	0x5
-  89 0036 8E010000 		.4byte	.LASF2
-ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 3
+  58              		.loc 1 24 0 is_stmt 1
+  59 0026 00BF     		nop
+  60 0028 80BD     		pop	{r7, pc}
+  61              		.cfi_endproc
+  62              	.LFE64:
+  63              		.size	TURN_LEFT, .-TURN_LEFT
+  64 002a 00BF     		.text
+  65              	.Letext0:
+  66              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+  67              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+  68              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+  69              		.section	.debug_info,"",%progbits
+  70              	.Ldebug_info0:
+  71 0000 C3000000 		.4byte	0xc3
+  72 0004 0400     		.2byte	0x4
+  73 0006 00000000 		.4byte	.Ldebug_abbrev0
+  74 000a 04       		.byte	0x4
+  75 000b 01       		.uleb128 0x1
+  76 000c 6D000000 		.4byte	.LASF16
+  77 0010 0C       		.byte	0xc
+  78 0011 61000000 		.4byte	.LASF17
+  79 0015 43010000 		.4byte	.LASF18
+  80 0019 00000000 		.4byte	.Ldebug_ranges0+0
+  81 001d 00000000 		.4byte	0
+  82 0021 00000000 		.4byte	.Ldebug_line0
+  83 0025 02       		.uleb128 0x2
+  84 0026 01       		.byte	0x1
+  85 0027 06       		.byte	0x6
+  86 0028 37010000 		.4byte	.LASF0
+  87 002c 02       		.uleb128 0x2
+  88 002d 01       		.byte	0x1
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccOJABQl.s 			page 3
 
 
-  90 003a 02       		.uleb128 0x2
-  91 003b 02       		.byte	0x2
-  92 003c 07       		.byte	0x7
-  93 003d 0E000000 		.4byte	.LASF3
-  94 0041 03       		.uleb128 0x3
-  95 0042 7E010000 		.4byte	.LASF9
-  96 0046 02       		.byte	0x2
-  97 0047 3F       		.byte	0x3f
-  98 0048 4C000000 		.4byte	0x4c
-  99 004c 02       		.uleb128 0x2
- 100 004d 04       		.byte	0x4
- 101 004e 05       		.byte	0x5
- 102 004f 0E010000 		.4byte	.LASF4
- 103 0053 02       		.uleb128 0x2
- 104 0054 04       		.byte	0x4
- 105 0055 07       		.byte	0x7
- 106 0056 38000000 		.4byte	.LASF5
- 107 005a 02       		.uleb128 0x2
- 108 005b 08       		.byte	0x8
- 109 005c 05       		.byte	0x5
- 110 005d 00000000 		.4byte	.LASF6
- 111 0061 02       		.uleb128 0x2
- 112 0062 08       		.byte	0x8
- 113 0063 07       		.byte	0x7
- 114 0064 4A000000 		.4byte	.LASF7
- 115 0068 04       		.uleb128 0x4
- 116 0069 04       		.byte	0x4
- 117 006a 05       		.byte	0x5
- 118 006b 696E7400 		.ascii	"int\000"
- 119 006f 02       		.uleb128 0x2
- 120 0070 04       		.byte	0x4
- 121 0071 07       		.byte	0x7
- 122 0072 2B000000 		.4byte	.LASF8
- 123 0076 03       		.uleb128 0x3
- 124 0077 98010000 		.4byte	.LASF10
- 125 007b 03       		.byte	0x3
- 126 007c 2C       		.byte	0x2c
- 127 007d 41000000 		.4byte	0x41
- 128 0081 02       		.uleb128 0x2
- 129 0082 04       		.byte	0x4
- 130 0083 04       		.byte	0x4
- 131 0084 88010000 		.4byte	.LASF11
- 132 0088 02       		.uleb128 0x2
- 133 0089 08       		.byte	0x8
- 134 008a 04       		.byte	0x4
- 135 008b 17010000 		.4byte	.LASF12
- 136 008f 02       		.uleb128 0x2
- 137 0090 01       		.byte	0x1
- 138 0091 08       		.byte	0x8
- 139 0092 09010000 		.4byte	.LASF13
- 140 0096 02       		.uleb128 0x2
- 141 0097 08       		.byte	0x8
- 142 0098 04       		.byte	0x4
- 143 0099 1E010000 		.4byte	.LASF14
- 144 009d 02       		.uleb128 0x2
- 145 009e 04       		.byte	0x4
- 146 009f 07       		.byte	0x7
-ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 4
+  89 002e 08       		.byte	0x8
+  90 002f FB000000 		.4byte	.LASF1
+  91 0033 02       		.uleb128 0x2
+  92 0034 02       		.byte	0x2
+  93 0035 05       		.byte	0x5
+  94 0036 8E010000 		.4byte	.LASF2
+  95 003a 02       		.uleb128 0x2
+  96 003b 02       		.byte	0x2
+  97 003c 07       		.byte	0x7
+  98 003d 0E000000 		.4byte	.LASF3
+  99 0041 03       		.uleb128 0x3
+ 100 0042 7E010000 		.4byte	.LASF9
+ 101 0046 02       		.byte	0x2
+ 102 0047 3F       		.byte	0x3f
+ 103 0048 4C000000 		.4byte	0x4c
+ 104 004c 02       		.uleb128 0x2
+ 105 004d 04       		.byte	0x4
+ 106 004e 05       		.byte	0x5
+ 107 004f 0E010000 		.4byte	.LASF4
+ 108 0053 02       		.uleb128 0x2
+ 109 0054 04       		.byte	0x4
+ 110 0055 07       		.byte	0x7
+ 111 0056 38000000 		.4byte	.LASF5
+ 112 005a 02       		.uleb128 0x2
+ 113 005b 08       		.byte	0x8
+ 114 005c 05       		.byte	0x5
+ 115 005d 00000000 		.4byte	.LASF6
+ 116 0061 02       		.uleb128 0x2
+ 117 0062 08       		.byte	0x8
+ 118 0063 07       		.byte	0x7
+ 119 0064 4A000000 		.4byte	.LASF7
+ 120 0068 04       		.uleb128 0x4
+ 121 0069 04       		.byte	0x4
+ 122 006a 05       		.byte	0x5
+ 123 006b 696E7400 		.ascii	"int\000"
+ 124 006f 02       		.uleb128 0x2
+ 125 0070 04       		.byte	0x4
+ 126 0071 07       		.byte	0x7
+ 127 0072 2B000000 		.4byte	.LASF8
+ 128 0076 03       		.uleb128 0x3
+ 129 0077 98010000 		.4byte	.LASF10
+ 130 007b 03       		.byte	0x3
+ 131 007c 2C       		.byte	0x2c
+ 132 007d 41000000 		.4byte	0x41
+ 133 0081 02       		.uleb128 0x2
+ 134 0082 04       		.byte	0x4
+ 135 0083 04       		.byte	0x4
+ 136 0084 88010000 		.4byte	.LASF11
+ 137 0088 02       		.uleb128 0x2
+ 138 0089 08       		.byte	0x8
+ 139 008a 04       		.byte	0x4
+ 140 008b 17010000 		.4byte	.LASF12
+ 141 008f 02       		.uleb128 0x2
+ 142 0090 01       		.byte	0x1
+ 143 0091 08       		.byte	0x8
+ 144 0092 09010000 		.4byte	.LASF13
+ 145 0096 02       		.uleb128 0x2
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccOJABQl.s 			page 4
 
 
- 147 00a0 A0010000 		.4byte	.LASF15
- 148 00a4 05       		.uleb128 0x5
- 149 00a5 21000000 		.4byte	.LASF19
- 150 00a9 01       		.byte	0x1
- 151 00aa 10       		.byte	0x10
- 152 00ab 00000000 		.4byte	.LFB64
- 153 00af 20000000 		.4byte	.LFE64-.LFB64
- 154 00b3 01       		.uleb128 0x1
- 155 00b4 9C       		.byte	0x9c
- 156 00b5 06       		.uleb128 0x6
- 157 00b6 2A010000 		.4byte	.LASF20
- 158 00ba 04       		.byte	0x4
- 159 00bb 1207     		.2byte	0x712
- 160 00bd C1000000 		.4byte	0xc1
- 161 00c1 07       		.uleb128 0x7
- 162 00c2 76000000 		.4byte	0x76
- 163 00c6 00       		.byte	0
- 164              		.section	.debug_abbrev,"",%progbits
- 165              	.Ldebug_abbrev0:
- 166 0000 01       		.uleb128 0x1
- 167 0001 11       		.uleb128 0x11
- 168 0002 01       		.byte	0x1
- 169 0003 25       		.uleb128 0x25
- 170 0004 0E       		.uleb128 0xe
- 171 0005 13       		.uleb128 0x13
- 172 0006 0B       		.uleb128 0xb
- 173 0007 03       		.uleb128 0x3
- 174 0008 0E       		.uleb128 0xe
- 175 0009 1B       		.uleb128 0x1b
- 176 000a 0E       		.uleb128 0xe
- 177 000b 55       		.uleb128 0x55
- 178 000c 17       		.uleb128 0x17
- 179 000d 11       		.uleb128 0x11
- 180 000e 01       		.uleb128 0x1
- 181 000f 10       		.uleb128 0x10
- 182 0010 17       		.uleb128 0x17
- 183 0011 00       		.byte	0
- 184 0012 00       		.byte	0
- 185 0013 02       		.uleb128 0x2
- 186 0014 24       		.uleb128 0x24
- 187 0015 00       		.byte	0
- 188 0016 0B       		.uleb128 0xb
- 189 0017 0B       		.uleb128 0xb
- 190 0018 3E       		.uleb128 0x3e
- 191 0019 0B       		.uleb128 0xb
- 192 001a 03       		.uleb128 0x3
- 193 001b 0E       		.uleb128 0xe
- 194 001c 00       		.byte	0
- 195 001d 00       		.byte	0
- 196 001e 03       		.uleb128 0x3
- 197 001f 16       		.uleb128 0x16
- 198 0020 00       		.byte	0
- 199 0021 03       		.uleb128 0x3
- 200 0022 0E       		.uleb128 0xe
- 201 0023 3A       		.uleb128 0x3a
- 202 0024 0B       		.uleb128 0xb
- 203 0025 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 5
+ 146 0097 08       		.byte	0x8
+ 147 0098 04       		.byte	0x4
+ 148 0099 1E010000 		.4byte	.LASF14
+ 149 009d 02       		.uleb128 0x2
+ 150 009e 04       		.byte	0x4
+ 151 009f 07       		.byte	0x7
+ 152 00a0 A0010000 		.4byte	.LASF15
+ 153 00a4 05       		.uleb128 0x5
+ 154 00a5 21000000 		.4byte	.LASF19
+ 155 00a9 01       		.byte	0x1
+ 156 00aa 10       		.byte	0x10
+ 157 00ab 00000000 		.4byte	.LFB64
+ 158 00af 2A000000 		.4byte	.LFE64-.LFB64
+ 159 00b3 01       		.uleb128 0x1
+ 160 00b4 9C       		.byte	0x9c
+ 161 00b5 06       		.uleb128 0x6
+ 162 00b6 2A010000 		.4byte	.LASF20
+ 163 00ba 04       		.byte	0x4
+ 164 00bb 1207     		.2byte	0x712
+ 165 00bd C1000000 		.4byte	0xc1
+ 166 00c1 07       		.uleb128 0x7
+ 167 00c2 76000000 		.4byte	0x76
+ 168 00c6 00       		.byte	0
+ 169              		.section	.debug_abbrev,"",%progbits
+ 170              	.Ldebug_abbrev0:
+ 171 0000 01       		.uleb128 0x1
+ 172 0001 11       		.uleb128 0x11
+ 173 0002 01       		.byte	0x1
+ 174 0003 25       		.uleb128 0x25
+ 175 0004 0E       		.uleb128 0xe
+ 176 0005 13       		.uleb128 0x13
+ 177 0006 0B       		.uleb128 0xb
+ 178 0007 03       		.uleb128 0x3
+ 179 0008 0E       		.uleb128 0xe
+ 180 0009 1B       		.uleb128 0x1b
+ 181 000a 0E       		.uleb128 0xe
+ 182 000b 55       		.uleb128 0x55
+ 183 000c 17       		.uleb128 0x17
+ 184 000d 11       		.uleb128 0x11
+ 185 000e 01       		.uleb128 0x1
+ 186 000f 10       		.uleb128 0x10
+ 187 0010 17       		.uleb128 0x17
+ 188 0011 00       		.byte	0
+ 189 0012 00       		.byte	0
+ 190 0013 02       		.uleb128 0x2
+ 191 0014 24       		.uleb128 0x24
+ 192 0015 00       		.byte	0
+ 193 0016 0B       		.uleb128 0xb
+ 194 0017 0B       		.uleb128 0xb
+ 195 0018 3E       		.uleb128 0x3e
+ 196 0019 0B       		.uleb128 0xb
+ 197 001a 03       		.uleb128 0x3
+ 198 001b 0E       		.uleb128 0xe
+ 199 001c 00       		.byte	0
+ 200 001d 00       		.byte	0
+ 201 001e 03       		.uleb128 0x3
+ 202 001f 16       		.uleb128 0x16
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccOJABQl.s 			page 5
 
 
- 204 0026 0B       		.uleb128 0xb
- 205 0027 49       		.uleb128 0x49
- 206 0028 13       		.uleb128 0x13
- 207 0029 00       		.byte	0
- 208 002a 00       		.byte	0
- 209 002b 04       		.uleb128 0x4
- 210 002c 24       		.uleb128 0x24
- 211 002d 00       		.byte	0
- 212 002e 0B       		.uleb128 0xb
- 213 002f 0B       		.uleb128 0xb
- 214 0030 3E       		.uleb128 0x3e
- 215 0031 0B       		.uleb128 0xb
- 216 0032 03       		.uleb128 0x3
- 217 0033 08       		.uleb128 0x8
- 218 0034 00       		.byte	0
- 219 0035 00       		.byte	0
- 220 0036 05       		.uleb128 0x5
- 221 0037 2E       		.uleb128 0x2e
- 222 0038 00       		.byte	0
- 223 0039 3F       		.uleb128 0x3f
- 224 003a 19       		.uleb128 0x19
- 225 003b 03       		.uleb128 0x3
- 226 003c 0E       		.uleb128 0xe
- 227 003d 3A       		.uleb128 0x3a
- 228 003e 0B       		.uleb128 0xb
- 229 003f 3B       		.uleb128 0x3b
- 230 0040 0B       		.uleb128 0xb
- 231 0041 11       		.uleb128 0x11
- 232 0042 01       		.uleb128 0x1
- 233 0043 12       		.uleb128 0x12
- 234 0044 06       		.uleb128 0x6
- 235 0045 40       		.uleb128 0x40
- 236 0046 18       		.uleb128 0x18
- 237 0047 9642     		.uleb128 0x2116
- 238 0049 19       		.uleb128 0x19
- 239 004a 00       		.byte	0
- 240 004b 00       		.byte	0
- 241 004c 06       		.uleb128 0x6
- 242 004d 34       		.uleb128 0x34
- 243 004e 00       		.byte	0
- 244 004f 03       		.uleb128 0x3
- 245 0050 0E       		.uleb128 0xe
- 246 0051 3A       		.uleb128 0x3a
- 247 0052 0B       		.uleb128 0xb
- 248 0053 3B       		.uleb128 0x3b
- 249 0054 05       		.uleb128 0x5
- 250 0055 49       		.uleb128 0x49
- 251 0056 13       		.uleb128 0x13
- 252 0057 3F       		.uleb128 0x3f
- 253 0058 19       		.uleb128 0x19
- 254 0059 3C       		.uleb128 0x3c
- 255 005a 19       		.uleb128 0x19
- 256 005b 00       		.byte	0
- 257 005c 00       		.byte	0
- 258 005d 07       		.uleb128 0x7
- 259 005e 35       		.uleb128 0x35
- 260 005f 00       		.byte	0
-ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 6
+ 203 0020 00       		.byte	0
+ 204 0021 03       		.uleb128 0x3
+ 205 0022 0E       		.uleb128 0xe
+ 206 0023 3A       		.uleb128 0x3a
+ 207 0024 0B       		.uleb128 0xb
+ 208 0025 3B       		.uleb128 0x3b
+ 209 0026 0B       		.uleb128 0xb
+ 210 0027 49       		.uleb128 0x49
+ 211 0028 13       		.uleb128 0x13
+ 212 0029 00       		.byte	0
+ 213 002a 00       		.byte	0
+ 214 002b 04       		.uleb128 0x4
+ 215 002c 24       		.uleb128 0x24
+ 216 002d 00       		.byte	0
+ 217 002e 0B       		.uleb128 0xb
+ 218 002f 0B       		.uleb128 0xb
+ 219 0030 3E       		.uleb128 0x3e
+ 220 0031 0B       		.uleb128 0xb
+ 221 0032 03       		.uleb128 0x3
+ 222 0033 08       		.uleb128 0x8
+ 223 0034 00       		.byte	0
+ 224 0035 00       		.byte	0
+ 225 0036 05       		.uleb128 0x5
+ 226 0037 2E       		.uleb128 0x2e
+ 227 0038 00       		.byte	0
+ 228 0039 3F       		.uleb128 0x3f
+ 229 003a 19       		.uleb128 0x19
+ 230 003b 03       		.uleb128 0x3
+ 231 003c 0E       		.uleb128 0xe
+ 232 003d 3A       		.uleb128 0x3a
+ 233 003e 0B       		.uleb128 0xb
+ 234 003f 3B       		.uleb128 0x3b
+ 235 0040 0B       		.uleb128 0xb
+ 236 0041 11       		.uleb128 0x11
+ 237 0042 01       		.uleb128 0x1
+ 238 0043 12       		.uleb128 0x12
+ 239 0044 06       		.uleb128 0x6
+ 240 0045 40       		.uleb128 0x40
+ 241 0046 18       		.uleb128 0x18
+ 242 0047 9642     		.uleb128 0x2116
+ 243 0049 19       		.uleb128 0x19
+ 244 004a 00       		.byte	0
+ 245 004b 00       		.byte	0
+ 246 004c 06       		.uleb128 0x6
+ 247 004d 34       		.uleb128 0x34
+ 248 004e 00       		.byte	0
+ 249 004f 03       		.uleb128 0x3
+ 250 0050 0E       		.uleb128 0xe
+ 251 0051 3A       		.uleb128 0x3a
+ 252 0052 0B       		.uleb128 0xb
+ 253 0053 3B       		.uleb128 0x3b
+ 254 0054 05       		.uleb128 0x5
+ 255 0055 49       		.uleb128 0x49
+ 256 0056 13       		.uleb128 0x13
+ 257 0057 3F       		.uleb128 0x3f
+ 258 0058 19       		.uleb128 0x19
+ 259 0059 3C       		.uleb128 0x3c
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccOJABQl.s 			page 6
 
 
- 261 0060 49       		.uleb128 0x49
- 262 0061 13       		.uleb128 0x13
- 263 0062 00       		.byte	0
- 264 0063 00       		.byte	0
- 265 0064 00       		.byte	0
- 266              		.section	.debug_aranges,"",%progbits
- 267 0000 1C000000 		.4byte	0x1c
- 268 0004 0200     		.2byte	0x2
- 269 0006 00000000 		.4byte	.Ldebug_info0
- 270 000a 04       		.byte	0x4
- 271 000b 00       		.byte	0
- 272 000c 0000     		.2byte	0
- 273 000e 0000     		.2byte	0
- 274 0010 00000000 		.4byte	.LFB64
- 275 0014 20000000 		.4byte	.LFE64-.LFB64
- 276 0018 00000000 		.4byte	0
- 277 001c 00000000 		.4byte	0
- 278              		.section	.debug_ranges,"",%progbits
- 279              	.Ldebug_ranges0:
- 280 0000 00000000 		.4byte	.LFB64
- 281 0004 20000000 		.4byte	.LFE64
- 282 0008 00000000 		.4byte	0
- 283 000c 00000000 		.4byte	0
- 284              		.section	.debug_line,"",%progbits
- 285              	.Ldebug_line0:
- 286 0000 5E010000 		.section	.debug_str,"MS",%progbits,1
- 286      02004401 
- 286      00000201 
- 286      FB0E0D00 
- 286      01010101 
- 287              	.LASF6:
- 288 0000 6C6F6E67 		.ascii	"long long int\000"
- 288      206C6F6E 
- 288      6720696E 
- 288      7400
- 289              	.LASF3:
- 290 000e 73686F72 		.ascii	"short unsigned int\000"
- 290      7420756E 
- 290      7369676E 
- 290      65642069 
- 290      6E7400
- 291              	.LASF19:
- 292 0021 5455524E 		.ascii	"TURN_LEFT\000"
- 292      5F4C4546 
- 292      5400
- 293              	.LASF8:
- 294 002b 756E7369 		.ascii	"unsigned int\000"
- 294      676E6564 
- 294      20696E74 
- 294      00
- 295              	.LASF5:
- 296 0038 6C6F6E67 		.ascii	"long unsigned int\000"
- 296      20756E73 
- 296      69676E65 
- 296      6420696E 
- 296      7400
- 297              	.LASF7:
-ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 7
+ 260 005a 19       		.uleb128 0x19
+ 261 005b 00       		.byte	0
+ 262 005c 00       		.byte	0
+ 263 005d 07       		.uleb128 0x7
+ 264 005e 35       		.uleb128 0x35
+ 265 005f 00       		.byte	0
+ 266 0060 49       		.uleb128 0x49
+ 267 0061 13       		.uleb128 0x13
+ 268 0062 00       		.byte	0
+ 269 0063 00       		.byte	0
+ 270 0064 00       		.byte	0
+ 271              		.section	.debug_aranges,"",%progbits
+ 272 0000 1C000000 		.4byte	0x1c
+ 273 0004 0200     		.2byte	0x2
+ 274 0006 00000000 		.4byte	.Ldebug_info0
+ 275 000a 04       		.byte	0x4
+ 276 000b 00       		.byte	0
+ 277 000c 0000     		.2byte	0
+ 278 000e 0000     		.2byte	0
+ 279 0010 00000000 		.4byte	.LFB64
+ 280 0014 2A000000 		.4byte	.LFE64-.LFB64
+ 281 0018 00000000 		.4byte	0
+ 282 001c 00000000 		.4byte	0
+ 283              		.section	.debug_ranges,"",%progbits
+ 284              	.Ldebug_ranges0:
+ 285 0000 00000000 		.4byte	.LFB64
+ 286 0004 2A000000 		.4byte	.LFE64
+ 287 0008 00000000 		.4byte	0
+ 288 000c 00000000 		.4byte	0
+ 289              		.section	.debug_line,"",%progbits
+ 290              	.Ldebug_line0:
+ 291 0000 65010000 		.section	.debug_str,"MS",%progbits,1
+ 291      02004401 
+ 291      00000201 
+ 291      FB0E0D00 
+ 291      01010101 
+ 292              	.LASF6:
+ 293 0000 6C6F6E67 		.ascii	"long long int\000"
+ 293      206C6F6E 
+ 293      6720696E 
+ 293      7400
+ 294              	.LASF3:
+ 295 000e 73686F72 		.ascii	"short unsigned int\000"
+ 295      7420756E 
+ 295      7369676E 
+ 295      65642069 
+ 295      6E7400
+ 296              	.LASF19:
+ 297 0021 5455524E 		.ascii	"TURN_LEFT\000"
+ 297      5F4C4546 
+ 297      5400
+ 298              	.LASF8:
+ 299 002b 756E7369 		.ascii	"unsigned int\000"
+ 299      676E6564 
+ 299      20696E74 
+ 299      00
+ 300              	.LASF5:
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccOJABQl.s 			page 7
 
 
- 298 004a 6C6F6E67 		.ascii	"long long unsigned int\000"
- 298      206C6F6E 
- 298      6720756E 
- 298      7369676E 
- 298      65642069 
- 299              	.LASF17:
- 300 0061 4C454654 		.ascii	"LEFT_TURN.c\000"
- 300      5F545552 
- 300      4E2E6300 
- 301              	.LASF16:
- 302 006d 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 302      43313120 
- 302      352E342E 
- 302      31203230 
- 302      31363036 
- 303 00a0 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 303      20726576 
- 303      6973696F 
- 303      6E203233 
- 303      37373135 
- 304 00d3 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
- 304      66756E63 
- 304      74696F6E 
- 304      2D736563 
- 304      74696F6E 
- 305              	.LASF1:
- 306 00fb 756E7369 		.ascii	"unsigned char\000"
- 306      676E6564 
- 306      20636861 
- 306      7200
- 307              	.LASF13:
- 308 0109 63686172 		.ascii	"char\000"
- 308      00
- 309              	.LASF4:
- 310 010e 6C6F6E67 		.ascii	"long int\000"
- 310      20696E74 
- 310      00
- 311              	.LASF12:
- 312 0117 646F7562 		.ascii	"double\000"
- 312      6C6500
- 313              	.LASF14:
- 314 011e 6C6F6E67 		.ascii	"long double\000"
- 314      20646F75 
- 314      626C6500 
- 315              	.LASF20:
- 316 012a 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 316      52784275 
- 316      66666572 
- 316      00
- 317              	.LASF0:
- 318 0137 7369676E 		.ascii	"signed char\000"
- 318      65642063 
- 318      68617200 
- 319              	.LASF18:
- 320 0143 433A5C55 		.ascii	"C:\\Users\\Calvi\\Desktop\\301\\psoc firmware\\CS30"
- 320      73657273 
- 320      5C43616C 
-ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccrxcreo.s 			page 8
+ 301 0038 6C6F6E67 		.ascii	"long unsigned int\000"
+ 301      20756E73 
+ 301      69676E65 
+ 301      6420696E 
+ 301      7400
+ 302              	.LASF7:
+ 303 004a 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 303      206C6F6E 
+ 303      6720756E 
+ 303      7369676E 
+ 303      65642069 
+ 304              	.LASF17:
+ 305 0061 4C454654 		.ascii	"LEFT_TURN.c\000"
+ 305      5F545552 
+ 305      4E2E6300 
+ 306              	.LASF16:
+ 307 006d 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 307      43313120 
+ 307      352E342E 
+ 307      31203230 
+ 307      31363036 
+ 308 00a0 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 308      20726576 
+ 308      6973696F 
+ 308      6E203233 
+ 308      37373135 
+ 309 00d3 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 309      66756E63 
+ 309      74696F6E 
+ 309      2D736563 
+ 309      74696F6E 
+ 310              	.LASF1:
+ 311 00fb 756E7369 		.ascii	"unsigned char\000"
+ 311      676E6564 
+ 311      20636861 
+ 311      7200
+ 312              	.LASF13:
+ 313 0109 63686172 		.ascii	"char\000"
+ 313      00
+ 314              	.LASF4:
+ 315 010e 6C6F6E67 		.ascii	"long int\000"
+ 315      20696E74 
+ 315      00
+ 316              	.LASF12:
+ 317 0117 646F7562 		.ascii	"double\000"
+ 317      6C6500
+ 318              	.LASF14:
+ 319 011e 6C6F6E67 		.ascii	"long double\000"
+ 319      20646F75 
+ 319      626C6500 
+ 320              	.LASF20:
+ 321 012a 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 321      52784275 
+ 321      66666572 
+ 321      00
+ 322              	.LASF0:
+ 323 0137 7369676E 		.ascii	"signed char\000"
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccOJABQl.s 			page 8
 
 
- 320      76695C44 
- 320      65736B74 
- 321 0170 315F436C 		.ascii	"1_Class.cydsn\000"
- 321      6173732E 
- 321      63796473 
- 321      6E00
- 322              	.LASF9:
- 323 017e 5F5F696E 		.ascii	"__int32_t\000"
- 323      7433325F 
- 323      7400
- 324              	.LASF11:
- 325 0188 666C6F61 		.ascii	"float\000"
- 325      7400
- 326              	.LASF2:
- 327 018e 73686F72 		.ascii	"short int\000"
- 327      7420696E 
- 327      7400
- 328              	.LASF10:
- 329 0198 696E7433 		.ascii	"int32_t\000"
- 329      325F7400 
- 330              	.LASF15:
- 331 01a0 73697A65 		.ascii	"sizetype\000"
- 331      74797065 
- 331      00
- 332              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 323      65642063 
+ 323      68617200 
+ 324              	.LASF18:
+ 325 0143 433A5C55 		.ascii	"C:\\Users\\Calvi\\Desktop\\301\\psoc firmware\\CS30"
+ 325      73657273 
+ 325      5C43616C 
+ 325      76695C44 
+ 325      65736B74 
+ 326 0170 315F436C 		.ascii	"1_Class.cydsn\000"
+ 326      6173732E 
+ 326      63796473 
+ 326      6E00
+ 327              	.LASF9:
+ 328 017e 5F5F696E 		.ascii	"__int32_t\000"
+ 328      7433325F 
+ 328      7400
+ 329              	.LASF11:
+ 330 0188 666C6F61 		.ascii	"float\000"
+ 330      7400
+ 331              	.LASF2:
+ 332 018e 73686F72 		.ascii	"short int\000"
+ 332      7420696E 
+ 332      7400
+ 333              	.LASF10:
+ 334 0198 696E7433 		.ascii	"int32_t\000"
+ 334      325F7400 
+ 335              	.LASF15:
+ 336 01a0 73697A65 		.ascii	"sizetype\000"
+ 336      74797065 
+ 336      00
+ 337              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

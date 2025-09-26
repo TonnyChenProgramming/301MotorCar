@@ -18,7 +18,6 @@
 void DRIFT_LEFT()
 {
     PWM_1_WriteCompare(145);
-    CyDelay(260);
     PWM_1_WriteCompare(12);
 
 }
