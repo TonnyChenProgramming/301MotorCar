@@ -15,6 +15,8 @@
 #include "SENSORS_READ.h"
 
 uint8 sensorValues;
+MovementState previous_movement;
+MovementState current_movement;
 struct MyStructure {   // Structure declaration
     uint8_t output1;
     uint8_t output2;
@@ -47,37 +49,45 @@ uint8 ReadSensors(void) {
 // Use pattern to decide how the robot should move
 MovementState GetMovement(void) {
     uint8 sensors = ReadSensors();
-    
     switch(sensors) {
         //case 0b000001: return STRAIGHT;
-        case 0b001010: return STRAIGHT;
-        case 0b011110: return STRAIGHT;
-        case 0b101011: return STRAIGHT;
+        case 0b001010: current_movement= STRAIGHT;
+        case 0b011110: current_movement= STRAIGHT;
+        case 0b101011: current_movement= STRAIGHT;
         
         //find path
         //case 0b111111: return STRAIGHT;
         
-        case 0b001000: return LEFT_TURN;
-        case 0b011100: return LEFT_TURN;
-        case 0b101001: return LEFT_TURN;
+        case 0b001000: current_movement= LEFT_TURN;
+        case 0b011100: current_movement= LEFT_TURN;
+        case 0b101001: current_movement= LEFT_TURN;
         
-        case 0b000010: return RIGHT_TURN;
-        case 0b010110: return RIGHT_TURN;
-        case 0b100011: return RIGHT_TURN;
+        case 0b000010: current_movement= RIGHT_TURN;
+        case 0b010110: current_movement= RIGHT_TURN;
+        case 0b100011: current_movement= RIGHT_TURN;
         
-        case 0b111100: return DRIFTED_RIGHT;
-        case 0b101010: return DRIFTED_RIGHT;
-        case 0b111010: return DRIFTED_RIGHT;
-        case 0b111011: return DRIFTED_RIGHT;
+        case 0b111100: current_movement= DRIFTED_RIGHT;
+        case 0b101010: current_movement= DRIFTED_RIGHT;
+        case 0b111010: current_movement= DRIFTED_RIGHT;
+        case 0b111011: current_movement= DRIFTED_RIGHT;
         
-        case 0b001111: return DRIFTED_LEFT;
-        case 0b101111: return DRIFTED_LEFT;
-        case 0b001011: return DRIFTED_LEFT;
+        case 0b001111: current_movement= DRIFTED_LEFT;
+        case 0b101111: current_movement= DRIFTED_LEFT;
+        case 0b001011: current_movement= DRIFTED_LEFT;
         
-        case 0b111111: return KEEP_RUNNING;
+        //case 0b111111: return KEEP_RUNNING;
         
-        case 0b000000: return STOP;
-        default:       return STOP;
+        case 0b000000: current_movement= STOP;
+        default:       current_movement= STOP;
     }
+    
+    // during turning, do nothing
+    if ((previous_movement == LEFT_TURN || previous_movement == RIGHT_TURN) && current_movement != STRAIGHT)
+    {
+        return WAIT;
+    }
+    
+    previous_movement = current_movement;
+    return current_movement;
 }
         

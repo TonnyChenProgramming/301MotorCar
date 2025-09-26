@@ -20,16 +20,22 @@
 
 uint8_t last_memeory = 0;
 /* [] END OF FILE */
-void move2(MovementState movement)
+void move(MovementState movement)
 {
 
-    if (movement == STRAIGHT)
+    if (movement == LEFT_TURN)
     {
-        MOVE_STRAIGHT();
+        TURN_LEFT();
+        last_memeory = 0;
+    }
+    else if (movement == RIGHT_TURN)
+    {
+        TURN_RIGHT();
+        last_memeory = 0;
     }
     
 }
-void move(MovementState movement)
+void move2(MovementState movement)
 {
     if(movement == STOP)
     {

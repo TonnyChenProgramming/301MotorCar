@@ -119,6 +119,8 @@ int main(void)
       //if (Output_3_Read() == 0) {TURN_RIGHT();}
       MovementState movement = GetMovement();
       move(movement);
+    if (movement == KEEP_RUNNING)
+    {
       if (edges.front_left_edge)
     {
         edges.front_left_edge = 0;
@@ -140,6 +142,8 @@ int main(void)
         edges.mid_right_edge = 0;
         edge_mid_right_manoeuvre();        
     }
+    }
+
     /*
         if (flag_ts_display) {
             flag_ts_display = 0;
