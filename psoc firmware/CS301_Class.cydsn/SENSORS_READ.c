@@ -50,7 +50,7 @@ uint8 ReadSensors(void) {
 MovementState GetMovement(void) {
     uint8 sensors = ReadSensors();
     switch(sensors) {
-            case 0b001010: current_movement = STRAIGHT; break;
+    case 0b001010: current_movement = STRAIGHT; break;
     case 0b011110: current_movement = STRAIGHT; break;
     case 0b101011: current_movement = STRAIGHT; break;
     case 0b111111: current_movement = STRAIGHT; break;  

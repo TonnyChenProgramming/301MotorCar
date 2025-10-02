@@ -21,7 +21,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "main.h"
 #include "defines.h"     
 #include "vars.h"
 #include "isr_1.h"
@@ -33,23 +32,22 @@
 #include "SENSORS_READ.h"
 #include "STOP.h"
 #include "MOVEMENT.h"
-#include "manoeuvre.h"
 
-#define ENCODER_CPR 500
-#define QUAD_MULT 4        
-#define COUNTS_PER_REV (ENCODER_CPR * QUAD_MULT)
+#define ENCODER_CPR 3
+#define QUAD_MULT 4    
+#define GEAR_RATIO 19
+#define CPR_WHEEL  (ENCODER_CPR * QUAD_MULT * GEAR_RATIO)
+#define WHEEL_DIAMETER_M  0.065f
+#define WHEEL_CIRC_M (3.14159265358979323846f * WHEEL_DIAMETER_M)
 
 #define TIMER_BASE_HZ 10000UL
 
-static volatile int32_t enc_last = 0;      
-static volatile int32_t enc_pos  = 0;      
-static volatile float   spd_cps  = 0.0f;   
-static volatile float   spd_rps  = 0.0f;   
-static volatile float   spd_rpm  = 0.0f;   
+static volatile int32_t enc1_last = 0, enc2_last = 0;
+static volatile int32_t enc1_pos  = 0, enc2_pos  = 0;
+static volatile float   spd1_cps  = 0.0f, spd2_cps = 0.0f; 
+static volatile float   spd1_mps = 0.0f, spd2_mps = 0.0f;
 
 static volatile uint8_t flag_print = 0;
-
-edge_pack_t edges = {0,0,0,0, 0, 0};
 
 // static void print_telemetry(void);
 void usbPutString(char *s);
@@ -67,19 +65,25 @@ CY_ISR(Timer_TS_ISR_Handler)
     if (flag_ts_speed) {
         flag_ts_speed = 0;
 
-        int32_t now   = QuadDec_M1_GetCounter();
-        int32_t delta = now - enc_last;
-        enc_last      = now;
-        enc_pos       = now;
+        // --- Left wheel ---
+        int32_t now1   = QuadDec_M1_GetCounter();
+        int32_t delta1 = now1 - enc1_last;
+        enc1_last      = now1;
+        enc1_pos       = now1;
+
+        // --- Right wheel ---
+        int32_t now2   = QuadDec_M2_GetCounter();
+        int32_t delta2 = now2 - enc2_last;
+        enc2_last      = now2;
+        enc2_pos       = now2;
 
         // counts/sec over Δt = DECIMATE_TS_SPEED / TIMER_BASE_HZ
-        // cps = delta * TIMER_BASE_HZ / DECIMATE_TS_SPEED
-        float cps = (float)delta * ((float)TIMER_BASE_HZ / (float)DECIMATE_TS_SPEED);
-        spd_cps = cps;
-
-        float rev_per_sec = spd_cps / (float)(/* CPR × 4 */ 3 * 4 * 19); // = 228 if PDF motor (3 CPR, 19:1, x4)
-        spd_rps = rev_per_sec * 2.0f * 3.14159265358979323846f;
-        spd_rpm = rev_per_sec * 60.0f;
+        const float cps_scale = (float)TIMER_BASE_HZ / (float)DECIMATE_TS_SPEED;
+        spd1_cps = (float)delta1 * cps_scale;
+        spd2_cps = (float)delta2 * cps_scale;
+        float revps1 = spd1_cps / (float)CPR_WHEEL, revps2 = spd2_cps / (float)CPR_WHEEL;
+        spd1_mps = revps1 * WHEEL_CIRC_M;
+        spd2_mps = revps2 * WHEEL_CIRC_M;
     }
 
 #ifdef Timer_TS_ClearInterrupt
@@ -96,10 +100,14 @@ int main(void)
     CyGlobalIntEnable;
     PWM_1_Start();
     PWM_2_Start();
+ 
     
     QuadDec_M1_Start();
+    QuadDec_M2_Start();
     QuadDec_M1_SetCounter(0);
-    enc_last = QuadDec_M1_GetCounter();
+    QuadDec_M2_SetCounter(0);
+    enc1_last = QuadDec_M1_GetCounter();
+    enc2_last = QuadDec_M2_GetCounter();
 
 #ifdef USE_USB
     USBUART_Start(0, USBUART_5V_OPERATION);
@@ -107,71 +115,47 @@ int main(void)
 
     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
     Timer_TS_Start();                      // then start
-    //MOVE_STRAIGHT();
-    // enable isr for edge detection
-    front_left_Start();
-    front_right_Start();
-    mid_left_Start();
-    mid_right_Start();
+const int32_t target_pos = 1241;  // set your desired count
     for(;;) {
       //MOVE_STRAIGHT();
       //if (Output_6_Read() == 0){ TURN_LEFT();}
       //if (Output_3_Read() == 0) {TURN_RIGHT();}
-      MovementState movement = GetMovement();
-      move(movement);
-    if (movement)
-    {
-      if (edges.front_left_edge)
-    {
-        edges.front_left_edge = 0;
-        edge_front_left_manoeuvre();
+      //move(GetMovement());
         
-    } 
-    else if (edges.front_right_edge)
-    {
-        edges.front_right_edge = 0;
-        edge_front_right_manoeuvre();
-    } 
-    else if (edges.mid_left_edge)
-    {
-        edges.mid_left_edge = 0;
-        edge_mid_left_manoeuvre();        
-    } 
-    else if (edges.mid_right_edge)
-    {
-        edges.mid_right_edge = 0;
-        edge_mid_right_manoeuvre();        
-    }
-    
-   }
 
-    /*
+        if (abs(QuadDec_M2_GetCounter()) >= target_pos) {
+            while(1){
+            PWM_1_WriteCompare(127);
+            PWM_2_WriteCompare(127);}
+            enc2_pos = 0;
+        }
+        else {
+            PWM_1_WriteCompare(204);
+            PWM_2_WriteCompare(209);
+        }
         if (flag_ts_display) {
             flag_ts_display = 0;
-
-            // if float printf isn’t enabled, convert to fixed point (see note below)
-            char buf[64];
             
+            char buf[120];
             snprintf(buf, sizeof(buf),
-                     "pos:%ld cps:%.0f rpm:%.1f rps:%.2f\r\n",
-                     (long)enc_pos, (double)spd_cps, (double)spd_rpm, (double)spd_rps);
+                     "Lpos:%ld Rpos:%ld  Lcps:%.0f Rcps:%.0f  L:%.3f m/s R:%.3f m/s\r\n",
+                     (long)enc1_pos, (long)enc2_pos,
+                     (double)spd1_cps, (double)spd2_cps,
+                     (double)spd1_mps, (double)spd2_mps);
             usbPutString(buf);
             
-    */
-
           }
     
-/*
-          MovementState move = GetMovement();
-          switch(move) {
-            case STRAIGHT:          MOVE_STRAIGHT();    break;
-            case LEFT_TURN:         TURN_LEFT();        break;
-            case RIGHT_TURN:        TURN_RIGHT();       break;
-            case DRIFTED_LEFT:      DRIFT_RIGHT();      break;
-            case DRIFTED_RIGHT:     DRIFT_LEFT();       break;
-            case STOP:              STOP_MOVING();      break;
-        }
-*/       
+
+         // MovementState move = GetMovement();
+        //  switch(move) {
+        //    case STRAIGHT:          MOVE_STRAIGHT();    break;
+        //    case LEFT_TURN:         TURN_LEFT();        break;
+          //  case RIGHT_TURN:        TURN_RIGHT();       break;
+           // case DRIFTED_LEFT:      DRIFT_RIGHT();      break;
+            //case DRIFTED_RIGHT:     DRIFT_LEFT();       break;
+            //case STOP:              STOP_MOVING();      break;
+        
         
         handle_usb();
         if (flag_KB_string) { usbPutString(line); flag_KB_string = 0; }
@@ -192,18 +176,18 @@ int main(void)
     usbPutString(buf);
 }
 */
-//}
+}
 void usbPutString(char *s)
 {
 #ifdef USE_USB
-    while (USBUART_CDCIsReady() == 0) {}
-    s[63] = '\0';
-    s[62] = '!';              
-    USBUART_PutData((uint8*)s, (uint16)strlen(s));
+    if (USBUART_CDCIsReady()) {
+        USBUART_PutData((uint8*)s, (uint16)strlen(s));
+    }
 #else
     (void)s;
 #endif
 }
+
 
 void usbPutChar(char c)
 {

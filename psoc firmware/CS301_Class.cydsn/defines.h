@@ -17,10 +17,16 @@
 #define TRUE 1
 #define UNKNOWN 10
 //* ========================================
+//#define TS 100 // sample time = 100kHz * TS
+//#define DECIMATE_TS_ENC     1000    // decimation factor for quad decoder
+//#define DECIMATE_TS_UPDATE  2000    // decimation factor for update action
+//#define DECIMATE_TS_SPEED   100
+//#define DECIMATE_TS_DISPLAY 1000
+
 #define TS 100 // sample time = 100kHz * TS
 #define DECIMATE_TS_ENC     1000    // decimation factor for quad decoder
-#define DECIMATE_TS_UPDATE  2000    // decimation factor for update action
-#define DECIMATE_TS_SPEED   100
+#define DECIMATE_TS_UPDATE  200    // decimation factor for update action
+#define DECIMATE_TS_SPEED   500
 #define DECIMATE_TS_DISPLAY 1000
 //* ========================================
 // General Debug
