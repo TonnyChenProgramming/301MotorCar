@@ -50,6 +50,8 @@ static volatile float   spd_rpm  = 0.0f;
 static volatile uint8_t flag_print = 0;
 static volatile int16 left_wheel_val;
 static volatile int16 right_wheel_val;
+uint8_t left_pwm = 176;
+uint8_t right_pwm = 176;
 uint8_t timer_flag = 0;
 edge_pack_t edges = {0,0,0,0, 0, 0};
 
@@ -62,36 +64,7 @@ void handle_usb();
 CY_ISR(Timer_TS_ISR_Handler)
 {
     timer_flag = 1;
-    right_wheel_val = QuadDec_M1_GetCounter();  // right wheel
-    left_wheel_val = QuadDec_M2_GetCounter(); // left wheel
-    // tick bookkeeping
-    //if (++ts_speed   >= DECIMATE_TS_SPEED)   { ts_speed = 0;   flag_ts_speed = 1;   }
-    //if (++ts_display >= DECIMATE_TS_DISPLAY) { ts_display = 0; flag_ts_display = 1; }
 
-    // Do speed math only when due
-    if (flag_ts_speed) {
-        flag_ts_speed = 0;
-
-        int32_t now   = QuadDec_M1_GetCounter();
-        int32_t delta = now - enc_last;
-        enc_last      = now;
-        enc_pos       = now;
-
-        // counts/sec over Δt = DECIMATE_TS_SPEED / TIMER_BASE_HZ
-        // cps = delta * TIMER_BASE_HZ / DECIMATE_TS_SPEED
-        float cps = (float)delta * ((float)TIMER_BASE_HZ / (float)DECIMATE_TS_SPEED);
-        spd_cps = cps;
-
-        float rev_per_sec = spd_cps / (float)(/* CPR × 4 */ 3 * 4 * 19); // = 228 if PDF motor (3 CPR, 19:1, x4)
-        spd_rps = rev_per_sec * 2.0f * 3.14159265358979323846f;
-        spd_rpm = rev_per_sec * 60.0f;
-    }
-
-#ifdef Timer_TS_ClearInterrupt
-    Timer_TS_ClearInterrupt(Timer_TS_INTR_MASK_TC);
-#else
-    (void)Timer_TS_ReadStatusRegister();
-#endif
 }
 
 
@@ -125,13 +98,35 @@ int main(void)
     QuadDec_M2_SetCounter(0);
     //left_wheel_val = QuadDec_M1_GetCounter();
     //right_wheel_val = QuadDec_M2_GetCounter();
-    MOVE_STRAIGHT();
+    //MOVE_STRAIGHT();
+    PWM_1_WriteCompare(left_pwm);
+    PWM_2_WriteCompare(right_pwm);
+//    while(1);
     for(;;) {
-      //MOVE_STRAIGHT();
-      //if (Output_6_Read() == 0){ TURN_LEFT();}
-      //if (Output_3_Read() == 0) {TURN_RIGHT();}
- 
-
+    if (timer_flag)
+    {
+    left_wheel_val  = QuadDec_M1_GetCounter();  // left wheel postive
+    right_wheel_val = QuadDec_M2_GetCounter(); // right wheel negative
+    // tick bookkeeping
+    //if (++ts_speed   >= DECIMATE_TS_SPEED)   { ts_speed = 0;   flag_ts_speed = 1;   }
+    //if (++ts_display >= DECIMATE_TS_DISPLAY) { ts_display = 0; flag_ts_display = 1; }
+    
+        if (left_wheel_val > (0-right_wheel_val))
+        {
+            left_pwm -=1;
+            right_pwm +=1;
+        } else if (left_wheel_val < (0-right_wheel_val))
+        {
+            left_pwm +=1;
+            right_pwm -=1;
+        }
+        QuadDec_M1_SetCounter(0);
+        QuadDec_M2_SetCounter(0); 
+        
+        PWM_1_WriteCompare(left_pwm);
+        PWM_2_WriteCompare(right_pwm);
+    }
+    
       
       //MovementState movement = GetMovement();
     /*
@@ -160,6 +155,7 @@ int main(void)
         edge_mid_right_manoeuvre();        
     }
     */
+    /*
     if (timer_flag)
     {
         timer_flag = 0;
@@ -168,10 +164,10 @@ int main(void)
                      "Lpos:%ld Rpos:%ld \r\n",
                      (long)left_wheel_val, (long)right_wheel_val);
         usbPutString(buf);
-        QuadDec_M1_SetCounter(0);
-        QuadDec_M2_SetCounter(0); 
+        //QuadDec_M1_SetCounter(0);
+        //QuadDec_M2_SetCounter(0); 
     }
-
+    */
     
     /*
         if (flag_ts_display) {
