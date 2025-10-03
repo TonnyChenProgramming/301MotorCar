@@ -53,11 +53,13 @@ uint8 ReadSensors(void) {
 // Use pattern to decide how the robot should move
 MovementState GetMovement(void) {
     uint8 sensors = ReadSensors();
+    current_movement = STRAIGHT;
     switch(sensors) {
     case 0b001010: current_movement = STRAIGHT; break;
     case 0b011110: current_movement = STRAIGHT; break;
     case 0b101011: current_movement = STRAIGHT; break; 
-    
+    case 0b111010: current_movement = STRAIGHT; break; 
+    case 0b001111: current_movement = STRAIGHT; break; 
     //case 0b101010: current_movement = STRAIGHT; break;
     //case 0b001011: current_movement = STRAIGHT; break;
 
@@ -71,10 +73,9 @@ MovementState GetMovement(void) {
 
     case 0b111100: current_movement = STRAIGHT; break;
     case 0b101010: current_movement = STRAIGHT; break;
-    case 0b111010: current_movement = STRAIGHT; break;
+ 
     case 0b111011: current_movement = STRAIGHT; break;
 
-    case 0b001111: current_movement = STRAIGHT; break;
     case 0b101111: current_movement = STRAIGHT; break;
     case 0b001011: current_movement = STRAIGHT; break;
 /*       
@@ -90,7 +91,6 @@ MovementState GetMovement(void) {
     case 0b000000: current_movement = STOP; break;
     case 0b111111: current_movement = STOP; break;
         
-    default: current_movement = STOP; break;
     }
     
     // during turning, do nothing
