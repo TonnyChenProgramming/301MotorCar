@@ -70,7 +70,7 @@ static float prev_error = 0;
 
 uint8_t timer_flag = 0;
 edge_pack_t edges = {0,0,0,0, 0, 0};
-
+MovementFiniteState movement_finite_state = STOP_STATE;
 MovementState current_move;
 
 // static void print_telemetry(void);
@@ -119,10 +119,25 @@ int main(void)
     // enable isr for edge detection
 
 for(;;) {
+    //update finite state machine
     current_move = GetMovement();
-    move_handling();
-    if(current_move == STRAIGHT && timer_flag )
+    if (current_move == STRAIGHT)
     {
+       movement_finite_state = STRAIGHT_STATE;
+    } else if(current_move == STOP){
+       movement_finite_state = STOP_STATE;
+    }
+      
+    //process finite state machine
+    switch (movement_finite_state) {
+    case STOP_STATE:
+        // code block
+        PWM_1_WriteCompare(127);
+        PWM_2_WriteCompare(127);
+        break;
+    case STRAIGHT_STATE:
+        if(timer_flag )
+        {
 
         int error = QuadDec_M1_GetCounter() + QuadDec_M2_GetCounter();
 
@@ -153,7 +168,18 @@ for(;;) {
 
         prev_error = error;
         timer_flag = 0;       
-    }
+        }
+        // code block
+        break;
+    case LEFT_TURN_STATE:
+        break;
+    case RIGHT_TURN_STATE:
+        break;
+
+    // code block
+}
+    
+
 }
 
 }

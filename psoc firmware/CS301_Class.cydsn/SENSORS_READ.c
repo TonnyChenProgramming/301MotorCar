@@ -54,10 +54,9 @@ uint8 ReadSensors(void) {
 MovementState GetMovement(void) {
     uint8 sensors = ReadSensors();
     switch(sensors) {
-            case 0b001010: current_movement = STRAIGHT; break;
+    case 0b001010: current_movement = STRAIGHT; break;
     case 0b011110: current_movement = STRAIGHT; break;
-    case 0b101011: current_movement = STRAIGHT; break;
-    case 0b111111: current_movement = STRAIGHT; break;  
+    case 0b101011: current_movement = STRAIGHT; break; 
     
     //case 0b101010: current_movement = STRAIGHT; break;
     //case 0b001011: current_movement = STRAIGHT; break;
@@ -70,6 +69,15 @@ MovementState GetMovement(void) {
     case 0b010110: current_movement = RIGHT_TURN; break;
     case 0b100011: current_movement = RIGHT_TURN; break;
 
+    case 0b111100: current_movement = STRAIGHT; break;
+    case 0b101010: current_movement = STRAIGHT; break;
+    case 0b111010: current_movement = STRAIGHT; break;
+    case 0b111011: current_movement = STRAIGHT; break;
+
+    case 0b001111: current_movement = STRAIGHT; break;
+    case 0b101111: current_movement = STRAIGHT; break;
+    case 0b001011: current_movement = STRAIGHT; break;
+/*       
     case 0b111100: current_movement = DRIFTED_RIGHT; break;
     case 0b101010: current_movement = DRIFTED_RIGHT; break;
     case 0b111010: current_movement = DRIFTED_RIGHT; break;
@@ -78,9 +86,10 @@ MovementState GetMovement(void) {
     case 0b001111: current_movement = DRIFTED_LEFT; break;
     case 0b101111: current_movement = DRIFTED_LEFT; break;
     case 0b001011: current_movement = DRIFTED_LEFT; break;
-
+*/
     case 0b000000: current_movement = STOP; break;
-
+    case 0b111111: current_movement = STOP; break;
+        
     default: current_movement = STOP; break;
     }
     

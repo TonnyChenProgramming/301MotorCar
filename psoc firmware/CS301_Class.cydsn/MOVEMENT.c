@@ -21,7 +21,7 @@ void stop(void)
 void move_handling(void)
 {
 
-
+/*
         MovementState m = GetMovement();
 
         if (m == STOP) {
@@ -42,21 +42,21 @@ void move_handling(void)
         }
         else if (m == LEFT_TURN ) {
             // simple turn available: keep following line as straight
-            motor_left(PWM_BWD);
-            motor_right(PWM_FWD);
+            //motor_left(PWM_BWD);
+            //motor_right(PWM_FWD);
             stop();
         }
         else if ( m == RIGHT_TURN) {
             // simple turn available: keep following line as straight
-            motor_left(PWM_FWD);
-            motor_right(PWM_BWD);
+            //motor_left(PWM_FWD);
+            //motor_right(PWM_BWD);
             stop();
         }
         else if(m == WAIT)
         {
         stop();
         }
-
+*/
 }
 
 // Rotate

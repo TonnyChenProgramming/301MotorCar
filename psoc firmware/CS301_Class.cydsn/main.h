@@ -24,6 +24,13 @@ typedef struct edge_pack {
     uint8_t left_wing_edge;
     
 } edge_pack_t;
+typedef enum {
+    STRAIGHT_STATE,
+    LEFT_TURN_STATE,
+    RIGHT_TURN_STATE,
+    STOP_STATE,
+
+} MovementFiniteState;
 extern edge_pack_t edges;
 extern uint8_t timer_flag;
 /* [] END OF FILE */
