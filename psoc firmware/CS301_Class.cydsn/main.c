@@ -54,8 +54,7 @@ static volatile int16 wheel_sum; // when wheel_sum is postive,left wheel is fast
 uint8_t change;
 uint8_t left_pwm = 176;
 uint8_t right_pwm = 176;
-#define PWM_MIN 127
-#define PWM_MAX 200
+
 
 float Kp = 0.5;
 float Ki = 0.1;
@@ -119,20 +118,35 @@ int main(void)
     {
       //left_wheel_val  = QuadDec_M1_GetCounter();  // left wheel postive
       //right_wheel_val = QuadDec_M2_GetCounter(); // right wheel negative
-        wheel_sum = QuadDec_M1_GetCounter()+ QuadDec_M2_GetCounter();//when wheel_sum is postive,left wheel is faster. otherwise. right wheel is faster 
-        if (wheel_sum>0)
-        {
-            left_pwm -=1; //change to variable change
-            right_pwm +=1;
-        } else if (wheel_sum <0)
-        {
-            left_pwm +=1;
-            right_pwm -=1;
-        }
-        QuadDec_M1_SetCounter(0);
-        QuadDec_M2_SetCounter(0);    
-        PWM_1_WriteCompare(left_pwm);
-        PWM_2_WriteCompare(right_pwm);
+    int error = QuadDec_M1_GetCounter() + QuadDec_M2_GetCounter();
+
+    // PID
+    integral += error;
+    float derivative = error - prev_error;
+    float output = Kp * error + Ki * integral + Kd * derivative;
+    
+    if (integral > 500) integral = 500;
+    if (integral < -500) integral = -500;
+
+    // Adjust PWM values
+    left_pwm  -= (int)output;
+    right_pwm += (int)output;
+
+    // Clamp
+    if (left_pwm < PID_PWM_MIN) left_pwm = PID_PWM_MIN;
+    if (left_pwm > PID_PWM_MAX) left_pwm = PID_PWM_MAX;
+    if (right_pwm < PID_PWM_MIN) right_pwm = PID_PWM_MIN;
+    if (right_pwm > PID_PWM_MAX) right_pwm = PID_PWM_MAX;
+
+    // Reset counters
+    QuadDec_M1_SetCounter(0);
+    QuadDec_M2_SetCounter(0);
+
+    PWM_1_WriteCompare(left_pwm);
+    PWM_2_WriteCompare(right_pwm);
+
+    prev_error = error;
+    timer_flag = 0;
     }
     
       

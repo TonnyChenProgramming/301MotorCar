@@ -46,8 +46,8 @@
 #define COAST_OFF CONTROL_Write(0);
 #define COAST_ON CONTROL_Write(0b11);
 
-#define PWM_MAX 255     // maximum value of duty cycle
-#define PWM_MIN 0       // minimum value of duty cycle
+#define PID_PWM_MAX 255     // maximum value of duty cycle
+#define PID_PWM_MIN 0       // minimum value of duty cycle
 //* ========================================
 // USBUART
 #define BUF_SIZE 64 // USBUART fixed buffer size
