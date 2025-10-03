@@ -37,14 +37,18 @@ uint8 ReadSensors(void) {
    sensorValues |= Output_2_Read() << 4;
    sensorValues |= Output_4_Read() << 5; // Left
    
-   //this_struct.output1 = Output_1_Read();
-    //this_struct.output2 = Output_2_Read();
-    //this_struct.output3 = Output_3_Read();
-    //this_struct.output4 = Output_4_Read();
-    //this_struct.output5 = Output_5_Read();
-    //this_struct.output6 = Output_6_Read();
+    /* LEDs on when sensor is on the line (active-low) */
+    LED3_Write(Output_1_Read() ? 0 : 1);
+    LED5_Write(Output_2_Read() ? 0 : 1);
+    LED4_Write(Output_3_Read() ? 0 : 1);
+    LED6_Write(Output_4_Read() ? 0 : 1);
+    LED1_Write(Output_5_Read() ? 0 : 1);
+    LED2_Write(Output_6_Read() ? 0 : 1);
+    
    return sensorValues;
 }
+
+
 
 // Use pattern to decide how the robot should move
 MovementState GetMovement(void) {

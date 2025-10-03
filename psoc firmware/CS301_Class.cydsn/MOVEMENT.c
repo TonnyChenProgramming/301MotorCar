@@ -1,88 +1,53 @@
-/* ========================================
- *
- * Copyright YOUR COMPANY, THE YEAR
- * All Rights Reserved
- * UNPUBLISHED, LICENSED SOFTWARE.
- *
- * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
- *
- * ========================================
-*/
-
-#include "STRAIGHT.h"
-#include "STOP.h"
-#include "DRIFTED_LEFT.h"
-#include "DRIFTED_RIGHT.h"
-#include "LEFT_TURN.h"
-#include "RIGHT_TURN.h"
+#include "project.h"
+#include "MOVEMENT.h"
 #include "SENSORS_READ.h"
 
-uint8_t last_memeory = 0;
-/* [] END OF FILE */
-void move2(MovementState movement)
-{
+// PWM values
+#define PWM_FWD  168   // minimum forward torque
+#define PWM_BWD   86   // backward value
+#define PWM_STOP   127
 
-    if (movement == LEFT_TURN)
-    {
-        TURN_LEFT();
-        last_memeory = 0;
-    }
-    else if (movement == RIGHT_TURN)
-    {
-        TURN_RIGHT();
-        last_memeory = 0;
-    }
-    
-}
-void move(MovementState movement)
+// Motor control helpers
+static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
+static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
+
+void stop(void)
 {
-    if(movement == STOP)
+    motor_left(PWM_STOP);
+    motor_right(PWM_STOP);
+}
+
+// Follow line until STOP or intersection
+void move_straight(void)
+{
+    for (;;)
     {
-        STOP_MOVING();
-        last_memeory = 0;
-    }
-    else if (movement == DRIFTED_LEFT)
-    {
-        DRIFT_RIGHT();
-        last_memeory = 1;
-    }
-    else if (movement == DRIFTED_RIGHT)
-    {
-        DRIFT_LEFT();
-        last_memeory = 2;
-        
-    }
-    else if (movement == LEFT_TURN)
-    {
-        TURN_LEFT();
-        last_memeory = 0;
-    }
-    else if (movement == RIGHT_TURN)
-    {
-        TURN_RIGHT();
-        last_memeory = 0;
-    }
-    else if (movement == STRAIGHT)
-    {
-        MOVE_STRAIGHT();
-        last_memeory = 0;
-    }
-/*
-    else if (movement == KEEP_RUNNING)
-    {
-        if (last_memeory == 0)
-        {
-            
-        STOP_MOVING();
-        } else if (last_memeory == 1)
-        {
-             DRIFT_RIGHT();
-        } else if (last_memeory == 2)
-        {
-            DRIFT_LEFT();
+        MovementState m = GetMovement();
+
+        if (m == STOP) {
+            stop();
+            break;
+        }
+        else if (m == STRAIGHT) {
+            motor_left(PWM_FWD);
+            motor_right(PWM_FWD);
+        }
+        else if (m == DRIFTED_LEFT) {
+            // robot is too far right, steer left
+            motor_left(PWM_FWD);
+            motor_right(PWM_STOP);
+        }
+        else if (m == DRIFTED_RIGHT) {
+            // robot is too far left, steer right
+            motor_left(PWM_STOP);
+            motor_right(PWM_FWD);
+        }
+        else if (m == LEFT_TURN || m == RIGHT_TURN) {
+            // simple turn available: keep following line as straight
+            motor_left(PWM_FWD);
+            motor_right(PWM_FWD);
         }
     }
-    */
-    
 }
+
+// Rotate

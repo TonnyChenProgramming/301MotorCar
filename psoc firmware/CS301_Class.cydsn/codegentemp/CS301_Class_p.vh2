@@ -1,6 +1,6 @@
 -- Project:   CS301_Class
--- Generated: 09/26/2025 18:04:35
--- PSoC Creator  4.4
+-- Generated: 10/03/2025 16:17:51
+-- PSoC Creator  4.2
 
 ENTITY CS301_Class IS
     PORT(
@@ -303,7 +303,7 @@ ARCHITECTURE __DEFAULT__ OF CS301_Class IS
     SIGNAL tmpOE__M1_IN1_net_0 : bit;
     ATTRIBUTE POWER OF tmpOE__M1_IN1_net_0 : SIGNAL IS true;
     SIGNAL \ClockBlock.dclk_glb_ff_1__sig\ : bit;
-    SIGNAL \ClockBlock.dclk_glb_ff_3__sig\ : bit;
+    SIGNAL \ClockBlock.dclk_glb_ff_2__sig\ : bit;
     SIGNAL \QuadDec_M1:Cnt16:CounterUDB:sC16:counterdp:u0.ce0__sig\ : bit;
     SIGNAL \QuadDec_M1:Cnt16:CounterUDB:sC16:counterdp:u0.cl0__sig\ : bit;
     SIGNAL \QuadDec_M1:Cnt16:CounterUDB:sC16:counterdp:u0.z0__sig\ : bit;
@@ -898,14 +898,14 @@ BEGIN
             dsi_glb_div => open,
             dclk_glb_0 => Net_1850,
             dclk_0 => Net_1850_local,
-            dclk_glb_1 => CLK24M,
-            dclk_1 => CLK24M_local,
-            dclk_glb_2 => \UART:Net_9\,
-            dclk_2 => \UART:Net_9_local\,
-            dclk_glb_3 => Net_4367,
-            dclk_3 => Net_4367_local,
+            dclk_glb_1 => Net_4367,
+            dclk_1 => Net_4367_local,
+            dclk_glb_2 => CLK24M,
+            dclk_2 => CLK24M_local,
+            dclk_glb_3 => \UART:Net_9\,
+            dclk_3 => \UART:Net_9_local\,
             dclk_glb_ff_1 => \ClockBlock.dclk_glb_ff_1__sig\,
-            dclk_glb_ff_3 => \ClockBlock.dclk_glb_ff_3__sig\);
+            dclk_glb_ff_2 => \ClockBlock.dclk_glb_ff_2__sig\);
 
     M1_IN1:logicalport
         GENERIC MAP(
@@ -3213,7 +3213,7 @@ BEGIN
             oe_sync => "0",
             output_clk_en => 0,
             output_clock_mode => "0",
-            output_conn => "1",
+            output_conn => "0",
             output_mode => "0",
             output_reset => 0,
             output_sync => "0",
@@ -3267,12 +3267,10 @@ BEGIN
             oe_sync_mode => 0,
             logicalport => "LED1",
             logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
             pa_out => LED1(0)__PA,
             oe => open,
-            pin_input => Net_4389,
-            pad_out => LED1(0)_PAD,
             pad_in => LED1(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
@@ -3305,7 +3303,7 @@ BEGIN
             oe_sync => "0",
             output_clk_en => 0,
             output_clock_mode => "0",
-            output_conn => "1",
+            output_conn => "0",
             output_mode => "0",
             output_reset => 0,
             output_sync => "0",
@@ -3359,12 +3357,10 @@ BEGIN
             oe_sync_mode => 0,
             logicalport => "LED2",
             logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
             pa_out => LED2(0)__PA,
             oe => open,
-            pin_input => Net_4390,
-            pad_out => LED2(0)_PAD,
             pad_in => LED2(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
@@ -3397,7 +3393,7 @@ BEGIN
             oe_sync => "0",
             output_clk_en => 0,
             output_clock_mode => "0",
-            output_conn => "1",
+            output_conn => "0",
             output_mode => "0",
             output_reset => 0,
             output_sync => "0",
@@ -3451,12 +3447,10 @@ BEGIN
             oe_sync_mode => 0,
             logicalport => "LED3",
             logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
             pa_out => LED3(0)__PA,
             oe => open,
-            pin_input => Net_4385,
-            pad_out => LED3(0)_PAD,
             pad_in => LED3(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
@@ -3489,7 +3483,7 @@ BEGIN
             oe_sync => "0",
             output_clk_en => 0,
             output_clock_mode => "0",
-            output_conn => "1",
+            output_conn => "0",
             output_mode => "0",
             output_reset => 0,
             output_sync => "0",
@@ -3543,12 +3537,10 @@ BEGIN
             oe_sync_mode => 0,
             logicalport => "LED4",
             logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
             pa_out => LED4(0)__PA,
             oe => open,
-            pin_input => Net_4387,
-            pad_out => LED4(0)_PAD,
             pad_in => LED4(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
@@ -3581,7 +3573,7 @@ BEGIN
             oe_sync => "0",
             output_clk_en => 0,
             output_clock_mode => "0",
-            output_conn => "1",
+            output_conn => "0",
             output_mode => "0",
             output_reset => 0,
             output_sync => "0",
@@ -3635,12 +3627,10 @@ BEGIN
             oe_sync_mode => 0,
             logicalport => "LED5",
             logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
             pa_out => LED5(0)__PA,
             oe => open,
-            pin_input => Net_4386,
-            pad_out => LED5(0)_PAD,
             pad_in => LED5(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
@@ -3673,7 +3663,7 @@ BEGIN
             oe_sync => "0",
             output_clk_en => 0,
             output_clock_mode => "0",
-            output_conn => "1",
+            output_conn => "0",
             output_mode => "0",
             output_reset => 0,
             output_sync => "0",
@@ -3727,12 +3717,10 @@ BEGIN
             oe_sync_mode => 0,
             logicalport => "LED6",
             logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
             pa_out => LED6(0)__PA,
             oe => open,
-            pin_input => Net_4388,
-            pad_out => LED6(0)_PAD,
             pad_in => LED6(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
@@ -4469,7 +4457,7 @@ BEGIN
         GENERIC MAP(
             cy_registers => "")
         PORT MAP(
-            clock => \ClockBlock.dclk_glb_ff_3__sig\,
+            clock => \ClockBlock.dclk_glb_ff_1__sig\,
             kill => open,
             enable => __ONE__,
             capture => open,
@@ -4765,7 +4753,7 @@ BEGIN
         GENERIC MAP(
             cy_registers => "")
         PORT MAP(
-            clock => \ClockBlock.dclk_glb_ff_1__sig\,
+            clock => \ClockBlock.dclk_glb_ff_2__sig\,
             kill => open,
             enable => __ONE__,
             capture => open,
@@ -4778,7 +4766,7 @@ BEGIN
         GENERIC MAP(
             cy_registers => "")
         PORT MAP(
-            clock => \ClockBlock.dclk_glb_ff_1__sig\,
+            clock => \ClockBlock.dclk_glb_ff_2__sig\,
             kill => open,
             enable => __ONE__,
             capture => open,
@@ -4840,7 +4828,7 @@ BEGIN
 
     front_right:interrupt
         GENERIC MAP(
-            int_type => "00",
+            int_type => "01",
             is_nmi => 0)
         PORT MAP(
             interrupt => Net_4388,
@@ -4848,7 +4836,7 @@ BEGIN
 
     front_left:interrupt
         GENERIC MAP(
-            int_type => "00",
+            int_type => "01",
             is_nmi => 0)
         PORT MAP(
             interrupt => Net_4389,
@@ -4856,7 +4844,7 @@ BEGIN
 
     left_wing:interrupt
         GENERIC MAP(
-            int_type => "00",
+            int_type => "01",
             is_nmi => 0)
         PORT MAP(
             interrupt => Net_4390,

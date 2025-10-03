@@ -39,7 +39,10 @@
 #define QUAD_MULT 4        
 #define COUNTS_PER_REV (ENCODER_CPR * QUAD_MULT)
 
-#define TIMER_BASE_HZ 10000UL
+#define TIMER_BASE_HZ 100000UL
+
+#define PWM_FWD  168
+#define PWM_STOP 127
 
 static volatile int32_t enc_last = 0;      
 static volatile int32_t enc_pos  = 0;      
@@ -48,6 +51,14 @@ static volatile float   spd_rps  = 0.0f;
 static volatile float   spd_rpm  = 0.0f;   
 
 static volatile uint8_t flag_print = 0;
+
+volatile uint8 front_left_flag = 0;
+volatile uint8 front_right_flag = 0;
+volatile uint8 mid_left_flag = 0;
+volatile uint8 mid_right_flag = 0;
+volatile uint8 left_wing_flag = 0;
+volatile uint8 right_wing_flag = 0;
+
 
 edge_pack_t edges = {0,0,0,0, 0, 0};
 
@@ -89,6 +100,11 @@ CY_ISR(Timer_TS_ISR_Handler)
 #endif
 }
 
+// helpers
+#define S_ACTIVE(pin_read) ((pin_read) == 0u)   // active-low -> 1 when line
+
+// active-low: 0 = on line, 1 = off line
+#define S_ACTIVE(pin_read) ((pin_read) == 0u)
 
 /* ================= Main ================= */
 int main(void)
@@ -100,99 +116,36 @@ int main(void)
     QuadDec_M1_Start();
     QuadDec_M1_SetCounter(0);
     enc_last = QuadDec_M1_GetCounter();
+    
+   front_left_Start();   /* uses front_left_Interrupt */
+
+
 
 #ifdef USE_USB
-    USBUART_Start(0, USBUART_5V_OPERATION);
+   USBUART_Start(0, USBUART_5V_OPERATION);
 #endif
 
     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
     Timer_TS_Start();                      // then start
-    //MOVE_STRAIGHT();
+    
     // enable isr for edge detection
-    front_left_Start();
-    front_right_Start();
-    mid_left_Start();
-    mid_right_Start();
-    for(;;) {
-      //MOVE_STRAIGHT();
-      //if (Output_6_Read() == 0){ TURN_LEFT();}
-      //if (Output_3_Read() == 0) {TURN_RIGHT();}
-      MovementState movement = GetMovement();
-      move(movement);
-    if (movement)
-    {
-      if (edges.front_left_edge)
-    {
-        edges.front_left_edge = 0;
-        edge_front_left_manoeuvre();
-        
-    } 
-    else if (edges.front_right_edge)
-    {
-        edges.front_right_edge = 0;
-        edge_front_right_manoeuvre();
-    } 
-    else if (edges.mid_left_edge)
-    {
-        edges.mid_left_edge = 0;
-        edge_mid_left_manoeuvre();        
-    } 
-    else if (edges.mid_right_edge)
-    {
-        edges.mid_right_edge = 0;
-        edge_mid_right_manoeuvre();        
-    }
-    
-   }
 
-    /*
-        if (flag_ts_display) {
-            flag_ts_display = 0;
 
-            // if float printf isn’t enabled, convert to fixed point (see note below)
-            char buf[64];
-            
-            snprintf(buf, sizeof(buf),
-                     "pos:%ld cps:%.0f rpm:%.1f rps:%.2f\r\n",
-                     (long)enc_pos, (double)spd_cps, (double)spd_rpm, (double)spd_rps);
-            usbPutString(buf);
-            
-    */
-
-          }
-    
-/*
-          MovementState move = GetMovement();
-          switch(move) {
-            case STRAIGHT:          MOVE_STRAIGHT();    break;
-            case LEFT_TURN:         TURN_LEFT();        break;
-            case RIGHT_TURN:        TURN_RIGHT();       break;
-            case DRIFTED_LEFT:      DRIFT_RIGHT();      break;
-            case DRIFTED_RIGHT:     DRIFT_LEFT();       break;
-            case STOP:              STOP_MOVING();      break;
-        }
-*/       
-        
-        handle_usb();
-        if (flag_KB_string) { usbPutString(line); flag_KB_string = 0; }
-    }
-    
-/* static void print_telemetry(void)
-{
-    uint8 intr = CyEnterCriticalSection();
-    int32_t pos = enc_pos;
-    float cps   = spd_cps;
-    float rpm   = spd_rpm;
-    float rps   = spd_rps;
-    CyExitCriticalSection(intr);
-
-    char buf[64];
-    snprintf(buf, sizeof(buf), "pos:%ld cps:%.0f rpm:%.1f rps:%.2f\r\n",
-   (long)pos, (double)cps, (double)rpm, (double)rps);
-    usbPutString(buf);
+  #define ON_LINE(x) ((x)==0u)
+for(;;) {
+    CyDelay(100);
+    LED3_Write(ON_LINE(Output_1_Read()));
+    LED5_Write(ON_LINE(Output_2_Read()));
+    LED4_Write(ON_LINE(Output_3_Read()));
+    LED6_Write(ON_LINE(Output_4_Read()));
+    LED1_Write(ON_LINE(Output_5_Read()));
+    LED2_Write(ON_LINE(Output_6_Read()));
 }
-*/
-//}
+
+}
+ 
+
+
 void usbPutString(char *s)
 {
 #ifdef USE_USB
