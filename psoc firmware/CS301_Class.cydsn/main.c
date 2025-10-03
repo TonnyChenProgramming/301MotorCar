@@ -25,15 +25,9 @@
 #include "defines.h"     
 #include "vars.h"
 #include "isr_1.h"
-#include "LEFT_TURN.h"
-#include "RIGHT_TURN.h"
-#include "STRAIGHT.h"
-#include "DRIFTED_RIGHT.h"
-#include "DRIFTED_LEFT.h"
 #include "SENSORS_READ.h"
-#include "STOP.h"
 #include "MOVEMENT.h"
-#include "manoeuvre.h"
+
 
 #define ENCODER_CPR 500
 #define QUAD_MULT 4        
@@ -59,8 +53,25 @@ volatile uint8 mid_right_flag = 0;
 volatile uint8 left_wing_flag = 0;
 volatile uint8 right_wing_flag = 0;
 
+static volatile int16 left_wheel_val; // positive
+static volatile int16 right_wheel_val;//negative
+static volatile int16 wheel_sum; // when wheel_sum is postive,left wheel is faster. otherwise. right wheel is faster
+uint8_t change;
+uint8_t left_pwm = 176;
+uint8_t right_pwm = 176;
 
+
+float Kp = 0.5;
+float Ki = 0.1;
+float Kd = 0.05;
+
+static float integral = 0;
+static float prev_error = 0;
+
+uint8_t timer_flag = 0;
 edge_pack_t edges = {0,0,0,0, 0, 0};
+
+MovementState current_move;
 
 // static void print_telemetry(void);
 void usbPutString(char *s);
@@ -70,35 +81,9 @@ void handle_usb();
 /* Timer ISR */
 CY_ISR(Timer_TS_ISR_Handler)
 {
-    // tick bookkeeping
-    if (++ts_speed   >= DECIMATE_TS_SPEED)   { ts_speed = 0;   flag_ts_speed = 1;   }
-    if (++ts_display >= DECIMATE_TS_DISPLAY) { ts_display = 0; flag_ts_display = 1; }
-
-    // Do speed math only when due
-    if (flag_ts_speed) {
-        flag_ts_speed = 0;
-
-        int32_t now   = QuadDec_M1_GetCounter();
-        int32_t delta = now - enc_last;
-        enc_last      = now;
-        enc_pos       = now;
-
-        // counts/sec over Δt = DECIMATE_TS_SPEED / TIMER_BASE_HZ
-        // cps = delta * TIMER_BASE_HZ / DECIMATE_TS_SPEED
-        float cps = (float)delta * ((float)TIMER_BASE_HZ / (float)DECIMATE_TS_SPEED);
-        spd_cps = cps;
-
-        float rev_per_sec = spd_cps / (float)(/* CPR × 4 */ 3 * 4 * 19); // = 228 if PDF motor (3 CPR, 19:1, x4)
-        spd_rps = rev_per_sec * 2.0f * 3.14159265358979323846f;
-        spd_rpm = rev_per_sec * 60.0f;
+    timer_flag = 1;    
     }
 
-#ifdef Timer_TS_ClearInterrupt
-    Timer_TS_ClearInterrupt(Timer_TS_INTR_MASK_TC);
-#else
-    (void)Timer_TS_ReadStatusRegister();
-#endif
-}
 
 // helpers
 #define S_ACTIVE(pin_read) ((pin_read) == 0u)   // active-low -> 1 when line
@@ -113,33 +98,62 @@ int main(void)
     PWM_1_Start();
     PWM_2_Start();
     
-    QuadDec_M1_Start();
-    QuadDec_M1_SetCounter(0);
-    enc_last = QuadDec_M1_GetCounter();
+    isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
+    Timer_TS_Start();                      // then start
     
-   front_left_Start();   /* uses front_left_Interrupt */
-
-
+    front_left_Start();
+    front_right_Start();
+    mid_left_Start();
+    mid_right_Start();
+    
+    QuadDec_M1_Start();
+    QuadDec_M2_Start();
+    QuadDec_M1_SetCounter(0);
+    QuadDec_M2_SetCounter(0);
 
 #ifdef USE_USB
    USBUART_Start(0, USBUART_5V_OPERATION);
 #endif
 
-    isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
-    Timer_TS_Start();                      // then start
-    
+
     // enable isr for edge detection
 
-
-  #define ON_LINE(x) ((x)==0u)
 for(;;) {
-    CyDelay(100);
-    LED3_Write(ON_LINE(Output_1_Read()));
-    LED5_Write(ON_LINE(Output_2_Read()));
-    LED4_Write(ON_LINE(Output_3_Read()));
-    LED6_Write(ON_LINE(Output_4_Read()));
-    LED1_Write(ON_LINE(Output_5_Read()));
-    LED2_Write(ON_LINE(Output_6_Read()));
+    current_move = GetMovement();
+    move_handling();
+    if(current_move == STRAIGHT && timer_flag )
+    {
+
+        int error = QuadDec_M1_GetCounter() + QuadDec_M2_GetCounter();
+
+        // PID
+        integral += error;
+        float derivative = error - prev_error;
+        float output = Kp * error + Ki * integral + Kd * derivative;
+        
+        if (integral > 500) integral = 500;
+        if (integral < -500) integral = -500;
+
+        // Adjust PWM values
+        left_pwm  -= (int)output;
+        right_pwm += (int)output;
+
+        // Clamp
+        if (left_pwm < PID_PWM_MIN) left_pwm = PID_PWM_MIN;
+        if (left_pwm > PID_PWM_MAX) left_pwm = PID_PWM_MAX;
+        if (right_pwm < PID_PWM_MIN) right_pwm = PID_PWM_MIN;
+        if (right_pwm > PID_PWM_MAX) right_pwm = PID_PWM_MAX;
+
+        // Reset counters
+        QuadDec_M1_SetCounter(0);
+        QuadDec_M2_SetCounter(0);
+
+        PWM_1_WriteCompare(left_pwm);
+        PWM_2_WriteCompare(right_pwm);
+
+        prev_error = error;
+        timer_flag = 0;       
+    }
 }
 
 }

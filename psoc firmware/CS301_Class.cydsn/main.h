@@ -25,5 +25,6 @@ typedef struct edge_pack {
     
 } edge_pack_t;
 extern edge_pack_t edges;
+extern uint8_t timer_flag;
 /* [] END OF FILE */
 #endif

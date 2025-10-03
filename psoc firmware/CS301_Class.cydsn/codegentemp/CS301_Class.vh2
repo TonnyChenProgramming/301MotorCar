@@ -2,7 +2,7 @@
 --	Conversion of CS301_Class.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Fri Oct 03 16:17:50 2025
+--	Fri Oct 03 20:58:09 2025
 --
 
 USE cypress.cypress.all;
@@ -1032,12 +1032,12 @@ SIGNAL tmpIO_0__Output_1_net_0 : bit;
 TERMINAL tmpSIOVREF__Output_1_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__Output_1_net_0 : bit;
 SIGNAL tmpOE__Output_2_net_0 : bit;
-SIGNAL Net_4386 : bit;
+SIGNAL Net_4453 : bit;
 SIGNAL tmpIO_0__Output_2_net_0 : bit;
 TERMINAL tmpSIOVREF__Output_2_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__Output_2_net_0 : bit;
 SIGNAL tmpOE__Output_3_net_0 : bit;
-SIGNAL Net_4387 : bit;
+SIGNAL Net_4455 : bit;
 SIGNAL tmpIO_0__Output_3_net_0 : bit;
 TERMINAL tmpSIOVREF__Output_3_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__Output_3_net_0 : bit;
@@ -2740,7 +2740,7 @@ Clock2:cy_clock_v1_0
 		id=>"4c992dc7-2721-4e82-beca-fd2bdf776a66",
 		source_clock_id=>"CEF43CFB-0213-49b9-B980-2FFAB81C5B47",
 		divisor=>0,
-		period=>"1000000000",
+		period=>"10000000000000",
 		is_direct=>'0',
 		is_digital=>'1')
 	PORT MAP(clock_out=>Net_4367,
@@ -3796,7 +3796,7 @@ Output_2:cy_psoc3_pins_v1_10
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__M1_IN1_net_0),
 		y=>(Net_2183),
-		fb=>Net_4386,
+		fb=>Net_4453,
 		analog=>(open),
 		io=>(tmpIO_0__Output_2_net_0),
 		siovref=>(tmpSIOVREF__Output_2_net_0),
@@ -3866,7 +3866,7 @@ Output_3:cy_psoc3_pins_v1_10
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__M1_IN1_net_0),
 		y=>(Net_2183),
-		fb=>Net_4387,
+		fb=>Net_4455,
 		analog=>(open),
 		io=>(tmpIO_0__Output_3_net_0),
 		siovref=>(tmpSIOVREF__Output_3_net_0),
@@ -4091,7 +4091,7 @@ Output_6:cy_psoc3_pins_v1_10
 mid_right:cy_isr_v1_0
 	GENERIC MAP(int_type=>"00",
 		is_nmi=>'0')
-	PORT MAP(int_signal=>Net_4386);
+	PORT MAP(int_signal=>Net_4453);
 mid_left:cy_isr_v1_0
 	GENERIC MAP(int_type=>"00",
 		is_nmi=>'0')
@@ -4113,7 +4113,7 @@ LED1:cy_psoc3_pins_v1_10
 		invert_out_reset=>'0',
 		io_voltage=>"",
 		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
+		output_conn=>"1",
 		output_sync=>"0",
 		output_clk_en=>'0',
 		output_mode=>"0",
@@ -4153,7 +4153,7 @@ LED1:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__M1_IN1_net_0),
-		y=>(Net_2183),
+		y=>Net_4389,
 		fb=>(tmpFB_0__LED1_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__LED1_net_0),
@@ -4183,7 +4183,7 @@ LED2:cy_psoc3_pins_v1_10
 		invert_out_reset=>'0',
 		io_voltage=>"",
 		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
+		output_conn=>"1",
 		output_sync=>"0",
 		output_clk_en=>'0',
 		output_mode=>"0",
@@ -4223,7 +4223,7 @@ LED2:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__M1_IN1_net_0),
-		y=>(Net_2183),
+		y=>Net_4390,
 		fb=>(tmpFB_0__LED2_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__LED2_net_0),
@@ -4253,7 +4253,7 @@ LED3:cy_psoc3_pins_v1_10
 		invert_out_reset=>'0',
 		io_voltage=>"",
 		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
+		output_conn=>"1",
 		output_sync=>"0",
 		output_clk_en=>'0',
 		output_mode=>"0",
@@ -4293,7 +4293,7 @@ LED3:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__M1_IN1_net_0),
-		y=>(Net_2183),
+		y=>Net_4385,
 		fb=>(tmpFB_0__LED3_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__LED3_net_0),
@@ -4323,7 +4323,7 @@ LED4:cy_psoc3_pins_v1_10
 		invert_out_reset=>'0',
 		io_voltage=>"",
 		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
+		output_conn=>"1",
 		output_sync=>"0",
 		output_clk_en=>'0',
 		output_mode=>"0",
@@ -4363,7 +4363,7 @@ LED4:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__M1_IN1_net_0),
-		y=>(Net_2183),
+		y=>Net_4455,
 		fb=>(tmpFB_0__LED4_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__LED4_net_0),
@@ -4393,7 +4393,7 @@ LED5:cy_psoc3_pins_v1_10
 		invert_out_reset=>'0',
 		io_voltage=>"",
 		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
+		output_conn=>"1",
 		output_sync=>"0",
 		output_clk_en=>'0',
 		output_mode=>"0",
@@ -4433,7 +4433,7 @@ LED5:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__M1_IN1_net_0),
-		y=>(Net_2183),
+		y=>Net_4453,
 		fb=>(tmpFB_0__LED5_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__LED5_net_0),
@@ -4463,7 +4463,7 @@ LED6:cy_psoc3_pins_v1_10
 		invert_out_reset=>'0',
 		io_voltage=>"",
 		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
+		output_conn=>"1",
 		output_sync=>"0",
 		output_clk_en=>'0',
 		output_mode=>"0",
@@ -4503,7 +4503,7 @@ LED6:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__M1_IN1_net_0),
-		y=>(Net_2183),
+		y=>Net_4388,
 		fb=>(tmpFB_0__LED6_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__LED6_net_0),
@@ -4531,7 +4531,7 @@ left_wing:cy_isr_v1_0
 right_wing:cy_isr_v1_0
 	GENERIC MAP(int_type=>"00",
 		is_nmi=>'0')
-	PORT MAP(int_signal=>Net_4387);
+	PORT MAP(int_signal=>Net_4455);
 \QuadDec_M1:Net_1251\:cy_dff
 	PORT MAP(d=>\QuadDec_M1:Net_1251\\D\,
 		clk=>\QuadDec_M1:bQuadDec:sync_clock\,

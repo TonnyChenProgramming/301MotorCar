@@ -1,7 +1,7 @@
 #include "project.h"
 #include "MOVEMENT.h"
 #include "SENSORS_READ.h"
-
+#include "main.h"
 // PWM values
 #define PWM_FWD  168   // minimum forward torque
 #define PWM_BWD   86   // backward value
@@ -18,36 +18,45 @@ void stop(void)
 }
 
 // Follow line until STOP or intersection
-void move_straight(void)
+void move_handling(void)
 {
-    for (;;)
-    {
+
+
         MovementState m = GetMovement();
 
         if (m == STOP) {
             stop();
-            break;
-        }
-        else if (m == STRAIGHT) {
-            motor_left(PWM_FWD);
-            motor_right(PWM_FWD);
+
         }
         else if (m == DRIFTED_LEFT) {
             // robot is too far right, steer left
-            motor_left(PWM_FWD);
-            motor_right(PWM_STOP);
+            //motor_left(PWM_FWD);
+            //motor_right(PWM_STOP);
+            stop();
         }
         else if (m == DRIFTED_RIGHT) {
             // robot is too far left, steer right
-            motor_left(PWM_STOP);
-            motor_right(PWM_FWD);
+            //motor_left(PWM_STOP);
+            //motor_right(PWM_FWD);
+            stop();
         }
-        else if (m == LEFT_TURN || m == RIGHT_TURN) {
+        else if (m == LEFT_TURN ) {
+            // simple turn available: keep following line as straight
+            motor_left(PWM_BWD);
+            motor_right(PWM_FWD);
+            stop();
+        }
+        else if ( m == RIGHT_TURN) {
             // simple turn available: keep following line as straight
             motor_left(PWM_FWD);
-            motor_right(PWM_FWD);
+            motor_right(PWM_BWD);
+            stop();
         }
-    }
+        else if(m == WAIT)
+        {
+        stop();
+        }
+
 }
 
 // Rotate

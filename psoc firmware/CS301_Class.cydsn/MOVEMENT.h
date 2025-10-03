@@ -15,7 +15,15 @@
 
 #include "SENSORS_READ.h"
     
-void move(MovementState movement);
+void stop(void);
+
+
+// Follow line until STOP or intersection
+void move_handling(void);
+
+
+// Rotate
+
     
 
 #endif
