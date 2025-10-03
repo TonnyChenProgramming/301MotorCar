@@ -22,6 +22,8 @@
 #define DECIMATE_TS_UPDATE  2000    // decimation factor for update action
 #define DECIMATE_TS_SPEED   100
 #define DECIMATE_TS_DISPLAY 1000
+#define PWM_MIN 127
+#define PWM_MAX 200
 //* ========================================
 // General Debug
 #define LED_ON          LED_Write(1)

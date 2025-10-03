@@ -48,10 +48,22 @@ static volatile float   spd_rps  = 0.0f;
 static volatile float   spd_rpm  = 0.0f;   
 
 static volatile uint8_t flag_print = 0;
-static volatile int16 left_wheel_val;
-static volatile int16 right_wheel_val;
+static volatile int16 left_wheel_val; // positive
+static volatile int16 right_wheel_val;//negative
+static volatile int16 wheel_sum; // when wheel_sum is postive,left wheel is faster. otherwise. right wheel is faster
+uint8_t change;
 uint8_t left_pwm = 176;
 uint8_t right_pwm = 176;
+#define PWM_MIN 127
+#define PWM_MAX 200
+
+float Kp = 0.5;
+float Ki = 0.1;
+float Kd = 0.05;
+
+static float integral = 0;
+static float prev_error = 0;
+
 uint8_t timer_flag = 0;
 edge_pack_t edges = {0,0,0,0, 0, 0};
 
@@ -105,24 +117,20 @@ int main(void)
     for(;;) {
     if (timer_flag)
     {
-    left_wheel_val  = QuadDec_M1_GetCounter();  // left wheel postive
-    right_wheel_val = QuadDec_M2_GetCounter(); // right wheel negative
-    // tick bookkeeping
-    //if (++ts_speed   >= DECIMATE_TS_SPEED)   { ts_speed = 0;   flag_ts_speed = 1;   }
-    //if (++ts_display >= DECIMATE_TS_DISPLAY) { ts_display = 0; flag_ts_display = 1; }
-    
-        if (left_wheel_val > (0-right_wheel_val))
+      //left_wheel_val  = QuadDec_M1_GetCounter();  // left wheel postive
+      //right_wheel_val = QuadDec_M2_GetCounter(); // right wheel negative
+        wheel_sum = QuadDec_M1_GetCounter()+ QuadDec_M2_GetCounter();//when wheel_sum is postive,left wheel is faster. otherwise. right wheel is faster 
+        if (wheel_sum>0)
         {
-            left_pwm -=1;
+            left_pwm -=1; //change to variable change
             right_pwm +=1;
-        } else if (left_wheel_val < (0-right_wheel_val))
+        } else if (wheel_sum <0)
         {
             left_pwm +=1;
             right_pwm -=1;
         }
         QuadDec_M1_SetCounter(0);
-        QuadDec_M2_SetCounter(0); 
-        
+        QuadDec_M2_SetCounter(0);    
         PWM_1_WriteCompare(left_pwm);
         PWM_2_WriteCompare(right_pwm);
     }
