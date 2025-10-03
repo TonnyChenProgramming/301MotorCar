@@ -48,7 +48,9 @@ static volatile float   spd_rps  = 0.0f;
 static volatile float   spd_rpm  = 0.0f;   
 
 static volatile uint8_t flag_print = 0;
-
+static volatile int16 left_wheel_val;
+static volatile int16 right_wheel_val;
+uint8_t timer_flag = 0;
 edge_pack_t edges = {0,0,0,0, 0, 0};
 
 // static void print_telemetry(void);
@@ -59,9 +61,12 @@ void handle_usb();
 /* Timer ISR */
 CY_ISR(Timer_TS_ISR_Handler)
 {
+    timer_flag = 1;
+    right_wheel_val = QuadDec_M1_GetCounter();  // right wheel
+    left_wheel_val = QuadDec_M2_GetCounter(); // left wheel
     // tick bookkeeping
-    if (++ts_speed   >= DECIMATE_TS_SPEED)   { ts_speed = 0;   flag_ts_speed = 1;   }
-    if (++ts_display >= DECIMATE_TS_DISPLAY) { ts_display = 0; flag_ts_display = 1; }
+    //if (++ts_speed   >= DECIMATE_TS_SPEED)   { ts_speed = 0;   flag_ts_speed = 1;   }
+    //if (++ts_display >= DECIMATE_TS_DISPLAY) { ts_display = 0; flag_ts_display = 1; }
 
     // Do speed math only when due
     if (flag_ts_speed) {
@@ -113,11 +118,23 @@ int main(void)
     front_right_Start();
     mid_left_Start();
     mid_right_Start();
+    
+    QuadDec_M1_Start();
+    QuadDec_M2_Start();
+    QuadDec_M1_SetCounter(0);
+    QuadDec_M2_SetCounter(0);
+    //left_wheel_val = QuadDec_M1_GetCounter();
+    //right_wheel_val = QuadDec_M2_GetCounter();
+    MOVE_STRAIGHT();
     for(;;) {
       //MOVE_STRAIGHT();
       //if (Output_6_Read() == 0){ TURN_LEFT();}
       //if (Output_3_Read() == 0) {TURN_RIGHT();}
-      MovementState movement = GetMovement();
+ 
+
+      
+      //MovementState movement = GetMovement();
+    /*
       move(movement);
     if (movement)
     {
@@ -142,9 +159,20 @@ int main(void)
         edges.mid_right_edge = 0;
         edge_mid_right_manoeuvre();        
     }
-    
-   }
+    */
+    if (timer_flag)
+    {
+        timer_flag = 0;
+        char buf[120];
+        snprintf(buf, sizeof(buf),
+                     "Lpos:%ld Rpos:%ld \r\n",
+                     (long)left_wheel_val, (long)right_wheel_val);
+        usbPutString(buf);
+        QuadDec_M1_SetCounter(0);
+        QuadDec_M2_SetCounter(0); 
+    }
 
+    
     /*
         if (flag_ts_display) {
             flag_ts_display = 0;
@@ -176,8 +204,8 @@ int main(void)
         handle_usb();
         if (flag_KB_string) { usbPutString(line); flag_KB_string = 0; }
     }
-    
-/* static void print_telemetry(void)
+ /*   
+static void print_telemetry(void)
 {
     uint8 intr = CyEnterCriticalSection();
     int32_t pos = enc_pos;
