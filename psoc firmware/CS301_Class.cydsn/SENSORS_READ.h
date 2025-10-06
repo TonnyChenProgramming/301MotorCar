@@ -37,5 +37,7 @@ typedef enum {
 // Prototype
 uint8 ReadSensors(void);
 MovementState GetMovement(void);
+int8_t GetLineError(void); 
+
 extern uint8 sensorValues;
 #endif

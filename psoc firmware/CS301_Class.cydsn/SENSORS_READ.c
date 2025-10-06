@@ -14,6 +14,16 @@
 
 #include "SENSORS_READ.h"
 
+// Returns error: -1 = drift left, 0 = centered, +1 = drift right
+int8_t GetLineError(void)
+{
+    int8_t error = 0;
+    if (!Output_1_Read()) error = -1;  // mid_left active
+    if (!Output_3_Read()) error = +1;  // mid_right active
+    return error;
+}
+
+
 uint8 sensorValues;
 MovementState previous_movement;
 MovementState current_movement;
@@ -49,57 +59,43 @@ uint8 ReadSensors(void) {
 }
 
 
-
-// Use pattern to decide how the robot should move
-MovementState GetMovement(void) {
+MovementState GetMovement(void)
+{
     uint8 sensors = ReadSensors();
-    current_movement = STRAIGHT;
-    switch(sensors) {
-    case 0b001010: current_movement = STRAIGHT; break;
-    case 0b011110: current_movement = STRAIGHT; break;
-    case 0b101011: current_movement = STRAIGHT; break; 
-    case 0b111010: current_movement = STRAIGHT; break; 
-    case 0b001111: current_movement = STRAIGHT; break; 
-    //case 0b101010: current_movement = STRAIGHT; break;
-    //case 0b001011: current_movement = STRAIGHT; break;
 
-    case 0b001000: current_movement = LEFT_TURN; break;
-    case 0b011100: current_movement = LEFT_TURN; break;
-    case 0b101001: current_movement = LEFT_TURN; break;
-
-    case 0b000010: current_movement = RIGHT_TURN; break;
-    case 0b010110: current_movement = RIGHT_TURN; break;
-    case 0b100011: current_movement = RIGHT_TURN; break;
-
-    case 0b111100: current_movement = STRAIGHT; break;
-    case 0b101010: current_movement = STRAIGHT; break;
- 
-    case 0b111011: current_movement = STRAIGHT; break;
-
-    case 0b101111: current_movement = STRAIGHT; break;
-    case 0b001011: current_movement = STRAIGHT; break;
-/*       
-    case 0b111100: current_movement = DRIFTED_RIGHT; break;
-    case 0b101010: current_movement = DRIFTED_RIGHT; break;
-    case 0b111010: current_movement = DRIFTED_RIGHT; break;
-    case 0b111011: current_movement = DRIFTED_RIGHT; break;
-
-    case 0b001111: current_movement = DRIFTED_LEFT; break;
-    case 0b101111: current_movement = DRIFTED_LEFT; break;
-    case 0b001011: current_movement = DRIFTED_LEFT; break;
-*/
-    case 0b000000: current_movement = STOP; break;
-    case 0b111111: current_movement = STOP; break;
-        
+    // Wing sensors first → trigger hard turns
+    if (!Output_4_Read()) {   // left wing active
+        previous_movement = LEFT_TURN;
+        return LEFT_TURN;
     }
-    
-    // during turning, do nothing
-    if ((previous_movement == LEFT_TURN || previous_movement == RIGHT_TURN) && current_movement != STRAIGHT)
+    else if (!Output_5_Read()) {  // right wing active
+        previous_movement = RIGHT_TURN;
+        return RIGHT_TURN;
+    }
+
+    // If we were turning, but middle sensors are not back yet → WAIT
+    if ((previous_movement == LEFT_TURN || previous_movement == RIGHT_TURN)) 
     {
-        return WAIT;
+        // Check middle sensors
+        if (!Output_1_Read() || !Output_3_Read()) {
+            return WAIT;  // stay in WAIT until line reacquired
+        } else {
+            previous_movement = STRAIGHT; // line back under middle sensors
+        }
     }
-    
-    previous_movement = current_movement;
-    return current_movement;
+
+    // Compute line error for PID
+    int8_t error = GetLineError();
+
+    if (error == 0) {
+        previous_movement = STRAIGHT;
+        return STRAIGHT;  // centered
+    } else {
+        previous_movement = STRAIGHT;
+        return STRAIGHT;  // off-center → PID corrects
+    }
+
+    // Fallback
+    previous_movement = STOP;
+    return STOP;
 }
-        

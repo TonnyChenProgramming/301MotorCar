@@ -57,20 +57,8 @@ static volatile int16 left_wheel_val; // positive
 static volatile int16 right_wheel_val;//negative
 static volatile int16 wheel_sum; // when wheel_sum is postive,left wheel is faster. otherwise. right wheel is faster
 
-int error;
-float derivative;
-float output;
-
 uint8_t left_pwm = 176;
 uint8_t right_pwm = 176;
-
-
-float Kp = 0.5;
-float Ki = 0.1;
-float Kd = 0.05;
-
-static float integral = 0;
-static float prev_error = 0;
 
 uint8_t timer_flag = 0;
 edge_pack_t edges = {0,0,0,0, 0, 0};
@@ -123,83 +111,8 @@ int main(void)
     // enable isr for edge detection
 
 for(;;) {
-
-    //update finite state machine
-    current_move = GetMovement();
-    if (current_move == STRAIGHT)
-    {
-       movement_finite_state = STRAIGHT_STATE;
-    } else if(current_move == STOP){
-       movement_finite_state = STOP_STATE;
-    }
-      
     
-    
-    
-    //process finite state machine
-    switch (movement_finite_state) {
-    case STOP_STATE:
-        // code block
-        PWM_1_WriteCompare(127);
-        PWM_2_WriteCompare(127);
-        error = 0;
-        derivative = 0;
-        output = 0;
-        integral = 0;
-        left_pwm = 176;
-        right_pwm = 176;
-        break;
-    case STRAIGHT_STATE:
-        if(timer_flag && current_move != STOP)
-        {
-
-        error = QuadDec_M1_GetCounter() + QuadDec_M2_GetCounter();
-
-        // PID
-        integral += error;
-        derivative = error - prev_error;
-        output = Kp * error + Ki * integral + Kd * derivative;
-        
-        if (integral > 500) integral = 500;
-        if (integral < -500) integral = -500;
-
-        // Adjust PWM values
-        left_pwm  -= (int)output;
-        right_pwm += (int)output;
-
-        // Clamp
-        if (left_pwm < PID_PWM_MIN) left_pwm = PID_PWM_MIN;
-        if (left_pwm > PID_PWM_MAX) left_pwm = PID_PWM_MAX;
-        if (right_pwm < PID_PWM_MIN) right_pwm = PID_PWM_MIN;
-        if (right_pwm > PID_PWM_MAX) right_pwm = PID_PWM_MAX;
-
-        // Reset counters
-        QuadDec_M1_SetCounter(0);
-        QuadDec_M2_SetCounter(0);
-
-        PWM_1_WriteCompare(left_pwm);
-        PWM_2_WriteCompare(right_pwm);
-
-        prev_error = error;
-        timer_flag = 0;       
-        }
-        // code block
-        break;
-    case LEFT_TURN_STATE:
-            
-        PWM_1_WriteCompare(127);
-        PWM_2_WriteCompare(127);
-        break;
-    case RIGHT_TURN_STATE:
-            
-        PWM_1_WriteCompare(127);
-        PWM_2_WriteCompare(127);
-        break;
-
-    // code block
-}
-    
-
+ move_handling(); 
 }
 
 }
