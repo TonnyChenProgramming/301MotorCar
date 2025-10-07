@@ -1,20 +1,6 @@
-/* ========================================
- * Fully working code: 
- * PWM      : 
- * Encoder  : 
- * ADC      :
- * USB      : port displays speed and position.
- * CMD: "PW xx"
- * Copyright Univ of Auckland, 2016
- * All Rights Reserved
- * UNPUBLISHED, LICENSED SOFTWARE.
- *
- * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF Univ of Auckland.
- *
- * ========================================
-*/
+// Main File 
 
+// Including all header files
 #include <project.h>
 #include <stdio.h>
 #include <string.h>
@@ -89,6 +75,7 @@ int main(void)
     CyGlobalIntEnable;
     PWM_1_Start();
     PWM_2_Start();
+    
     
     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
     Timer_TS_Start();                      // then start

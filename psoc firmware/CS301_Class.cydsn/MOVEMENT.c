@@ -16,32 +16,42 @@ static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
 static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
 // PID constants (tune these)
-float Kp = 30.0;
+float Kp = 4.0;
 float Ki = 0.0;
-float Kd = 10.0;
+float Kd = 3.0;
 static float integral = 0;
 static float prev_error = 0;
 
 void do_straight_with_pid(void)
 {
     int error = GetLineError();  // -1, 0, +1 from middle sensors
-
+    
+    if (error == 0 && previous_movement == STOP) {
+        motor_left(168);
+        motor_right(168);
+        return;
+    }
+    
     // PID calculations
     integral += error;
     if (integral > 50) integral = 50;
     if (integral < -50) integral = -50;
     float derivative = error - prev_error;
     float output = Kp * error + Ki * integral + Kd * derivative;
+    
+    output *= 0.1;
 
     int base_speed = 170;  // forward PWM
-    int left_pwm  = base_speed - (int)output;
-    int right_pwm = base_speed + (int)output;
+    int correction = (int)(output);
+    
+    int left_pwm  = base_speed - correction;
+    int right_pwm = base_speed + correction;
 
     // clamp
-    if (left_pwm < 120) left_pwm = 120;
-    if (left_pwm > 200) left_pwm = 200;
-    if (right_pwm < 120) right_pwm = 120;
-    if (right_pwm > 200) right_pwm = 200;
+    if (left_pwm < 150) left_pwm = 150;
+    if (left_pwm > 190) left_pwm = 190;
+    if (right_pwm < 150) right_pwm = 150;
+    if (right_pwm > 190) right_pwm = 190;
 
     motor_left(left_pwm);
     motor_right(right_pwm);
@@ -66,17 +76,19 @@ void move_handling(void)
             break;
 
         case STRAIGHT:
+        case DRIFTED_LEFT:
+        case DRIFTED_RIGHT:
             do_straight_with_pid();  // PID active for straight line
             break;
 
         case LEFT_TURN:
-            motor_left(PWM_STOP);    // pivot left
-            motor_right(PWM_FWD);
+            motor_left(99);    // pivot left
+            motor_right(168);
             break;
 
         case RIGHT_TURN:
-            motor_left(PWM_FWD);
-            motor_right(PWM_STOP);   // pivot right
+            motor_left(168);
+            motor_right(99);   // pivot right
             break;
 
         case WAIT:
@@ -84,16 +96,18 @@ void move_handling(void)
             // simplest: repeat previous motor command
             switch (previous_movement) {
                 case LEFT_TURN:
-                    motor_left(PWM_STOP);
-                    motor_right(PWM_FWD);
+                    motor_left(127);
+                    motor_right(255);
                     break;
 
                 case RIGHT_TURN:
-                    motor_left(PWM_FWD);
-                    motor_right(PWM_STOP);
+                    motor_left(255);
+                    motor_right(127);
                     break;
 
                 case STRAIGHT:
+                case DRIFTED_LEFT:
+                case DRIFTED_RIGHT:
                     do_straight_with_pid();
                     break;
 

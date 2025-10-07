@@ -1,25 +1,11 @@
-/* ========================================
- *
- * Copyright YOUR COMPANY, THE YEAR
- * All Rights Reserved
- * UNPUBLISHED, LICENSED SOFTWARE.
- *
- * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
- *
- * ========================================
-*/
-
-/* [] END OF FILE */
-
 #include "SENSORS_READ.h"
 
 // Returns error: -1 = drift left, 0 = centered, +1 = drift right
 int8_t GetLineError(void)
 {
     int8_t error = 0;
-    if (!Output_1_Read()) error = -1;  // mid_left active
-    if (!Output_3_Read()) error = +1;  // mid_right active
+    if (!Output_5_Read()) error = -1;  // front_left active
+    if (!Output_4_Read()) error = +1;  // front_right active
     return error;
 }
 
@@ -46,14 +32,6 @@ uint8 ReadSensors(void) {
    sensorValues |= Output_3_Read() << 3;
    sensorValues |= Output_2_Read() << 4;
    sensorValues |= Output_4_Read() << 5; // Left
-   
-    /* LEDs on when sensor is on the line (active-low) */
-    LED3_Write(Output_1_Read() ? 0 : 1);
-    LED5_Write(Output_2_Read() ? 0 : 1);
-    LED4_Write(Output_3_Read() ? 0 : 1);
-    LED6_Write(Output_4_Read() ? 0 : 1);
-    LED1_Write(Output_5_Read() ? 0 : 1);
-    LED2_Write(Output_6_Read() ? 0 : 1);
     
    return sensorValues;
 }
@@ -64,11 +42,11 @@ MovementState GetMovement(void)
     uint8 sensors = ReadSensors();
 
     // Wing sensors first → trigger hard turns
-    if (!Output_4_Read()) {   // left wing active
+    if (!Output_6_Read()) {   // left wing active
         previous_movement = LEFT_TURN;
         return LEFT_TURN;
     }
-    else if (!Output_5_Read()) {  // right wing active
+    else if (!Output_3_Read()) {  // right wing active
         previous_movement = RIGHT_TURN;
         return RIGHT_TURN;
     }
@@ -77,7 +55,7 @@ MovementState GetMovement(void)
     if ((previous_movement == LEFT_TURN || previous_movement == RIGHT_TURN)) 
     {
         // Check middle sensors
-        if (!Output_1_Read() || !Output_3_Read()) {
+        if (Output_1_Read() && Output_2_Read()) {
             return WAIT;  // stay in WAIT until line reacquired
         } else {
             previous_movement = STRAIGHT; // line back under middle sensors
