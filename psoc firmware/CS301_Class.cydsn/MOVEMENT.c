@@ -16,42 +16,44 @@ static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
 static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
 // PID constants (tune these)
-float Kp = 4.0;
-float Ki = 0.0;
-float Kd = 3.0;
+float Kp = 0.5;
+float Ki = 0.1;
+float Kd = 0.05;
 static float integral = 0;
 static float prev_error = 0;
+int error;
+float derivative;
+float output;
+uint8_t left_pwm = 176;
+uint8_t right_pwm = 176;
+
 
 void do_straight_with_pid(void)
 {
-    int error = GetLineError();  // -1, 0, +1 from middle sensors
-    
-    if (error == 0 && previous_movement == STOP) {
-        motor_left(168);
-        motor_right(168);
-        return;
-    }
-    
-    // PID calculations
-    integral += error;
-    if (integral > 50) integral = 50;
-    if (integral < -50) integral = -50;
-    float derivative = error - prev_error;
-    float output = Kp * error + Ki * integral + Kd * derivative;
-    
-    output *= 0.1;
 
-    int base_speed = 170;  // forward PWM
-    int correction = (int)(output);
-    
-    int left_pwm  = base_speed - correction;
-    int right_pwm = base_speed + correction;
+        error = QuadDec_M1_GetCounter() + QuadDec_M2_GetCounter();
 
-    // clamp
-    if (left_pwm < 150) left_pwm = 150;
-    if (left_pwm > 190) left_pwm = 190;
-    if (right_pwm < 150) right_pwm = 150;
-    if (right_pwm > 190) right_pwm = 190;
+        // PID
+        integral += error;
+        derivative = error - prev_error;
+        output = Kp * error + Ki * integral + Kd * derivative;
+        
+        if (integral > 500) integral = 500;
+        if (integral < -500) integral = -500;
+
+        // Adjust PWM values
+        left_pwm  -= (int)output;
+        right_pwm += (int)output;
+
+        // Clamp
+        if (left_pwm < PID_PWM_MIN) left_pwm = PID_PWM_MIN;
+        if (left_pwm > PID_PWM_MAX) left_pwm = PID_PWM_MAX;
+        if (right_pwm < PID_PWM_MIN) right_pwm = PID_PWM_MIN;
+        if (right_pwm > PID_PWM_MAX) right_pwm = PID_PWM_MAX;
+
+        // Reset counters
+        QuadDec_M1_SetCounter(0);
+        QuadDec_M2_SetCounter(0);
 
     motor_left(left_pwm);
     motor_right(right_pwm);

@@ -43,8 +43,7 @@ static volatile int16 left_wheel_val; // positive
 static volatile int16 right_wheel_val;//negative
 static volatile int16 wheel_sum; // when wheel_sum is postive,left wheel is faster. otherwise. right wheel is faster
 
-uint8_t left_pwm = 176;
-uint8_t right_pwm = 176;
+
 
 uint8_t timer_flag = 0;
 edge_pack_t edges = {0,0,0,0, 0, 0};

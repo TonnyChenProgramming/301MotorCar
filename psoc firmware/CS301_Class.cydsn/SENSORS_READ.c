@@ -1,14 +1,5 @@
 #include "SENSORS_READ.h"
 
-// Returns error: -1 = drift left, 0 = centered, +1 = drift right
-int8_t GetLineError(void)
-{
-    int8_t error = 0;
-    if (!Output_5_Read()) error = -1;  // front_left active
-    if (!Output_4_Read()) error = +1;  // front_right active
-    return error;
-}
-
 
 uint8 sensorValues;
 MovementState previous_movement;
@@ -62,18 +53,6 @@ MovementState GetMovement(void)
         }
     }
 
-    // Compute line error for PID
-    int8_t error = GetLineError();
-
-    if (error == 0) {
-        previous_movement = STRAIGHT;
-        return STRAIGHT;  // centered
-    } else {
-        previous_movement = STRAIGHT;
-        return STRAIGHT;  // off-center → PID corrects
-    }
-
-    // Fallback
-    previous_movement = STOP;
-    return STOP;
+    previous_movement = STRAIGHT;
+    return STRAIGHT;
 }
