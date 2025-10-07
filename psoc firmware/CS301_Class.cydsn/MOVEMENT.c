@@ -24,19 +24,23 @@ static float prev_error = 0;
 int error;
 float derivative;
 float output;
-uint8_t left_pwm = 176;
+uint8_t left_pwm = 98;
 uint8_t right_pwm = 176;
 
+void usbPutString(char *s);
 
 void do_straight_with_pid(void)
 {
-
-        error = QuadDec_M1_GetCounter() + QuadDec_M2_GetCounter();
+        
+        int left_enc = QuadDec_M1_GetCounter();
+        int right_enc = QuadDec_M2_GetCounter();
+        error = left_enc - right_enc;
 
         // PID
         integral += error;
         derivative = error - prev_error;
         output = Kp * error + Ki * integral + Kd * derivative;
+        output *= 0.2;
         
         if (integral > 500) integral = 500;
         if (integral < -500) integral = -500;
@@ -59,6 +63,14 @@ void do_straight_with_pid(void)
     motor_right(right_pwm);
 
     prev_error = error;
+    
+    //debug
+    #ifdef USE_USB
+    char buf[64];
+    sprintf(buf, "L:%d R:%d Err:%d Int:%d Der:%d Out:%d LPW:%d RPMW:%d\r\n",
+            left_enc, right_enc, error, (int)integral, (int)derivative, (int)output, left_pwm, right_pwm);
+    usbPutString(buf);
+    #endif
 }
 
 
@@ -78,8 +90,6 @@ void move_handling(void)
             break;
 
         case STRAIGHT:
-        case DRIFTED_LEFT:
-        case DRIFTED_RIGHT:
             do_straight_with_pid();  // PID active for straight line
             break;
 
@@ -94,35 +104,15 @@ void move_handling(void)
             break;
 
         case WAIT:
-            // Keep last turn command active or stop
-            // simplest: repeat previous motor command
-            switch (previous_movement) {
-                case LEFT_TURN:
-                    motor_left(127);
-                    motor_right(255);
-                    break;
-
-                case RIGHT_TURN:
-                    motor_left(255);
-                    motor_right(127);
-                    break;
-
-                case STRAIGHT:
-                case DRIFTED_LEFT:
-                case DRIFTED_RIGHT:
-                    do_straight_with_pid();
-                    break;
-
-                case STOP:
-                default:
-                    stop();
-                    break;
-            }
+            do_straight_with_pid();
             break;
 
         default:
             stop();
             break;
+         
+        }
+        if (m != WAIT) {
+            previous_movement = m;
     }
 }
-

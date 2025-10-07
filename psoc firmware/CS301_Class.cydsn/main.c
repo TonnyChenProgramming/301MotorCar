@@ -99,6 +99,10 @@ int main(void)
 for(;;) {
     
  move_handling(); 
+
+#ifdef USE_USB
+        handle_usb();
+#endif
 }
 
 }
