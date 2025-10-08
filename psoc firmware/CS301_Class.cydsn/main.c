@@ -95,26 +95,26 @@ int main(void)
 #endif
 
 for(;;) {
-    if (timer_flag) {
-        timer_flag = 0;
-        MovementState m = GetMovement();
+   // if (timer_flag) {
+     //   timer_flag = 0;
+      //  MovementState m = GetMovement();
         move_handling(); 
         
-             // Debug print current state
-        char buf[64];
-        switch(m)
-        {
-            case STOP:        sprintf(buf, "STATE: STOP\r\n"); break;
-            case STRAIGHT:    sprintf(buf, "STATE: STRAIGHT\r\n"); break;
-            case LEFT_TURN:   sprintf(buf, "STATE: LEFT TURN\r\n"); break;
-            case RIGHT_TURN:  sprintf(buf, "STATE: RIGHT TURN\r\n"); break;
-            case WAIT:        sprintf(buf, "STATE: WAIT\r\n"); break;
-            default:          sprintf(buf, "STATE: UNKNOWN\r\n"); break;
-        }
-        usbPutString(buf);
+                     // Debug print current state
+       // char buf[64];
+       // switch(m)
+       // {
+            //case STOP:        sprintf(buf, "STATE: STOP\r\n"); break;
+            //case STRAIGHT:    sprintf(buf, "STATE: STRAIGHT\r\n"); break;
+            //case LEFT_TURN:   sprintf(buf, "STATE: LEFT TURN\r\n"); break;
+           // case RIGHT_TURN:  sprintf(buf, "STATE: RIGHT TURN\r\n"); break;
+          //  case WAIT:        sprintf(buf, "STATE: WAIT\r\n"); break;
+         //   default:          sprintf(buf, "STATE: UNKNOWN\r\n"); break;
+        //}
+       // usbPutString(buf);
 
-        CyDelay(500); // small delay so it doesn't spam the terminal
-    }
+     //   CyDelay(500); // small delay so it doesn't spam the terminal
+   // }
     
 }
 

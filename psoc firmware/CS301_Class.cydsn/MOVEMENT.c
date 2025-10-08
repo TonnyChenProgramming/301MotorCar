@@ -24,7 +24,7 @@ static float prev_error = 0;
 int error;
 float derivative;
 float output;
-uint8_t left_pwm = 98;
+uint8_t left_pwm = 172;
 uint8_t right_pwm = 176;
 
 void usbPutString(char *s);
@@ -104,8 +104,28 @@ void move_handling(void)
             break;
 
         case WAIT:
-            do_straight_with_pid();
-            break;
+           // Keep turning in the same direction until middle sensors see line again
+    if (Output_5_Read() && Output_4_Read()) {
+        // Line reacquired (assuming active-low sensors: 0 = line detected)
+        do_straight_with_pid();
+        previous_movement = STRAIGHT;
+    } 
+    else {
+        // Continue the previous turn direction
+        if (previous_movement == LEFT_TURN) {
+            motor_left(127);
+            motor_right(168);   // keep turning left
+        } 
+        else if (previous_movement == RIGHT_TURN) {
+            motor_left(168);
+            motor_right(99);    // keep turning right
+        } 
+        else {
+            // Default to stop if no previous movement known
+            stop();
+        }
+    }
+    break;
 
         default:
             stop();
