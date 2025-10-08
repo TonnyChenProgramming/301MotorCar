@@ -43,7 +43,8 @@ static volatile int16 left_wheel_val; // positive
 static volatile int16 right_wheel_val;//negative
 static volatile int16 wheel_sum; // when wheel_sum is postive,left wheel is faster. otherwise. right wheel is faster
 
-
+static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
+static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
 uint8_t timer_flag = 0;
 edge_pack_t edges = {0,0,0,0, 0, 0};
@@ -93,21 +94,32 @@ int main(void)
    USBUART_Start(0, USBUART_5V_OPERATION);
 #endif
 
-
-    // enable isr for edge detection
-
 for(;;) {
-    
- move_handling(); 
+    if (timer_flag) {
+        timer_flag = 0;
+        MovementState m = GetMovement();
+        move_handling(); 
+        
+             // Debug print current state
+        char buf[64];
+        switch(m)
+        {
+            case STOP:        sprintf(buf, "STATE: STOP\r\n"); break;
+            case STRAIGHT:    sprintf(buf, "STATE: STRAIGHT\r\n"); break;
+            case LEFT_TURN:   sprintf(buf, "STATE: LEFT TURN\r\n"); break;
+            case RIGHT_TURN:  sprintf(buf, "STATE: RIGHT TURN\r\n"); break;
+            case WAIT:        sprintf(buf, "STATE: WAIT\r\n"); break;
+            default:          sprintf(buf, "STATE: UNKNOWN\r\n"); break;
+        }
+        usbPutString(buf);
 
-#ifdef USE_USB
-        handle_usb();
-#endif
+        CyDelay(500); // small delay so it doesn't spam the terminal
+    }
+    
 }
 
 }
  
-
 
 void usbPutString(char *s)
 {

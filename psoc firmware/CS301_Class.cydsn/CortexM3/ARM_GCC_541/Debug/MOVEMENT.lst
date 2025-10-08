@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 1
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 1
   40 0008 FB80     		strh	r3, [r7, #6]	@ movhi
   41              		.loc 1 15 0
   42 000a FB88     		ldrh	r3, [r7, #6]	@ movhi
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 2
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 2
 
 
   43 000c DBB2     		uxtb	r3, r3
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 1
   96              		.size	Kp, 4
   97              	Kp:
   98 0000 0000003F 		.word	1056964608
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 3
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 3
 
 
   99              		.global	Ki
@@ -164,32 +164,23 @@ ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 1
  139              		.global	__aeabi_fcmpgt
  140              		.global	__aeabi_fcmplt
  141              		.global	__aeabi_f2iz
- 142              		.section	.rodata
+ 142              		.section	.text.do_straight_with_pid,"ax",%progbits
  143              		.align	2
- 144              	.LC0:
- 145 0000 4C3A2564 		.ascii	"L:%d R:%d Err:%d Int:%d Der:%d Out:%d LPW:%d RPMW:%"
- 145      20523A25 
- 145      64204572 
- 145      723A2564 
- 145      20496E74 
- 146 0033 640D0A00 		.ascii	"d\015\012\000"
- 147              		.section	.text.do_straight_with_pid,"ax",%progbits
- 148              		.align	2
- 149              		.global	do_straight_with_pid
- 150              		.thumb
- 151              		.thumb_func
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 4
-
-
- 152              		.type	do_straight_with_pid, %function
- 153              	do_straight_with_pid:
- 154              	.LFB66:
+ 144              		.global	do_straight_with_pid
+ 145              		.thumb
+ 146              		.thumb_func
+ 147              		.type	do_straight_with_pid, %function
+ 148              	do_straight_with_pid:
+ 149              	.LFB66:
   17:MOVEMENT.c    **** 
   18:MOVEMENT.c    **** // PID constants (tune these)
   19:MOVEMENT.c    **** float Kp = 0.5;
   20:MOVEMENT.c    **** float Ki = 0.1;
   21:MOVEMENT.c    **** float Kd = 0.05;
   22:MOVEMENT.c    **** static float integral = 0;
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 4
+
+
   23:MOVEMENT.c    **** static float prev_error = 0;
   24:MOVEMENT.c    **** int error;
   25:MOVEMENT.c    **** float derivative;
@@ -201,1466 +192,1388 @@ ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 1
   31:MOVEMENT.c    **** 
   32:MOVEMENT.c    **** void do_straight_with_pid(void)
   33:MOVEMENT.c    **** {
- 155              		.loc 1 33 0
- 156              		.cfi_startproc
- 157              		@ args = 0, pretend = 0, frame = 72
- 158              		@ frame_needed = 1, uses_anonymous_args = 0
- 159 0000 F0B5     		push	{r4, r5, r6, r7, lr}
- 160              		.cfi_def_cfa_offset 20
- 161              		.cfi_offset 4, -20
- 162              		.cfi_offset 5, -16
- 163              		.cfi_offset 6, -12
- 164              		.cfi_offset 7, -8
- 165              		.cfi_offset 14, -4
- 166 0002 99B0     		sub	sp, sp, #100
- 167              		.cfi_def_cfa_offset 120
- 168 0004 06AF     		add	r7, sp, #24
- 169              		.cfi_def_cfa 7, 96
+ 150              		.loc 1 33 0
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 8
+ 153              		@ frame_needed = 1, uses_anonymous_args = 0
+ 154 0000 90B5     		push	{r4, r7, lr}
+ 155              		.cfi_def_cfa_offset 12
+ 156              		.cfi_offset 4, -12
+ 157              		.cfi_offset 7, -8
+ 158              		.cfi_offset 14, -4
+ 159 0002 83B0     		sub	sp, sp, #12
+ 160              		.cfi_def_cfa_offset 24
+ 161 0004 00AF     		add	r7, sp, #0
+ 162              		.cfi_def_cfa_register 7
   34:MOVEMENT.c    ****         
   35:MOVEMENT.c    ****         int left_enc = QuadDec_M1_GetCounter();
- 170              		.loc 1 35 0
- 171 0006 FFF7FEFF 		bl	QuadDec_M1_GetCounter
- 172 000a 0346     		mov	r3, r0
- 173 000c 7B64     		str	r3, [r7, #68]
+ 163              		.loc 1 35 0
+ 164 0006 FFF7FEFF 		bl	QuadDec_M1_GetCounter
+ 165 000a 0346     		mov	r3, r0
+ 166 000c 7B60     		str	r3, [r7, #4]
   36:MOVEMENT.c    ****         int right_enc = QuadDec_M2_GetCounter();
- 174              		.loc 1 36 0
- 175 000e FFF7FEFF 		bl	QuadDec_M2_GetCounter
- 176 0012 0346     		mov	r3, r0
- 177 0014 3B64     		str	r3, [r7, #64]
-  37:MOVEMENT.c    ****         error = left_enc - right_enc;
- 178              		.loc 1 37 0
- 179 0016 7A6C     		ldr	r2, [r7, #68]
- 180 0018 3B6C     		ldr	r3, [r7, #64]
- 181 001a D31A     		subs	r3, r2, r3
- 182 001c 764A     		ldr	r2, .L14+8
- 183 001e 1360     		str	r3, [r2]
+ 167              		.loc 1 36 0
+ 168 000e FFF7FEFF 		bl	QuadDec_M2_GetCounter
+ 169 0012 0346     		mov	r3, r0
+ 170 0014 3B60     		str	r3, [r7]
+  37:MOVEMENT.c    ****         error = left_enc + right_enc;
+ 171              		.loc 1 37 0
+ 172 0016 7A68     		ldr	r2, [r7, #4]
+ 173 0018 3B68     		ldr	r3, [r7]
+ 174 001a 1344     		add	r3, r3, r2
+ 175 001c 624A     		ldr	r2, .L14+8
+ 176 001e 1360     		str	r3, [r2]
   38:MOVEMENT.c    **** 
   39:MOVEMENT.c    ****         // PID
   40:MOVEMENT.c    ****         integral += error;
- 184              		.loc 1 40 0
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 5
+ 177              		.loc 1 40 0
+ 178 0020 614B     		ldr	r3, .L14+8
+ 179 0022 1B68     		ldr	r3, [r3]
+ 180 0024 1846     		mov	r0, r3
+ 181 0026 FFF7FEFF 		bl	__aeabi_i2f
+ 182 002a 0246     		mov	r2, r0
+ 183 002c 5F4B     		ldr	r3, .L14+12
+ 184 002e 1B68     		ldr	r3, [r3]	@ float
+ 185 0030 1946     		mov	r1, r3
+ 186 0032 1046     		mov	r0, r2
+ 187 0034 FFF7FEFF 		bl	__aeabi_fadd
+ 188 0038 0346     		mov	r3, r0
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 5
 
 
- 185 0020 754B     		ldr	r3, .L14+8
- 186 0022 1B68     		ldr	r3, [r3]
- 187 0024 1846     		mov	r0, r3
- 188 0026 FFF7FEFF 		bl	__aeabi_i2f
- 189 002a 0246     		mov	r2, r0
- 190 002c 734B     		ldr	r3, .L14+12
- 191 002e 1B68     		ldr	r3, [r3]	@ float
- 192 0030 1946     		mov	r1, r3
- 193 0032 1046     		mov	r0, r2
- 194 0034 FFF7FEFF 		bl	__aeabi_fadd
- 195 0038 0346     		mov	r3, r0
- 196 003a 1A46     		mov	r2, r3
- 197 003c 6F4B     		ldr	r3, .L14+12
- 198 003e 1A60     		str	r2, [r3]	@ float
+ 189 003a 1A46     		mov	r2, r3
+ 190 003c 5B4B     		ldr	r3, .L14+12
+ 191 003e 1A60     		str	r2, [r3]	@ float
   41:MOVEMENT.c    ****         derivative = error - prev_error;
- 199              		.loc 1 41 0
- 200 0040 6D4B     		ldr	r3, .L14+8
- 201 0042 1B68     		ldr	r3, [r3]
- 202 0044 1846     		mov	r0, r3
- 203 0046 FFF7FEFF 		bl	__aeabi_i2f
- 204 004a 0246     		mov	r2, r0
- 205 004c 6C4B     		ldr	r3, .L14+16
- 206 004e 1B68     		ldr	r3, [r3]	@ float
- 207 0050 1946     		mov	r1, r3
- 208 0052 1046     		mov	r0, r2
- 209 0054 FFF7FEFF 		bl	__aeabi_fsub
- 210 0058 0346     		mov	r3, r0
- 211 005a 1A46     		mov	r2, r3
- 212 005c 694B     		ldr	r3, .L14+20
- 213 005e 1A60     		str	r2, [r3]	@ float
+ 192              		.loc 1 41 0
+ 193 0040 594B     		ldr	r3, .L14+8
+ 194 0042 1B68     		ldr	r3, [r3]
+ 195 0044 1846     		mov	r0, r3
+ 196 0046 FFF7FEFF 		bl	__aeabi_i2f
+ 197 004a 0246     		mov	r2, r0
+ 198 004c 584B     		ldr	r3, .L14+16
+ 199 004e 1B68     		ldr	r3, [r3]	@ float
+ 200 0050 1946     		mov	r1, r3
+ 201 0052 1046     		mov	r0, r2
+ 202 0054 FFF7FEFF 		bl	__aeabi_fsub
+ 203 0058 0346     		mov	r3, r0
+ 204 005a 1A46     		mov	r2, r3
+ 205 005c 554B     		ldr	r3, .L14+20
+ 206 005e 1A60     		str	r2, [r3]	@ float
   42:MOVEMENT.c    ****         output = Kp * error + Ki * integral + Kd * derivative;
- 214              		.loc 1 42 0
- 215 0060 654B     		ldr	r3, .L14+8
- 216 0062 1B68     		ldr	r3, [r3]
- 217 0064 1846     		mov	r0, r3
- 218 0066 FFF7FEFF 		bl	__aeabi_i2f
- 219 006a 0246     		mov	r2, r0
- 220 006c 664B     		ldr	r3, .L14+24
- 221 006e 1B68     		ldr	r3, [r3]	@ float
- 222 0070 1946     		mov	r1, r3
- 223 0072 1046     		mov	r0, r2
- 224 0074 FFF7FEFF 		bl	__aeabi_fmul
- 225 0078 0346     		mov	r3, r0
- 226 007a 1C46     		mov	r4, r3
- 227 007c 634B     		ldr	r3, .L14+28
- 228 007e 1A68     		ldr	r2, [r3]	@ float
- 229 0080 5E4B     		ldr	r3, .L14+12
- 230 0082 1B68     		ldr	r3, [r3]	@ float
- 231 0084 1946     		mov	r1, r3
- 232 0086 1046     		mov	r0, r2
- 233 0088 FFF7FEFF 		bl	__aeabi_fmul
- 234 008c 0346     		mov	r3, r0
- 235 008e 1946     		mov	r1, r3
- 236 0090 2046     		mov	r0, r4
- 237 0092 FFF7FEFF 		bl	__aeabi_fadd
- 238 0096 0346     		mov	r3, r0
- 239 0098 1C46     		mov	r4, r3
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 6
+ 207              		.loc 1 42 0
+ 208 0060 514B     		ldr	r3, .L14+8
+ 209 0062 1B68     		ldr	r3, [r3]
+ 210 0064 1846     		mov	r0, r3
+ 211 0066 FFF7FEFF 		bl	__aeabi_i2f
+ 212 006a 0246     		mov	r2, r0
+ 213 006c 524B     		ldr	r3, .L14+24
+ 214 006e 1B68     		ldr	r3, [r3]	@ float
+ 215 0070 1946     		mov	r1, r3
+ 216 0072 1046     		mov	r0, r2
+ 217 0074 FFF7FEFF 		bl	__aeabi_fmul
+ 218 0078 0346     		mov	r3, r0
+ 219 007a 1C46     		mov	r4, r3
+ 220 007c 4F4B     		ldr	r3, .L14+28
+ 221 007e 1A68     		ldr	r2, [r3]	@ float
+ 222 0080 4A4B     		ldr	r3, .L14+12
+ 223 0082 1B68     		ldr	r3, [r3]	@ float
+ 224 0084 1946     		mov	r1, r3
+ 225 0086 1046     		mov	r0, r2
+ 226 0088 FFF7FEFF 		bl	__aeabi_fmul
+ 227 008c 0346     		mov	r3, r0
+ 228 008e 1946     		mov	r1, r3
+ 229 0090 2046     		mov	r0, r4
+ 230 0092 FFF7FEFF 		bl	__aeabi_fadd
+ 231 0096 0346     		mov	r3, r0
+ 232 0098 1C46     		mov	r4, r3
+ 233 009a 494B     		ldr	r3, .L14+32
+ 234 009c 1A68     		ldr	r2, [r3]	@ float
+ 235 009e 454B     		ldr	r3, .L14+20
+ 236 00a0 1B68     		ldr	r3, [r3]	@ float
+ 237 00a2 1946     		mov	r1, r3
+ 238 00a4 1046     		mov	r0, r2
+ 239 00a6 FFF7FEFF 		bl	__aeabi_fmul
+ 240 00aa 0346     		mov	r3, r0
+ 241 00ac 1946     		mov	r1, r3
+ 242 00ae 2046     		mov	r0, r4
+ 243 00b0 FFF7FEFF 		bl	__aeabi_fadd
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 6
 
 
- 240 009a 5D4B     		ldr	r3, .L14+32
- 241 009c 1A68     		ldr	r2, [r3]	@ float
- 242 009e 594B     		ldr	r3, .L14+20
- 243 00a0 1B68     		ldr	r3, [r3]	@ float
- 244 00a2 1946     		mov	r1, r3
- 245 00a4 1046     		mov	r0, r2
- 246 00a6 FFF7FEFF 		bl	__aeabi_fmul
- 247 00aa 0346     		mov	r3, r0
- 248 00ac 1946     		mov	r1, r3
- 249 00ae 2046     		mov	r0, r4
- 250 00b0 FFF7FEFF 		bl	__aeabi_fadd
- 251 00b4 0346     		mov	r3, r0
- 252 00b6 1A46     		mov	r2, r3
- 253 00b8 564B     		ldr	r3, .L14+36
- 254 00ba 1A60     		str	r2, [r3]	@ float
+ 244 00b4 0346     		mov	r3, r0
+ 245 00b6 1A46     		mov	r2, r3
+ 246 00b8 424B     		ldr	r3, .L14+36
+ 247 00ba 1A60     		str	r2, [r3]	@ float
   43:MOVEMENT.c    ****         output *= 0.2;
- 255              		.loc 1 43 0
- 256 00bc 554B     		ldr	r3, .L14+36
- 257 00be 1B68     		ldr	r3, [r3]	@ float
- 258 00c0 1846     		mov	r0, r3
- 259 00c2 FFF7FEFF 		bl	__aeabi_f2d
- 260 00c6 4AA3     		adr	r3, .L14
- 261 00c8 D3E90023 		ldrd	r2, [r3]
- 262 00cc FFF7FEFF 		bl	__aeabi_dmul
- 263 00d0 0346     		mov	r3, r0
- 264 00d2 0C46     		mov	r4, r1
- 265 00d4 1846     		mov	r0, r3
- 266 00d6 2146     		mov	r1, r4
- 267 00d8 FFF7FEFF 		bl	__aeabi_d2f
- 268 00dc 0246     		mov	r2, r0
- 269 00de 4D4B     		ldr	r3, .L14+36
- 270 00e0 1A60     		str	r2, [r3]	@ float
+ 248              		.loc 1 43 0
+ 249 00bc 414B     		ldr	r3, .L14+36
+ 250 00be 1B68     		ldr	r3, [r3]	@ float
+ 251 00c0 1846     		mov	r0, r3
+ 252 00c2 FFF7FEFF 		bl	__aeabi_f2d
+ 253 00c6 36A3     		adr	r3, .L14
+ 254 00c8 D3E90023 		ldrd	r2, [r3]
+ 255 00cc FFF7FEFF 		bl	__aeabi_dmul
+ 256 00d0 0346     		mov	r3, r0
+ 257 00d2 0C46     		mov	r4, r1
+ 258 00d4 1846     		mov	r0, r3
+ 259 00d6 2146     		mov	r1, r4
+ 260 00d8 FFF7FEFF 		bl	__aeabi_d2f
+ 261 00dc 0246     		mov	r2, r0
+ 262 00de 394B     		ldr	r3, .L14+36
+ 263 00e0 1A60     		str	r2, [r3]	@ float
   44:MOVEMENT.c    ****         
   45:MOVEMENT.c    ****         if (integral > 500) integral = 500;
- 271              		.loc 1 45 0
- 272 00e2 464B     		ldr	r3, .L14+12
- 273 00e4 1B68     		ldr	r3, [r3]	@ float
- 274 00e6 4C49     		ldr	r1, .L14+40
- 275 00e8 1846     		mov	r0, r3
- 276 00ea FFF7FEFF 		bl	__aeabi_fcmpgt
- 277 00ee 0346     		mov	r3, r0
- 278 00f0 002B     		cmp	r3, #0
- 279 00f2 02D0     		beq	.L4
- 280              		.loc 1 45 0 is_stmt 0 discriminator 1
- 281 00f4 414B     		ldr	r3, .L14+12
- 282 00f6 484A     		ldr	r2, .L14+40
- 283 00f8 1A60     		str	r2, [r3]	@ float
- 284              	.L4:
+ 264              		.loc 1 45 0
+ 265 00e2 324B     		ldr	r3, .L14+12
+ 266 00e4 1B68     		ldr	r3, [r3]	@ float
+ 267 00e6 3849     		ldr	r1, .L14+40
+ 268 00e8 1846     		mov	r0, r3
+ 269 00ea FFF7FEFF 		bl	__aeabi_fcmpgt
+ 270 00ee 0346     		mov	r3, r0
+ 271 00f0 002B     		cmp	r3, #0
+ 272 00f2 02D0     		beq	.L4
+ 273              		.loc 1 45 0 is_stmt 0 discriminator 1
+ 274 00f4 2D4B     		ldr	r3, .L14+12
+ 275 00f6 344A     		ldr	r2, .L14+40
+ 276 00f8 1A60     		str	r2, [r3]	@ float
+ 277              	.L4:
   46:MOVEMENT.c    ****         if (integral < -500) integral = -500;
- 285              		.loc 1 46 0 is_stmt 1
- 286 00fa 404B     		ldr	r3, .L14+12
- 287 00fc 1B68     		ldr	r3, [r3]	@ float
- 288 00fe 4749     		ldr	r1, .L14+44
- 289 0100 1846     		mov	r0, r3
- 290 0102 FFF7FEFF 		bl	__aeabi_fcmplt
- 291 0106 0346     		mov	r3, r0
- 292 0108 002B     		cmp	r3, #0
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 7
-
-
- 293 010a 02D0     		beq	.L6
- 294              		.loc 1 46 0 is_stmt 0 discriminator 1
- 295 010c 3B4B     		ldr	r3, .L14+12
- 296 010e 434A     		ldr	r2, .L14+44
- 297 0110 1A60     		str	r2, [r3]	@ float
- 298              	.L6:
+ 278              		.loc 1 46 0 is_stmt 1
+ 279 00fa 2C4B     		ldr	r3, .L14+12
+ 280 00fc 1B68     		ldr	r3, [r3]	@ float
+ 281 00fe 3349     		ldr	r1, .L14+44
+ 282 0100 1846     		mov	r0, r3
+ 283 0102 FFF7FEFF 		bl	__aeabi_fcmplt
+ 284 0106 0346     		mov	r3, r0
+ 285 0108 002B     		cmp	r3, #0
+ 286 010a 02D0     		beq	.L6
+ 287              		.loc 1 46 0 is_stmt 0 discriminator 1
+ 288 010c 274B     		ldr	r3, .L14+12
+ 289 010e 2F4A     		ldr	r2, .L14+44
+ 290 0110 1A60     		str	r2, [r3]	@ float
+ 291              	.L6:
   47:MOVEMENT.c    **** 
   48:MOVEMENT.c    ****         // Adjust PWM values
   49:MOVEMENT.c    ****         left_pwm  -= (int)output;
- 299              		.loc 1 49 0 is_stmt 1
- 300 0112 434B     		ldr	r3, .L14+48
- 301 0114 1C78     		ldrb	r4, [r3]	@ zero_extendqisi2
- 302 0116 3F4B     		ldr	r3, .L14+36
- 303 0118 1B68     		ldr	r3, [r3]	@ float
- 304 011a 1846     		mov	r0, r3
- 305 011c FFF7FEFF 		bl	__aeabi_f2iz
- 306 0120 0346     		mov	r3, r0
- 307 0122 DBB2     		uxtb	r3, r3
- 308 0124 E31A     		subs	r3, r4, r3
- 309 0126 DAB2     		uxtb	r2, r3
- 310 0128 3D4B     		ldr	r3, .L14+48
- 311 012a 1A70     		strb	r2, [r3]
+ 292              		.loc 1 49 0 is_stmt 1
+ 293 0112 2F4B     		ldr	r3, .L14+48
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 7
+
+
+ 294 0114 1C78     		ldrb	r4, [r3]	@ zero_extendqisi2
+ 295 0116 2B4B     		ldr	r3, .L14+36
+ 296 0118 1B68     		ldr	r3, [r3]	@ float
+ 297 011a 1846     		mov	r0, r3
+ 298 011c FFF7FEFF 		bl	__aeabi_f2iz
+ 299 0120 0346     		mov	r3, r0
+ 300 0122 DBB2     		uxtb	r3, r3
+ 301 0124 E31A     		subs	r3, r4, r3
+ 302 0126 DAB2     		uxtb	r2, r3
+ 303 0128 294B     		ldr	r3, .L14+48
+ 304 012a 1A70     		strb	r2, [r3]
   50:MOVEMENT.c    ****         right_pwm += (int)output;
- 312              		.loc 1 50 0
- 313 012c 394B     		ldr	r3, .L14+36
- 314 012e 1B68     		ldr	r3, [r3]	@ float
- 315 0130 1846     		mov	r0, r3
- 316 0132 FFF7FEFF 		bl	__aeabi_f2iz
- 317 0136 0346     		mov	r3, r0
- 318 0138 DAB2     		uxtb	r2, r3
- 319 013a 3A4B     		ldr	r3, .L14+52
- 320 013c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 321 013e 1344     		add	r3, r3, r2
- 322 0140 DAB2     		uxtb	r2, r3
- 323 0142 384B     		ldr	r3, .L14+52
- 324 0144 1A70     		strb	r2, [r3]
+ 305              		.loc 1 50 0
+ 306 012c 254B     		ldr	r3, .L14+36
+ 307 012e 1B68     		ldr	r3, [r3]	@ float
+ 308 0130 1846     		mov	r0, r3
+ 309 0132 FFF7FEFF 		bl	__aeabi_f2iz
+ 310 0136 0346     		mov	r3, r0
+ 311 0138 DAB2     		uxtb	r2, r3
+ 312 013a 264B     		ldr	r3, .L14+52
+ 313 013c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 314 013e 1344     		add	r3, r3, r2
+ 315 0140 DAB2     		uxtb	r2, r3
+ 316 0142 244B     		ldr	r3, .L14+52
+ 317 0144 1A70     		strb	r2, [r3]
   51:MOVEMENT.c    **** 
   52:MOVEMENT.c    ****         // Clamp
   53:MOVEMENT.c    ****         if (left_pwm < PID_PWM_MIN) left_pwm = PID_PWM_MIN;
- 325              		.loc 1 53 0
- 326 0146 364B     		ldr	r3, .L14+48
- 327 0148 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 328 014a 7E2B     		cmp	r3, #126
- 329 014c 02D8     		bhi	.L12
- 330              		.loc 1 53 0 is_stmt 0 discriminator 1
- 331 014e 344B     		ldr	r3, .L14+48
- 332 0150 7F22     		movs	r2, #127
- 333 0152 1A70     		strb	r2, [r3]
- 334              	.L12:
+ 318              		.loc 1 53 0
+ 319 0146 224B     		ldr	r3, .L14+48
+ 320 0148 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 321 014a 7E2B     		cmp	r3, #126
+ 322 014c 02D8     		bhi	.L12
+ 323              		.loc 1 53 0 is_stmt 0 discriminator 1
+ 324 014e 204B     		ldr	r3, .L14+48
+ 325 0150 7F22     		movs	r2, #127
+ 326 0152 1A70     		strb	r2, [r3]
+ 327              	.L12:
   54:MOVEMENT.c    ****         if (left_pwm > PID_PWM_MAX) left_pwm = PID_PWM_MAX;
   55:MOVEMENT.c    ****         if (right_pwm < PID_PWM_MIN) right_pwm = PID_PWM_MIN;
- 335              		.loc 1 55 0 is_stmt 1
- 336 0154 334B     		ldr	r3, .L14+52
- 337 0156 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 338 0158 7E2B     		cmp	r3, #126
- 339 015a 02D8     		bhi	.L13
- 340              		.loc 1 55 0 is_stmt 0 discriminator 1
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 8
-
-
- 341 015c 314B     		ldr	r3, .L14+52
- 342 015e 7F22     		movs	r2, #127
- 343 0160 1A70     		strb	r2, [r3]
- 344              	.L13:
+ 328              		.loc 1 55 0 is_stmt 1
+ 329 0154 1F4B     		ldr	r3, .L14+52
+ 330 0156 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 331 0158 7E2B     		cmp	r3, #126
+ 332 015a 02D8     		bhi	.L13
+ 333              		.loc 1 55 0 is_stmt 0 discriminator 1
+ 334 015c 1D4B     		ldr	r3, .L14+52
+ 335 015e 7F22     		movs	r2, #127
+ 336 0160 1A70     		strb	r2, [r3]
+ 337              	.L13:
   56:MOVEMENT.c    ****         if (right_pwm > PID_PWM_MAX) right_pwm = PID_PWM_MAX;
   57:MOVEMENT.c    **** 
   58:MOVEMENT.c    ****         // Reset counters
   59:MOVEMENT.c    ****         QuadDec_M1_SetCounter(0);
- 345              		.loc 1 59 0 is_stmt 1
- 346 0162 0020     		movs	r0, #0
- 347 0164 FFF7FEFF 		bl	QuadDec_M1_SetCounter
+ 338              		.loc 1 59 0 is_stmt 1
+ 339 0162 0020     		movs	r0, #0
+ 340 0164 FFF7FEFF 		bl	QuadDec_M1_SetCounter
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 8
+
+
   60:MOVEMENT.c    ****         QuadDec_M2_SetCounter(0);
- 348              		.loc 1 60 0
- 349 0168 0020     		movs	r0, #0
- 350 016a FFF7FEFF 		bl	QuadDec_M2_SetCounter
+ 341              		.loc 1 60 0
+ 342 0168 0020     		movs	r0, #0
+ 343 016a FFF7FEFF 		bl	QuadDec_M2_SetCounter
   61:MOVEMENT.c    **** 
   62:MOVEMENT.c    ****     motor_left(left_pwm);
- 351              		.loc 1 62 0
- 352 016e 2C4B     		ldr	r3, .L14+48
- 353 0170 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 354 0172 9BB2     		uxth	r3, r3
- 355 0174 1846     		mov	r0, r3
- 356 0176 FFF7FEFF 		bl	motor_left
+ 344              		.loc 1 62 0
+ 345 016e 184B     		ldr	r3, .L14+48
+ 346 0170 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 347 0172 9BB2     		uxth	r3, r3
+ 348 0174 1846     		mov	r0, r3
+ 349 0176 FFF7FEFF 		bl	motor_left
   63:MOVEMENT.c    ****     motor_right(right_pwm);
- 357              		.loc 1 63 0
- 358 017a 2A4B     		ldr	r3, .L14+52
- 359 017c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 360 017e 9BB2     		uxth	r3, r3
- 361 0180 1846     		mov	r0, r3
- 362 0182 FFF7FEFF 		bl	motor_right
+ 350              		.loc 1 63 0
+ 351 017a 164B     		ldr	r3, .L14+52
+ 352 017c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 353 017e 9BB2     		uxth	r3, r3
+ 354 0180 1846     		mov	r0, r3
+ 355 0182 FFF7FEFF 		bl	motor_right
   64:MOVEMENT.c    **** 
   65:MOVEMENT.c    ****     prev_error = error;
- 363              		.loc 1 65 0
- 364 0186 1C4B     		ldr	r3, .L14+8
- 365 0188 1B68     		ldr	r3, [r3]
- 366 018a 1846     		mov	r0, r3
- 367 018c FFF7FEFF 		bl	__aeabi_i2f
- 368 0190 0246     		mov	r2, r0
- 369 0192 1B4B     		ldr	r3, .L14+16
- 370 0194 1A60     		str	r2, [r3]	@ float
+ 356              		.loc 1 65 0
+ 357 0186 084B     		ldr	r3, .L14+8
+ 358 0188 1B68     		ldr	r3, [r3]
+ 359 018a 1846     		mov	r0, r3
+ 360 018c FFF7FEFF 		bl	__aeabi_i2f
+ 361 0190 0246     		mov	r2, r0
+ 362 0192 074B     		ldr	r3, .L14+16
+ 363 0194 1A60     		str	r2, [r3]	@ float
   66:MOVEMENT.c    ****     
   67:MOVEMENT.c    ****     //debug
-  68:MOVEMENT.c    ****     #ifdef USE_USB
-  69:MOVEMENT.c    ****     char buf[64];
-  70:MOVEMENT.c    ****     sprintf(buf, "L:%d R:%d Err:%d Int:%d Der:%d Out:%d LPW:%d RPMW:%d\r\n",
- 371              		.loc 1 70 0
- 372 0196 184B     		ldr	r3, .L14+8
- 373 0198 1C68     		ldr	r4, [r3]
- 374 019a 184B     		ldr	r3, .L14+12
- 375 019c 1B68     		ldr	r3, [r3]	@ float
- 376 019e 1846     		mov	r0, r3
- 377 01a0 FFF7FEFF 		bl	__aeabi_f2iz
- 378 01a4 0546     		mov	r5, r0
- 379 01a6 174B     		ldr	r3, .L14+20
- 380 01a8 1B68     		ldr	r3, [r3]	@ float
- 381 01aa 1846     		mov	r0, r3
- 382 01ac FFF7FEFF 		bl	__aeabi_f2iz
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 9
-
-
- 383 01b0 0646     		mov	r6, r0
- 384 01b2 184B     		ldr	r3, .L14+36
- 385 01b4 1B68     		ldr	r3, [r3]	@ float
- 386 01b6 1846     		mov	r0, r3
- 387 01b8 FFF7FEFF 		bl	__aeabi_f2iz
- 388 01bc 0246     		mov	r2, r0
- 389 01be 184B     		ldr	r3, .L14+48
- 390 01c0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 391 01c2 1946     		mov	r1, r3
- 392 01c4 174B     		ldr	r3, .L14+52
- 393 01c6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 394 01c8 3846     		mov	r0, r7
- 395 01ca 0593     		str	r3, [sp, #20]
- 396 01cc 0491     		str	r1, [sp, #16]
- 397 01ce 0392     		str	r2, [sp, #12]
- 398 01d0 0296     		str	r6, [sp, #8]
- 399 01d2 0195     		str	r5, [sp, #4]
- 400 01d4 0094     		str	r4, [sp]
- 401 01d6 3B6C     		ldr	r3, [r7, #64]
- 402 01d8 7A6C     		ldr	r2, [r7, #68]
- 403 01da 1349     		ldr	r1, .L14+56
- 404 01dc FFF7FEFF 		bl	sprintf
-  71:MOVEMENT.c    ****             left_enc, right_enc, error, (int)integral, (int)derivative, (int)output, left_pwm, righ
-  72:MOVEMENT.c    ****     usbPutString(buf);
- 405              		.loc 1 72 0
- 406 01e0 3B46     		mov	r3, r7
- 407 01e2 1846     		mov	r0, r3
- 408 01e4 FFF7FEFF 		bl	usbPutString
-  73:MOVEMENT.c    ****     #endif
+  68:MOVEMENT.c    ****     ///#ifdef USE_USB
+  69:MOVEMENT.c    ****     //char buf[64];
+  70:MOVEMENT.c    ****     //sprintf(buf, "L:%d R:%d Err:%d Int:%d Der:%d Out:%d LPW:%d RPMW:%d\r\n",
+  71:MOVEMENT.c    ****      //       left_enc, right_enc, error, (int)integral, (int)derivative, (int)output, left_pwm, ri
+  72:MOVEMENT.c    ****     //usbPutString(buf);
+  73:MOVEMENT.c    ****     //#endif
   74:MOVEMENT.c    **** }
- 409              		.loc 1 74 0
- 410 01e8 00BF     		nop
- 411 01ea 4C37     		adds	r7, r7, #76
- 412              		.cfi_def_cfa_offset 20
- 413 01ec BD46     		mov	sp, r7
- 414              		.cfi_def_cfa_register 13
- 415              		@ sp needed
- 416 01ee F0BD     		pop	{r4, r5, r6, r7, pc}
- 417              	.L15:
- 418              		.align	3
- 419              	.L14:
- 420 01f0 9A999999 		.word	-1717986918
- 421 01f4 9999C93F 		.word	1070176665
- 422 01f8 00000000 		.word	error
- 423 01fc 00000000 		.word	integral
- 424 0200 04000000 		.word	prev_error
- 425 0204 00000000 		.word	derivative
- 426 0208 00000000 		.word	Kp
- 427 020c 00000000 		.word	Ki
- 428 0210 00000000 		.word	Kd
- 429 0214 00000000 		.word	output
- 430 0218 0000FA43 		.word	1140457472
- 431 021c 0000FAC3 		.word	-1007026176
- 432 0220 00000000 		.word	left_pwm
- 433 0224 00000000 		.word	right_pwm
- 434 0228 00000000 		.word	.LC0
- 435              		.cfi_endproc
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 10
+ 364              		.loc 1 74 0
+ 365 0196 00BF     		nop
+ 366 0198 0C37     		adds	r7, r7, #12
+ 367              		.cfi_def_cfa_offset 12
+ 368 019a BD46     		mov	sp, r7
+ 369              		.cfi_def_cfa_register 13
+ 370              		@ sp needed
+ 371 019c 90BD     		pop	{r4, r7, pc}
+ 372              	.L15:
+ 373 019e 00BF     		.align	3
+ 374              	.L14:
+ 375 01a0 9A999999 		.word	-1717986918
+ 376 01a4 9999C93F 		.word	1070176665
+ 377 01a8 00000000 		.word	error
+ 378 01ac 00000000 		.word	integral
+ 379 01b0 04000000 		.word	prev_error
+ 380 01b4 00000000 		.word	derivative
+ 381 01b8 00000000 		.word	Kp
+ 382 01bc 00000000 		.word	Ki
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 9
 
 
- 436              	.LFE66:
- 437              		.size	do_straight_with_pid, .-do_straight_with_pid
- 438              		.section	.text.stop,"ax",%progbits
- 439              		.align	2
- 440              		.global	stop
- 441              		.thumb
- 442              		.thumb_func
- 443              		.type	stop, %function
- 444              	stop:
- 445              	.LFB67:
+ 383 01c0 00000000 		.word	Kd
+ 384 01c4 00000000 		.word	output
+ 385 01c8 0000FA43 		.word	1140457472
+ 386 01cc 0000FAC3 		.word	-1007026176
+ 387 01d0 00000000 		.word	left_pwm
+ 388 01d4 00000000 		.word	right_pwm
+ 389              		.cfi_endproc
+ 390              	.LFE66:
+ 391              		.size	do_straight_with_pid, .-do_straight_with_pid
+ 392              		.section	.text.stop,"ax",%progbits
+ 393              		.align	2
+ 394              		.global	stop
+ 395              		.thumb
+ 396              		.thumb_func
+ 397              		.type	stop, %function
+ 398              	stop:
+ 399              	.LFB67:
   75:MOVEMENT.c    **** 
   76:MOVEMENT.c    **** 
   77:MOVEMENT.c    **** void stop(void)
   78:MOVEMENT.c    **** {
- 446              		.loc 1 78 0
- 447              		.cfi_startproc
- 448              		@ args = 0, pretend = 0, frame = 0
- 449              		@ frame_needed = 1, uses_anonymous_args = 0
- 450 0000 80B5     		push	{r7, lr}
- 451              		.cfi_def_cfa_offset 8
- 452              		.cfi_offset 7, -8
- 453              		.cfi_offset 14, -4
- 454 0002 00AF     		add	r7, sp, #0
- 455              		.cfi_def_cfa_register 7
+ 400              		.loc 1 78 0
+ 401              		.cfi_startproc
+ 402              		@ args = 0, pretend = 0, frame = 0
+ 403              		@ frame_needed = 1, uses_anonymous_args = 0
+ 404 0000 80B5     		push	{r7, lr}
+ 405              		.cfi_def_cfa_offset 8
+ 406              		.cfi_offset 7, -8
+ 407              		.cfi_offset 14, -4
+ 408 0002 00AF     		add	r7, sp, #0
+ 409              		.cfi_def_cfa_register 7
   79:MOVEMENT.c    ****     motor_left(PWM_STOP);
- 456              		.loc 1 79 0
- 457 0004 7F20     		movs	r0, #127
- 458 0006 FFF7FEFF 		bl	motor_left
+ 410              		.loc 1 79 0
+ 411 0004 7F20     		movs	r0, #127
+ 412 0006 FFF7FEFF 		bl	motor_left
   80:MOVEMENT.c    ****     motor_right(PWM_STOP);
- 459              		.loc 1 80 0
- 460 000a 7F20     		movs	r0, #127
- 461 000c FFF7FEFF 		bl	motor_right
+ 413              		.loc 1 80 0
+ 414 000a 7F20     		movs	r0, #127
+ 415 000c FFF7FEFF 		bl	motor_right
   81:MOVEMENT.c    **** }
- 462              		.loc 1 81 0
- 463 0010 00BF     		nop
- 464 0012 80BD     		pop	{r7, pc}
- 465              		.cfi_endproc
- 466              	.LFE67:
- 467              		.size	stop, .-stop
- 468              		.section	.text.move_handling,"ax",%progbits
- 469              		.align	2
- 470              		.global	move_handling
- 471              		.thumb
- 472              		.thumb_func
- 473              		.type	move_handling, %function
- 474              	move_handling:
- 475              	.LFB68:
+ 416              		.loc 1 81 0
+ 417 0010 00BF     		nop
+ 418 0012 80BD     		pop	{r7, pc}
+ 419              		.cfi_endproc
+ 420              	.LFE67:
+ 421              		.size	stop, .-stop
+ 422              		.section	.text.move_handling,"ax",%progbits
+ 423              		.align	2
+ 424              		.global	move_handling
+ 425              		.thumb
+ 426              		.thumb_func
+ 427              		.type	move_handling, %function
+ 428              	move_handling:
+ 429              	.LFB68:
   82:MOVEMENT.c    **** 
   83:MOVEMENT.c    **** void move_handling(void)
   84:MOVEMENT.c    **** {
- 476              		.loc 1 84 0
- 477              		.cfi_startproc
- 478              		@ args = 0, pretend = 0, frame = 8
- 479              		@ frame_needed = 1, uses_anonymous_args = 0
- 480 0000 80B5     		push	{r7, lr}
- 481              		.cfi_def_cfa_offset 8
- 482              		.cfi_offset 7, -8
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 11
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 10
 
 
- 483              		.cfi_offset 14, -4
- 484 0002 82B0     		sub	sp, sp, #8
- 485              		.cfi_def_cfa_offset 16
- 486 0004 00AF     		add	r7, sp, #0
- 487              		.cfi_def_cfa_register 7
+ 430              		.loc 1 84 0
+ 431              		.cfi_startproc
+ 432              		@ args = 0, pretend = 0, frame = 8
+ 433              		@ frame_needed = 1, uses_anonymous_args = 0
+ 434 0000 80B5     		push	{r7, lr}
+ 435              		.cfi_def_cfa_offset 8
+ 436              		.cfi_offset 7, -8
+ 437              		.cfi_offset 14, -4
+ 438 0002 82B0     		sub	sp, sp, #8
+ 439              		.cfi_def_cfa_offset 16
+ 440 0004 00AF     		add	r7, sp, #0
+ 441              		.cfi_def_cfa_register 7
   85:MOVEMENT.c    ****     MovementState m = GetMovement();
- 488              		.loc 1 85 0
- 489 0006 FFF7FEFF 		bl	GetMovement
- 490 000a 0346     		mov	r3, r0
- 491 000c FB71     		strb	r3, [r7, #7]
+ 442              		.loc 1 85 0
+ 443 0006 FFF7FEFF 		bl	GetMovement
+ 444 000a 0346     		mov	r3, r0
+ 445 000c FB71     		strb	r3, [r7, #7]
   86:MOVEMENT.c    **** 
   87:MOVEMENT.c    ****     switch (m) {
- 492              		.loc 1 87 0
- 493 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
- 494 0010 062B     		cmp	r3, #6
- 495 0012 28D8     		bhi	.L18
- 496 0014 01A2     		adr	r2, .L20
- 497 0016 52F823F0 		ldr	pc, [r2, r3, lsl #2]
- 498 001a 00BF     		.p2align 2
- 499              	.L20:
- 500 001c 3F000000 		.word	.L19+1
- 501 0020 45000000 		.word	.L21+1
- 502 0024 53000000 		.word	.L22+1
- 503 0028 67000000 		.word	.L18+1
- 504 002c 67000000 		.word	.L18+1
- 505 0030 39000000 		.word	.L23+1
- 506 0034 61000000 		.word	.L24+1
- 507              		.p2align 1
- 508              	.L23:
+ 446              		.loc 1 87 0
+ 447 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 448 0010 062B     		cmp	r3, #6
+ 449 0012 28D8     		bhi	.L18
+ 450 0014 01A2     		adr	r2, .L20
+ 451 0016 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 452 001a 00BF     		.p2align 2
+ 453              	.L20:
+ 454 001c 3F000000 		.word	.L19+1
+ 455 0020 45000000 		.word	.L21+1
+ 456 0024 53000000 		.word	.L22+1
+ 457 0028 67000000 		.word	.L18+1
+ 458 002c 67000000 		.word	.L18+1
+ 459 0030 39000000 		.word	.L23+1
+ 460 0034 61000000 		.word	.L24+1
+ 461              		.p2align 1
+ 462              	.L23:
   88:MOVEMENT.c    ****         case STOP:
   89:MOVEMENT.c    ****             stop();
- 509              		.loc 1 89 0
- 510 0038 FFF7FEFF 		bl	stop
+ 463              		.loc 1 89 0
+ 464 0038 FFF7FEFF 		bl	stop
   90:MOVEMENT.c    ****             break;
- 511              		.loc 1 90 0
- 512 003c 16E0     		b	.L25
- 513              	.L19:
+ 465              		.loc 1 90 0
+ 466 003c 16E0     		b	.L25
+ 467              	.L19:
   91:MOVEMENT.c    **** 
   92:MOVEMENT.c    ****         case STRAIGHT:
   93:MOVEMENT.c    ****             do_straight_with_pid();  // PID active for straight line
- 514              		.loc 1 93 0
- 515 003e FFF7FEFF 		bl	do_straight_with_pid
+ 468              		.loc 1 93 0
+ 469 003e FFF7FEFF 		bl	do_straight_with_pid
   94:MOVEMENT.c    ****             break;
- 516              		.loc 1 94 0
- 517 0042 13E0     		b	.L25
- 518              	.L21:
+ 470              		.loc 1 94 0
+ 471 0042 13E0     		b	.L25
+ 472              	.L21:
   95:MOVEMENT.c    **** 
   96:MOVEMENT.c    ****         case LEFT_TURN:
-  97:MOVEMENT.c    ****             motor_left(99);    // pivot left
- 519              		.loc 1 97 0
- 520 0044 6320     		movs	r0, #99
- 521 0046 FFF7FEFF 		bl	motor_left
-  98:MOVEMENT.c    ****             motor_right(168);
- 522              		.loc 1 98 0
- 523 004a A820     		movs	r0, #168
- 524 004c FFF7FEFF 		bl	motor_right
+  97:MOVEMENT.c    ****             motor_left(127);    // pivot left
+ 473              		.loc 1 97 0
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 11
+
+
+ 474 0044 7F20     		movs	r0, #127
+ 475 0046 FFF7FEFF 		bl	motor_left
+  98:MOVEMENT.c    ****             motor_right(127);
+ 476              		.loc 1 98 0
+ 477 004a 7F20     		movs	r0, #127
+ 478 004c FFF7FEFF 		bl	motor_right
   99:MOVEMENT.c    ****             break;
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 12
-
-
- 525              		.loc 1 99 0
- 526 0050 0CE0     		b	.L25
- 527              	.L22:
+ 479              		.loc 1 99 0
+ 480 0050 0CE0     		b	.L25
+ 481              	.L22:
  100:MOVEMENT.c    **** 
  101:MOVEMENT.c    ****         case RIGHT_TURN:
  102:MOVEMENT.c    ****             motor_left(168);
- 528              		.loc 1 102 0
- 529 0052 A820     		movs	r0, #168
- 530 0054 FFF7FEFF 		bl	motor_left
+ 482              		.loc 1 102 0
+ 483 0052 A820     		movs	r0, #168
+ 484 0054 FFF7FEFF 		bl	motor_left
  103:MOVEMENT.c    ****             motor_right(99);   // pivot right
- 531              		.loc 1 103 0
- 532 0058 6320     		movs	r0, #99
- 533 005a FFF7FEFF 		bl	motor_right
+ 485              		.loc 1 103 0
+ 486 0058 6320     		movs	r0, #99
+ 487 005a FFF7FEFF 		bl	motor_right
  104:MOVEMENT.c    ****             break;
- 534              		.loc 1 104 0
- 535 005e 05E0     		b	.L25
- 536              	.L24:
+ 488              		.loc 1 104 0
+ 489 005e 05E0     		b	.L25
+ 490              	.L24:
  105:MOVEMENT.c    **** 
  106:MOVEMENT.c    ****         case WAIT:
  107:MOVEMENT.c    ****             do_straight_with_pid();
- 537              		.loc 1 107 0
- 538 0060 FFF7FEFF 		bl	do_straight_with_pid
+ 491              		.loc 1 107 0
+ 492 0060 FFF7FEFF 		bl	do_straight_with_pid
  108:MOVEMENT.c    ****             break;
- 539              		.loc 1 108 0
- 540 0064 02E0     		b	.L25
- 541              	.L18:
+ 493              		.loc 1 108 0
+ 494 0064 02E0     		b	.L25
+ 495              	.L18:
  109:MOVEMENT.c    **** 
  110:MOVEMENT.c    ****         default:
  111:MOVEMENT.c    ****             stop();
- 542              		.loc 1 111 0
- 543 0066 FFF7FEFF 		bl	stop
+ 496              		.loc 1 111 0
+ 497 0066 FFF7FEFF 		bl	stop
  112:MOVEMENT.c    ****             break;
- 544              		.loc 1 112 0
- 545 006a 00BF     		nop
- 546              	.L25:
+ 498              		.loc 1 112 0
+ 499 006a 00BF     		nop
+ 500              	.L25:
  113:MOVEMENT.c    ****          
  114:MOVEMENT.c    ****         }
  115:MOVEMENT.c    ****         if (m != WAIT) {
- 547              		.loc 1 115 0
- 548 006c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
- 549 006e 062B     		cmp	r3, #6
- 550 0070 02D0     		beq	.L27
+ 501              		.loc 1 115 0
+ 502 006c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 503 006e 062B     		cmp	r3, #6
+ 504 0070 02D0     		beq	.L27
  116:MOVEMENT.c    ****             previous_movement = m;
- 551              		.loc 1 116 0
- 552 0072 034A     		ldr	r2, .L28
- 553 0074 FB79     		ldrb	r3, [r7, #7]
- 554 0076 1370     		strb	r3, [r2]
- 555              	.L27:
+ 505              		.loc 1 116 0
+ 506 0072 034A     		ldr	r2, .L28
+ 507 0074 FB79     		ldrb	r3, [r7, #7]
+ 508 0076 1370     		strb	r3, [r2]
+ 509              	.L27:
  117:MOVEMENT.c    ****     }
  118:MOVEMENT.c    **** }
- 556              		.loc 1 118 0
- 557 0078 00BF     		nop
- 558 007a 0837     		adds	r7, r7, #8
- 559              		.cfi_def_cfa_offset 8
- 560 007c BD46     		mov	sp, r7
- 561              		.cfi_def_cfa_register 13
- 562              		@ sp needed
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 13
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 12
 
 
- 563 007e 80BD     		pop	{r7, pc}
- 564              	.L29:
- 565              		.align	2
- 566              	.L28:
- 567 0080 00000000 		.word	previous_movement
- 568              		.cfi_endproc
- 569              	.LFE68:
- 570              		.size	move_handling, .-move_handling
- 571              		.text
- 572              	.Letext0:
- 573              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 574              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 575              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 576              		.file 5 "SENSORS_READ.h"
- 577              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
- 578              		.section	.debug_info,"",%progbits
- 579              	.Ldebug_info0:
- 580 0000 94020000 		.4byte	0x294
- 581 0004 0400     		.2byte	0x4
- 582 0006 00000000 		.4byte	.Ldebug_abbrev0
- 583 000a 04       		.byte	0x4
- 584 000b 01       		.uleb128 0x1
- 585 000c 0A000000 		.4byte	.LASF42
- 586 0010 0C       		.byte	0xc
- 587 0011 A7010000 		.4byte	.LASF43
- 588 0015 2F020000 		.4byte	.LASF44
- 589 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 590 001d 00000000 		.4byte	0
- 591 0021 00000000 		.4byte	.Ldebug_line0
- 592 0025 02       		.uleb128 0x2
- 593 0026 01       		.byte	0x1
- 594 0027 06       		.byte	0x6
- 595 0028 0D010000 		.4byte	.LASF0
- 596 002c 03       		.uleb128 0x3
- 597 002d 00000000 		.4byte	.LASF4
- 598 0031 02       		.byte	0x2
- 599 0032 1D       		.byte	0x1d
- 600 0033 37000000 		.4byte	0x37
- 601 0037 02       		.uleb128 0x2
- 602 0038 01       		.byte	0x1
- 603 0039 08       		.byte	0x8
- 604 003a 19010000 		.4byte	.LASF1
- 605 003e 02       		.uleb128 0x2
- 606 003f 02       		.byte	0x2
- 607 0040 05       		.byte	0x5
- 608 0041 12020000 		.4byte	.LASF2
- 609 0045 02       		.uleb128 0x2
- 610 0046 02       		.byte	0x2
- 611 0047 07       		.byte	0x7
- 612 0048 5C010000 		.4byte	.LASF3
- 613 004c 03       		.uleb128 0x3
- 614 004d BA000000 		.4byte	.LASF5
- 615 0051 02       		.byte	0x2
- 616 0052 3F       		.byte	0x3f
- 617 0053 57000000 		.4byte	0x57
- 618 0057 02       		.uleb128 0x2
- 619 0058 04       		.byte	0x4
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 14
+ 510              		.loc 1 118 0
+ 511 0078 00BF     		nop
+ 512 007a 0837     		adds	r7, r7, #8
+ 513              		.cfi_def_cfa_offset 8
+ 514 007c BD46     		mov	sp, r7
+ 515              		.cfi_def_cfa_register 13
+ 516              		@ sp needed
+ 517 007e 80BD     		pop	{r7, pc}
+ 518              	.L29:
+ 519              		.align	2
+ 520              	.L28:
+ 521 0080 00000000 		.word	previous_movement
+ 522              		.cfi_endproc
+ 523              	.LFE68:
+ 524              		.size	move_handling, .-move_handling
+ 525              		.text
+ 526              	.Letext0:
+ 527              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 528              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 529              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 530              		.file 5 "SENSORS_READ.h"
+ 531              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 532              		.section	.debug_info,"",%progbits
+ 533              	.Ldebug_info0:
+ 534 0000 75020000 		.4byte	0x275
+ 535 0004 0400     		.2byte	0x4
+ 536 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 537 000a 04       		.byte	0x4
+ 538 000b 01       		.uleb128 0x1
+ 539 000c 0A000000 		.4byte	.LASF42
+ 540 0010 0C       		.byte	0xc
+ 541 0011 A7010000 		.4byte	.LASF43
+ 542 0015 12020000 		.4byte	.LASF44
+ 543 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 544 001d 00000000 		.4byte	0
+ 545 0021 00000000 		.4byte	.Ldebug_line0
+ 546 0025 02       		.uleb128 0x2
+ 547 0026 01       		.byte	0x1
+ 548 0027 06       		.byte	0x6
+ 549 0028 0D010000 		.4byte	.LASF0
+ 550 002c 03       		.uleb128 0x3
+ 551 002d 00000000 		.4byte	.LASF4
+ 552 0031 02       		.byte	0x2
+ 553 0032 1D       		.byte	0x1d
+ 554 0033 37000000 		.4byte	0x37
+ 555 0037 02       		.uleb128 0x2
+ 556 0038 01       		.byte	0x1
+ 557 0039 08       		.byte	0x8
+ 558 003a 19010000 		.4byte	.LASF1
+ 559 003e 02       		.uleb128 0x2
+ 560 003f 02       		.byte	0x2
+ 561 0040 05       		.byte	0x5
+ 562 0041 4D020000 		.4byte	.LASF2
+ 563 0045 02       		.uleb128 0x2
+ 564 0046 02       		.byte	0x2
+ 565 0047 07       		.byte	0x7
+ 566 0048 5C010000 		.4byte	.LASF3
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 13
 
 
- 620 0059 05       		.byte	0x5
- 621 005a 8A020000 		.4byte	.LASF6
- 622 005e 02       		.uleb128 0x2
- 623 005f 04       		.byte	0x4
- 624 0060 07       		.byte	0x7
- 625 0061 4A010000 		.4byte	.LASF7
- 626 0065 02       		.uleb128 0x2
- 627 0066 08       		.byte	0x8
- 628 0067 05       		.byte	0x5
- 629 0068 FF010000 		.4byte	.LASF8
- 630 006c 02       		.uleb128 0x2
- 631 006d 08       		.byte	0x8
- 632 006e 07       		.byte	0x7
- 633 006f BF010000 		.4byte	.LASF9
- 634 0073 04       		.uleb128 0x4
- 635 0074 04       		.byte	0x4
- 636 0075 05       		.byte	0x5
- 637 0076 696E7400 		.ascii	"int\000"
- 638 007a 02       		.uleb128 0x2
- 639 007b 04       		.byte	0x4
- 640 007c 07       		.byte	0x7
- 641 007d B2010000 		.4byte	.LASF10
- 642 0081 03       		.uleb128 0x3
- 643 0082 D6010000 		.4byte	.LASF11
- 644 0086 03       		.byte	0x3
- 645 0087 18       		.byte	0x18
- 646 0088 2C000000 		.4byte	0x2c
- 647 008c 03       		.uleb128 0x3
- 648 008d FF000000 		.4byte	.LASF12
- 649 0091 03       		.byte	0x3
- 650 0092 2C       		.byte	0x2c
- 651 0093 4C000000 		.4byte	0x4c
- 652 0097 05       		.uleb128 0x5
- 653 0098 97010000 		.4byte	.LASF13
- 654 009c 04       		.byte	0x4
- 655 009d E801     		.2byte	0x1e8
- 656 009f 45000000 		.4byte	0x45
- 657 00a3 02       		.uleb128 0x2
- 658 00a4 04       		.byte	0x4
- 659 00a5 04       		.byte	0x4
- 660 00a6 07010000 		.4byte	.LASF14
- 661 00aa 02       		.uleb128 0x2
- 662 00ab 08       		.byte	0x8
- 663 00ac 04       		.byte	0x4
- 664 00ad 8B010000 		.4byte	.LASF15
- 665 00b1 02       		.uleb128 0x2
- 666 00b2 01       		.byte	0x1
- 667 00b3 08       		.byte	0x8
- 668 00b4 0D020000 		.4byte	.LASF16
- 669 00b8 02       		.uleb128 0x2
- 670 00b9 08       		.byte	0x8
- 671 00ba 04       		.byte	0x4
- 672 00bb 93020000 		.4byte	.LASF17
- 673 00bf 02       		.uleb128 0x2
- 674 00c0 04       		.byte	0x4
- 675 00c1 07       		.byte	0x7
- 676 00c2 F0010000 		.4byte	.LASF18
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 15
+ 567 004c 03       		.uleb128 0x3
+ 568 004d BA000000 		.4byte	.LASF5
+ 569 0051 02       		.byte	0x2
+ 570 0052 3F       		.byte	0x3f
+ 571 0053 57000000 		.4byte	0x57
+ 572 0057 02       		.uleb128 0x2
+ 573 0058 04       		.byte	0x4
+ 574 0059 05       		.byte	0x5
+ 575 005a 7E020000 		.4byte	.LASF6
+ 576 005e 02       		.uleb128 0x2
+ 577 005f 04       		.byte	0x4
+ 578 0060 07       		.byte	0x7
+ 579 0061 4A010000 		.4byte	.LASF7
+ 580 0065 02       		.uleb128 0x2
+ 581 0066 08       		.byte	0x8
+ 582 0067 05       		.byte	0x5
+ 583 0068 FF010000 		.4byte	.LASF8
+ 584 006c 02       		.uleb128 0x2
+ 585 006d 08       		.byte	0x8
+ 586 006e 07       		.byte	0x7
+ 587 006f BF010000 		.4byte	.LASF9
+ 588 0073 04       		.uleb128 0x4
+ 589 0074 04       		.byte	0x4
+ 590 0075 05       		.byte	0x5
+ 591 0076 696E7400 		.ascii	"int\000"
+ 592 007a 02       		.uleb128 0x2
+ 593 007b 04       		.byte	0x4
+ 594 007c 07       		.byte	0x7
+ 595 007d B2010000 		.4byte	.LASF10
+ 596 0081 03       		.uleb128 0x3
+ 597 0082 D6010000 		.4byte	.LASF11
+ 598 0086 03       		.byte	0x3
+ 599 0087 18       		.byte	0x18
+ 600 0088 2C000000 		.4byte	0x2c
+ 601 008c 03       		.uleb128 0x3
+ 602 008d FF000000 		.4byte	.LASF12
+ 603 0091 03       		.byte	0x3
+ 604 0092 2C       		.byte	0x2c
+ 605 0093 4C000000 		.4byte	0x4c
+ 606 0097 05       		.uleb128 0x5
+ 607 0098 97010000 		.4byte	.LASF13
+ 608 009c 04       		.byte	0x4
+ 609 009d EA01     		.2byte	0x1ea
+ 610 009f 45000000 		.4byte	0x45
+ 611 00a3 02       		.uleb128 0x2
+ 612 00a4 04       		.byte	0x4
+ 613 00a5 04       		.byte	0x4
+ 614 00a6 07010000 		.4byte	.LASF14
+ 615 00aa 02       		.uleb128 0x2
+ 616 00ab 08       		.byte	0x8
+ 617 00ac 04       		.byte	0x4
+ 618 00ad 8B010000 		.4byte	.LASF15
+ 619 00b1 02       		.uleb128 0x2
+ 620 00b2 01       		.byte	0x1
+ 621 00b3 08       		.byte	0x8
+ 622 00b4 0D020000 		.4byte	.LASF16
+ 623 00b8 02       		.uleb128 0x2
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 14
 
 
- 677 00c6 06       		.uleb128 0x6
- 678 00c7 01       		.byte	0x1
- 679 00c8 37000000 		.4byte	0x37
- 680 00cc 05       		.byte	0x5
- 681 00cd 1B       		.byte	0x1b
- 682 00ce FD000000 		.4byte	0xfd
- 683 00d2 07       		.uleb128 0x7
- 684 00d3 76020000 		.4byte	.LASF19
- 685 00d7 00       		.byte	0
- 686 00d8 07       		.uleb128 0x7
- 687 00d9 6F010000 		.4byte	.LASF20
- 688 00dd 01       		.byte	0x1
- 689 00de 07       		.uleb128 0x7
- 690 00df 31010000 		.4byte	.LASF21
- 691 00e3 02       		.byte	0x2
- 692 00e4 07       		.uleb128 0x7
- 693 00e5 E3010000 		.4byte	.LASF22
- 694 00e9 03       		.byte	0x3
- 695 00ea 07       		.uleb128 0x7
- 696 00eb A3000000 		.4byte	.LASF23
- 697 00ef 04       		.byte	0x4
- 698 00f0 07       		.uleb128 0x7
- 699 00f1 92010000 		.4byte	.LASF24
- 700 00f5 05       		.byte	0x5
- 701 00f6 07       		.uleb128 0x7
- 702 00f7 DE010000 		.4byte	.LASF25
- 703 00fb 06       		.byte	0x6
- 704 00fc 00       		.byte	0
- 705 00fd 03       		.uleb128 0x3
- 706 00fe 9F020000 		.4byte	.LASF26
- 707 0102 05       		.byte	0x5
- 708 0103 23       		.byte	0x23
- 709 0104 C6000000 		.4byte	0xc6
- 710 0108 08       		.uleb128 0x8
- 711 0109 98000000 		.4byte	.LASF27
- 712 010d 01       		.byte	0x1
- 713 010e 0F       		.byte	0xf
- 714 010f 00000000 		.4byte	.LFB64
- 715 0113 1C000000 		.4byte	.LFE64-.LFB64
- 716 0117 01       		.uleb128 0x1
- 717 0118 9C       		.byte	0x9c
- 718 0119 2C010000 		.4byte	0x12c
- 719 011d 09       		.uleb128 0x9
- 720 011e 76616C00 		.ascii	"val\000"
- 721 0122 01       		.byte	0x1
- 722 0123 0F       		.byte	0xf
- 723 0124 97000000 		.4byte	0x97
- 724 0128 02       		.uleb128 0x2
- 725 0129 91       		.byte	0x91
- 726 012a 76       		.sleb128 -10
- 727 012b 00       		.byte	0
- 728 012c 08       		.uleb128 0x8
- 729 012d 23020000 		.4byte	.LASF28
- 730 0131 01       		.byte	0x1
- 731 0132 10       		.byte	0x10
- 732 0133 00000000 		.4byte	.LFB65
- 733 0137 1C000000 		.4byte	.LFE65-.LFB65
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 16
+ 624 00b9 08       		.byte	0x8
+ 625 00ba 04       		.byte	0x4
+ 626 00bb 87020000 		.4byte	.LASF17
+ 627 00bf 02       		.uleb128 0x2
+ 628 00c0 04       		.byte	0x4
+ 629 00c1 07       		.byte	0x7
+ 630 00c2 F0010000 		.4byte	.LASF18
+ 631 00c6 06       		.uleb128 0x6
+ 632 00c7 01       		.byte	0x1
+ 633 00c8 37000000 		.4byte	0x37
+ 634 00cc 05       		.byte	0x5
+ 635 00cd 1B       		.byte	0x1b
+ 636 00ce FD000000 		.4byte	0xfd
+ 637 00d2 07       		.uleb128 0x7
+ 638 00d3 6A020000 		.4byte	.LASF19
+ 639 00d7 00       		.byte	0
+ 640 00d8 07       		.uleb128 0x7
+ 641 00d9 6F010000 		.4byte	.LASF20
+ 642 00dd 01       		.byte	0x1
+ 643 00de 07       		.uleb128 0x7
+ 644 00df 31010000 		.4byte	.LASF21
+ 645 00e3 02       		.byte	0x2
+ 646 00e4 07       		.uleb128 0x7
+ 647 00e5 E3010000 		.4byte	.LASF22
+ 648 00e9 03       		.byte	0x3
+ 649 00ea 07       		.uleb128 0x7
+ 650 00eb A3000000 		.4byte	.LASF23
+ 651 00ef 04       		.byte	0x4
+ 652 00f0 07       		.uleb128 0x7
+ 653 00f1 92010000 		.4byte	.LASF24
+ 654 00f5 05       		.byte	0x5
+ 655 00f6 07       		.uleb128 0x7
+ 656 00f7 DE010000 		.4byte	.LASF25
+ 657 00fb 06       		.byte	0x6
+ 658 00fc 00       		.byte	0
+ 659 00fd 03       		.uleb128 0x3
+ 660 00fe 93020000 		.4byte	.LASF26
+ 661 0102 05       		.byte	0x5
+ 662 0103 23       		.byte	0x23
+ 663 0104 C6000000 		.4byte	0xc6
+ 664 0108 08       		.uleb128 0x8
+ 665 0109 98000000 		.4byte	.LASF27
+ 666 010d 01       		.byte	0x1
+ 667 010e 0F       		.byte	0xf
+ 668 010f 00000000 		.4byte	.LFB64
+ 669 0113 1C000000 		.4byte	.LFE64-.LFB64
+ 670 0117 01       		.uleb128 0x1
+ 671 0118 9C       		.byte	0x9c
+ 672 0119 2C010000 		.4byte	0x12c
+ 673 011d 09       		.uleb128 0x9
+ 674 011e 76616C00 		.ascii	"val\000"
+ 675 0122 01       		.byte	0x1
+ 676 0123 0F       		.byte	0xf
+ 677 0124 97000000 		.4byte	0x97
+ 678 0128 02       		.uleb128 0x2
+ 679 0129 91       		.byte	0x91
+ 680 012a 76       		.sleb128 -10
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 15
 
 
- 734 013b 01       		.uleb128 0x1
- 735 013c 9C       		.byte	0x9c
- 736 013d 50010000 		.4byte	0x150
- 737 0141 09       		.uleb128 0x9
- 738 0142 76616C00 		.ascii	"val\000"
- 739 0146 01       		.byte	0x1
- 740 0147 10       		.byte	0x10
- 741 0148 97000000 		.4byte	0x97
- 742 014c 02       		.uleb128 0x2
- 743 014d 91       		.byte	0x91
- 744 014e 76       		.sleb128 -10
- 745 014f 00       		.byte	0
- 746 0150 0A       		.uleb128 0xa
- 747 0151 C4000000 		.4byte	.LASF31
- 748 0155 01       		.byte	0x1
- 749 0156 20       		.byte	0x20
- 750 0157 00000000 		.4byte	.LFB66
- 751 015b 2C020000 		.4byte	.LFE66-.LFB66
- 752 015f 01       		.uleb128 0x1
- 753 0160 9C       		.byte	0x9c
- 754 0161 91010000 		.4byte	0x191
- 755 0165 0B       		.uleb128 0xb
- 756 0166 9E010000 		.4byte	.LASF29
- 757 016a 01       		.byte	0x1
- 758 016b 23       		.byte	0x23
- 759 016c 73000000 		.4byte	0x73
- 760 0170 02       		.uleb128 0x2
- 761 0171 91       		.byte	0x91
- 762 0172 64       		.sleb128 -28
- 763 0173 0B       		.uleb128 0xb
- 764 0174 27010000 		.4byte	.LASF30
- 765 0178 01       		.byte	0x1
- 766 0179 24       		.byte	0x24
- 767 017a 73000000 		.4byte	0x73
- 768 017e 02       		.uleb128 0x2
- 769 017f 91       		.byte	0x91
- 770 0180 60       		.sleb128 -32
- 771 0181 0C       		.uleb128 0xc
- 772 0182 62756600 		.ascii	"buf\000"
- 773 0186 01       		.byte	0x1
- 774 0187 45       		.byte	0x45
- 775 0188 91010000 		.4byte	0x191
- 776 018c 03       		.uleb128 0x3
- 777 018d 91       		.byte	0x91
- 778 018e A07F     		.sleb128 -96
- 779 0190 00       		.byte	0
- 780 0191 0D       		.uleb128 0xd
- 781 0192 B1000000 		.4byte	0xb1
- 782 0196 A1010000 		.4byte	0x1a1
- 783 019a 0E       		.uleb128 0xe
- 784 019b BF000000 		.4byte	0xbf
- 785 019f 3F       		.byte	0x3f
- 786 01a0 00       		.byte	0
- 787 01a1 0F       		.uleb128 0xf
- 788 01a2 79010000 		.4byte	.LASF45
- 789 01a6 01       		.byte	0x1
- 790 01a7 4D       		.byte	0x4d
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 17
+ 681 012b 00       		.byte	0
+ 682 012c 08       		.uleb128 0x8
+ 683 012d 5E020000 		.4byte	.LASF28
+ 684 0131 01       		.byte	0x1
+ 685 0132 10       		.byte	0x10
+ 686 0133 00000000 		.4byte	.LFB65
+ 687 0137 1C000000 		.4byte	.LFE65-.LFB65
+ 688 013b 01       		.uleb128 0x1
+ 689 013c 9C       		.byte	0x9c
+ 690 013d 50010000 		.4byte	0x150
+ 691 0141 09       		.uleb128 0x9
+ 692 0142 76616C00 		.ascii	"val\000"
+ 693 0146 01       		.byte	0x1
+ 694 0147 10       		.byte	0x10
+ 695 0148 97000000 		.4byte	0x97
+ 696 014c 02       		.uleb128 0x2
+ 697 014d 91       		.byte	0x91
+ 698 014e 76       		.sleb128 -10
+ 699 014f 00       		.byte	0
+ 700 0150 0A       		.uleb128 0xa
+ 701 0151 C4000000 		.4byte	.LASF31
+ 702 0155 01       		.byte	0x1
+ 703 0156 20       		.byte	0x20
+ 704 0157 00000000 		.4byte	.LFB66
+ 705 015b D8010000 		.4byte	.LFE66-.LFB66
+ 706 015f 01       		.uleb128 0x1
+ 707 0160 9C       		.byte	0x9c
+ 708 0161 82010000 		.4byte	0x182
+ 709 0165 0B       		.uleb128 0xb
+ 710 0166 9E010000 		.4byte	.LASF29
+ 711 016a 01       		.byte	0x1
+ 712 016b 23       		.byte	0x23
+ 713 016c 73000000 		.4byte	0x73
+ 714 0170 02       		.uleb128 0x2
+ 715 0171 91       		.byte	0x91
+ 716 0172 6C       		.sleb128 -20
+ 717 0173 0B       		.uleb128 0xb
+ 718 0174 27010000 		.4byte	.LASF30
+ 719 0178 01       		.byte	0x1
+ 720 0179 24       		.byte	0x24
+ 721 017a 73000000 		.4byte	0x73
+ 722 017e 02       		.uleb128 0x2
+ 723 017f 91       		.byte	0x91
+ 724 0180 68       		.sleb128 -24
+ 725 0181 00       		.byte	0
+ 726 0182 0C       		.uleb128 0xc
+ 727 0183 79010000 		.4byte	.LASF45
+ 728 0187 01       		.byte	0x1
+ 729 0188 4D       		.byte	0x4d
+ 730 0189 00000000 		.4byte	.LFB67
+ 731 018d 14000000 		.4byte	.LFE67-.LFB67
+ 732 0191 01       		.uleb128 0x1
+ 733 0192 9C       		.byte	0x9c
+ 734 0193 0A       		.uleb128 0xa
+ 735 0194 3C010000 		.4byte	.LASF32
+ 736 0198 01       		.byte	0x1
+ 737 0199 53       		.byte	0x53
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 16
 
 
- 791 01a8 00000000 		.4byte	.LFB67
- 792 01ac 14000000 		.4byte	.LFE67-.LFB67
- 793 01b0 01       		.uleb128 0x1
- 794 01b1 9C       		.byte	0x9c
- 795 01b2 0A       		.uleb128 0xa
- 796 01b3 3C010000 		.4byte	.LASF32
- 797 01b7 01       		.byte	0x1
- 798 01b8 53       		.byte	0x53
- 799 01b9 00000000 		.4byte	.LFB68
- 800 01bd 84000000 		.4byte	.LFE68-.LFB68
- 801 01c1 01       		.uleb128 0x1
- 802 01c2 9C       		.byte	0x9c
- 803 01c3 D4010000 		.4byte	0x1d4
- 804 01c7 0C       		.uleb128 0xc
- 805 01c8 6D00     		.ascii	"m\000"
- 806 01ca 01       		.byte	0x1
- 807 01cb 55       		.byte	0x55
- 808 01cc FD000000 		.4byte	0xfd
- 809 01d0 02       		.uleb128 0x2
- 810 01d1 91       		.byte	0x91
- 811 01d2 77       		.sleb128 -9
- 812 01d3 00       		.byte	0
- 813 01d4 0B       		.uleb128 0xb
- 814 01d5 B1000000 		.4byte	.LASF33
- 815 01d9 01       		.byte	0x1
- 816 01da 16       		.byte	0x16
- 817 01db A3000000 		.4byte	0xa3
- 818 01df 05       		.uleb128 0x5
- 819 01e0 03       		.byte	0x3
- 820 01e1 00000000 		.4byte	integral
- 821 01e5 0B       		.uleb128 0xb
- 822 01e6 F4000000 		.4byte	.LASF34
- 823 01ea 01       		.byte	0x1
- 824 01eb 17       		.byte	0x17
- 825 01ec A3000000 		.4byte	0xa3
- 826 01f0 05       		.uleb128 0x5
- 827 01f1 03       		.byte	0x3
- 828 01f2 04000000 		.4byte	prev_error
- 829 01f6 10       		.uleb128 0x10
- 830 01f7 7E010000 		.4byte	.LASF35
- 831 01fb 06       		.byte	0x6
- 832 01fc 1207     		.2byte	0x712
- 833 01fe 02020000 		.4byte	0x202
- 834 0202 11       		.uleb128 0x11
- 835 0203 8C000000 		.4byte	0x8c
- 836 0207 12       		.uleb128 0x12
- 837 0208 E2000000 		.4byte	.LASF36
- 838 020c 01       		.byte	0x1
- 839 020d 07       		.byte	0x7
- 840 020e FD000000 		.4byte	0xfd
- 841 0212 13       		.uleb128 0x13
- 842 0213 4B7000   		.ascii	"Kp\000"
- 843 0216 01       		.byte	0x1
- 844 0217 13       		.byte	0x13
- 845 0218 A3000000 		.4byte	0xa3
- 846 021c 05       		.uleb128 0x5
- 847 021d 03       		.byte	0x3
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 18
+ 738 019a 00000000 		.4byte	.LFB68
+ 739 019e 84000000 		.4byte	.LFE68-.LFB68
+ 740 01a2 01       		.uleb128 0x1
+ 741 01a3 9C       		.byte	0x9c
+ 742 01a4 B5010000 		.4byte	0x1b5
+ 743 01a8 0D       		.uleb128 0xd
+ 744 01a9 6D00     		.ascii	"m\000"
+ 745 01ab 01       		.byte	0x1
+ 746 01ac 55       		.byte	0x55
+ 747 01ad FD000000 		.4byte	0xfd
+ 748 01b1 02       		.uleb128 0x2
+ 749 01b2 91       		.byte	0x91
+ 750 01b3 77       		.sleb128 -9
+ 751 01b4 00       		.byte	0
+ 752 01b5 0B       		.uleb128 0xb
+ 753 01b6 B1000000 		.4byte	.LASF33
+ 754 01ba 01       		.byte	0x1
+ 755 01bb 16       		.byte	0x16
+ 756 01bc A3000000 		.4byte	0xa3
+ 757 01c0 05       		.uleb128 0x5
+ 758 01c1 03       		.byte	0x3
+ 759 01c2 00000000 		.4byte	integral
+ 760 01c6 0B       		.uleb128 0xb
+ 761 01c7 F4000000 		.4byte	.LASF34
+ 762 01cb 01       		.byte	0x1
+ 763 01cc 17       		.byte	0x17
+ 764 01cd A3000000 		.4byte	0xa3
+ 765 01d1 05       		.uleb128 0x5
+ 766 01d2 03       		.byte	0x3
+ 767 01d3 04000000 		.4byte	prev_error
+ 768 01d7 0E       		.uleb128 0xe
+ 769 01d8 7E010000 		.4byte	.LASF35
+ 770 01dc 06       		.byte	0x6
+ 771 01dd 1207     		.2byte	0x712
+ 772 01df E3010000 		.4byte	0x1e3
+ 773 01e3 0F       		.uleb128 0xf
+ 774 01e4 8C000000 		.4byte	0x8c
+ 775 01e8 10       		.uleb128 0x10
+ 776 01e9 E2000000 		.4byte	.LASF36
+ 777 01ed 01       		.byte	0x1
+ 778 01ee 07       		.byte	0x7
+ 779 01ef FD000000 		.4byte	0xfd
+ 780 01f3 11       		.uleb128 0x11
+ 781 01f4 4B7000   		.ascii	"Kp\000"
+ 782 01f7 01       		.byte	0x1
+ 783 01f8 13       		.byte	0x13
+ 784 01f9 A3000000 		.4byte	0xa3
+ 785 01fd 05       		.uleb128 0x5
+ 786 01fe 03       		.byte	0x3
+ 787 01ff 00000000 		.4byte	Kp
+ 788 0203 11       		.uleb128 0x11
+ 789 0204 4B6900   		.ascii	"Ki\000"
+ 790 0207 01       		.byte	0x1
+ 791 0208 14       		.byte	0x14
+ 792 0209 A3000000 		.4byte	0xa3
+ 793 020d 05       		.uleb128 0x5
+ 794 020e 03       		.byte	0x3
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 17
 
 
- 848 021e 00000000 		.4byte	Kp
- 849 0222 13       		.uleb128 0x13
- 850 0223 4B6900   		.ascii	"Ki\000"
- 851 0226 01       		.byte	0x1
- 852 0227 14       		.byte	0x14
- 853 0228 A3000000 		.4byte	0xa3
- 854 022c 05       		.uleb128 0x5
- 855 022d 03       		.byte	0x3
- 856 022e 00000000 		.4byte	Ki
- 857 0232 13       		.uleb128 0x13
- 858 0233 4B6400   		.ascii	"Kd\000"
- 859 0236 01       		.byte	0x1
- 860 0237 15       		.byte	0x15
- 861 0238 A3000000 		.4byte	0xa3
- 862 023c 05       		.uleb128 0x5
- 863 023d 03       		.byte	0x3
- 864 023e 00000000 		.4byte	Kd
- 865 0242 14       		.uleb128 0x14
- 866 0243 F9010000 		.4byte	.LASF37
- 867 0247 01       		.byte	0x1
- 868 0248 18       		.byte	0x18
- 869 0249 73000000 		.4byte	0x73
- 870 024d 05       		.uleb128 0x5
- 871 024e 03       		.byte	0x3
- 872 024f 00000000 		.4byte	error
- 873 0253 14       		.uleb128 0x14
- 874 0254 7F020000 		.4byte	.LASF38
- 875 0258 01       		.byte	0x1
- 876 0259 19       		.byte	0x19
- 877 025a A3000000 		.4byte	0xa3
- 878 025e 05       		.uleb128 0x5
- 879 025f 03       		.byte	0x3
- 880 0260 00000000 		.4byte	derivative
- 881 0264 14       		.uleb128 0x14
- 882 0265 1C020000 		.4byte	.LASF39
- 883 0269 01       		.byte	0x1
- 884 026a 1A       		.byte	0x1a
- 885 026b A3000000 		.4byte	0xa3
- 886 026f 05       		.uleb128 0x5
- 887 0270 03       		.byte	0x3
- 888 0271 00000000 		.4byte	output
- 889 0275 14       		.uleb128 0x14
- 890 0276 D9000000 		.4byte	.LASF40
- 891 027a 01       		.byte	0x1
- 892 027b 1B       		.byte	0x1b
- 893 027c 81000000 		.4byte	0x81
- 894 0280 05       		.uleb128 0x5
- 895 0281 03       		.byte	0x3
- 896 0282 00000000 		.4byte	left_pwm
- 897 0286 14       		.uleb128 0x14
- 898 0287 AD020000 		.4byte	.LASF41
- 899 028b 01       		.byte	0x1
- 900 028c 1C       		.byte	0x1c
- 901 028d 81000000 		.4byte	0x81
- 902 0291 05       		.uleb128 0x5
- 903 0292 03       		.byte	0x3
- 904 0293 00000000 		.4byte	right_pwm
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 19
+ 795 020f 00000000 		.4byte	Ki
+ 796 0213 11       		.uleb128 0x11
+ 797 0214 4B6400   		.ascii	"Kd\000"
+ 798 0217 01       		.byte	0x1
+ 799 0218 15       		.byte	0x15
+ 800 0219 A3000000 		.4byte	0xa3
+ 801 021d 05       		.uleb128 0x5
+ 802 021e 03       		.byte	0x3
+ 803 021f 00000000 		.4byte	Kd
+ 804 0223 12       		.uleb128 0x12
+ 805 0224 F9010000 		.4byte	.LASF37
+ 806 0228 01       		.byte	0x1
+ 807 0229 18       		.byte	0x18
+ 808 022a 73000000 		.4byte	0x73
+ 809 022e 05       		.uleb128 0x5
+ 810 022f 03       		.byte	0x3
+ 811 0230 00000000 		.4byte	error
+ 812 0234 12       		.uleb128 0x12
+ 813 0235 73020000 		.4byte	.LASF38
+ 814 0239 01       		.byte	0x1
+ 815 023a 19       		.byte	0x19
+ 816 023b A3000000 		.4byte	0xa3
+ 817 023f 05       		.uleb128 0x5
+ 818 0240 03       		.byte	0x3
+ 819 0241 00000000 		.4byte	derivative
+ 820 0245 12       		.uleb128 0x12
+ 821 0246 57020000 		.4byte	.LASF39
+ 822 024a 01       		.byte	0x1
+ 823 024b 1A       		.byte	0x1a
+ 824 024c A3000000 		.4byte	0xa3
+ 825 0250 05       		.uleb128 0x5
+ 826 0251 03       		.byte	0x3
+ 827 0252 00000000 		.4byte	output
+ 828 0256 12       		.uleb128 0x12
+ 829 0257 D9000000 		.4byte	.LASF40
+ 830 025b 01       		.byte	0x1
+ 831 025c 1B       		.byte	0x1b
+ 832 025d 81000000 		.4byte	0x81
+ 833 0261 05       		.uleb128 0x5
+ 834 0262 03       		.byte	0x3
+ 835 0263 00000000 		.4byte	left_pwm
+ 836 0267 12       		.uleb128 0x12
+ 837 0268 A1020000 		.4byte	.LASF41
+ 838 026c 01       		.byte	0x1
+ 839 026d 1C       		.byte	0x1c
+ 840 026e 81000000 		.4byte	0x81
+ 841 0272 05       		.uleb128 0x5
+ 842 0273 03       		.byte	0x3
+ 843 0274 00000000 		.4byte	right_pwm
+ 844 0278 00       		.byte	0
+ 845              		.section	.debug_abbrev,"",%progbits
+ 846              	.Ldebug_abbrev0:
+ 847 0000 01       		.uleb128 0x1
+ 848 0001 11       		.uleb128 0x11
+ 849 0002 01       		.byte	0x1
+ 850 0003 25       		.uleb128 0x25
+ 851 0004 0E       		.uleb128 0xe
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 18
 
 
- 905 0297 00       		.byte	0
- 906              		.section	.debug_abbrev,"",%progbits
- 907              	.Ldebug_abbrev0:
- 908 0000 01       		.uleb128 0x1
- 909 0001 11       		.uleb128 0x11
- 910 0002 01       		.byte	0x1
- 911 0003 25       		.uleb128 0x25
- 912 0004 0E       		.uleb128 0xe
- 913 0005 13       		.uleb128 0x13
- 914 0006 0B       		.uleb128 0xb
- 915 0007 03       		.uleb128 0x3
- 916 0008 0E       		.uleb128 0xe
- 917 0009 1B       		.uleb128 0x1b
- 918 000a 0E       		.uleb128 0xe
- 919 000b 55       		.uleb128 0x55
- 920 000c 17       		.uleb128 0x17
- 921 000d 11       		.uleb128 0x11
- 922 000e 01       		.uleb128 0x1
- 923 000f 10       		.uleb128 0x10
- 924 0010 17       		.uleb128 0x17
- 925 0011 00       		.byte	0
- 926 0012 00       		.byte	0
- 927 0013 02       		.uleb128 0x2
- 928 0014 24       		.uleb128 0x24
- 929 0015 00       		.byte	0
- 930 0016 0B       		.uleb128 0xb
- 931 0017 0B       		.uleb128 0xb
- 932 0018 3E       		.uleb128 0x3e
- 933 0019 0B       		.uleb128 0xb
- 934 001a 03       		.uleb128 0x3
- 935 001b 0E       		.uleb128 0xe
- 936 001c 00       		.byte	0
- 937 001d 00       		.byte	0
- 938 001e 03       		.uleb128 0x3
- 939 001f 16       		.uleb128 0x16
- 940 0020 00       		.byte	0
- 941 0021 03       		.uleb128 0x3
- 942 0022 0E       		.uleb128 0xe
- 943 0023 3A       		.uleb128 0x3a
- 944 0024 0B       		.uleb128 0xb
- 945 0025 3B       		.uleb128 0x3b
- 946 0026 0B       		.uleb128 0xb
- 947 0027 49       		.uleb128 0x49
- 948 0028 13       		.uleb128 0x13
- 949 0029 00       		.byte	0
- 950 002a 00       		.byte	0
- 951 002b 04       		.uleb128 0x4
- 952 002c 24       		.uleb128 0x24
- 953 002d 00       		.byte	0
- 954 002e 0B       		.uleb128 0xb
- 955 002f 0B       		.uleb128 0xb
- 956 0030 3E       		.uleb128 0x3e
- 957 0031 0B       		.uleb128 0xb
- 958 0032 03       		.uleb128 0x3
- 959 0033 08       		.uleb128 0x8
- 960 0034 00       		.byte	0
- 961 0035 00       		.byte	0
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 20
+ 852 0005 13       		.uleb128 0x13
+ 853 0006 0B       		.uleb128 0xb
+ 854 0007 03       		.uleb128 0x3
+ 855 0008 0E       		.uleb128 0xe
+ 856 0009 1B       		.uleb128 0x1b
+ 857 000a 0E       		.uleb128 0xe
+ 858 000b 55       		.uleb128 0x55
+ 859 000c 17       		.uleb128 0x17
+ 860 000d 11       		.uleb128 0x11
+ 861 000e 01       		.uleb128 0x1
+ 862 000f 10       		.uleb128 0x10
+ 863 0010 17       		.uleb128 0x17
+ 864 0011 00       		.byte	0
+ 865 0012 00       		.byte	0
+ 866 0013 02       		.uleb128 0x2
+ 867 0014 24       		.uleb128 0x24
+ 868 0015 00       		.byte	0
+ 869 0016 0B       		.uleb128 0xb
+ 870 0017 0B       		.uleb128 0xb
+ 871 0018 3E       		.uleb128 0x3e
+ 872 0019 0B       		.uleb128 0xb
+ 873 001a 03       		.uleb128 0x3
+ 874 001b 0E       		.uleb128 0xe
+ 875 001c 00       		.byte	0
+ 876 001d 00       		.byte	0
+ 877 001e 03       		.uleb128 0x3
+ 878 001f 16       		.uleb128 0x16
+ 879 0020 00       		.byte	0
+ 880 0021 03       		.uleb128 0x3
+ 881 0022 0E       		.uleb128 0xe
+ 882 0023 3A       		.uleb128 0x3a
+ 883 0024 0B       		.uleb128 0xb
+ 884 0025 3B       		.uleb128 0x3b
+ 885 0026 0B       		.uleb128 0xb
+ 886 0027 49       		.uleb128 0x49
+ 887 0028 13       		.uleb128 0x13
+ 888 0029 00       		.byte	0
+ 889 002a 00       		.byte	0
+ 890 002b 04       		.uleb128 0x4
+ 891 002c 24       		.uleb128 0x24
+ 892 002d 00       		.byte	0
+ 893 002e 0B       		.uleb128 0xb
+ 894 002f 0B       		.uleb128 0xb
+ 895 0030 3E       		.uleb128 0x3e
+ 896 0031 0B       		.uleb128 0xb
+ 897 0032 03       		.uleb128 0x3
+ 898 0033 08       		.uleb128 0x8
+ 899 0034 00       		.byte	0
+ 900 0035 00       		.byte	0
+ 901 0036 05       		.uleb128 0x5
+ 902 0037 16       		.uleb128 0x16
+ 903 0038 00       		.byte	0
+ 904 0039 03       		.uleb128 0x3
+ 905 003a 0E       		.uleb128 0xe
+ 906 003b 3A       		.uleb128 0x3a
+ 907 003c 0B       		.uleb128 0xb
+ 908 003d 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 19
 
 
- 962 0036 05       		.uleb128 0x5
- 963 0037 16       		.uleb128 0x16
- 964 0038 00       		.byte	0
- 965 0039 03       		.uleb128 0x3
- 966 003a 0E       		.uleb128 0xe
- 967 003b 3A       		.uleb128 0x3a
- 968 003c 0B       		.uleb128 0xb
- 969 003d 3B       		.uleb128 0x3b
- 970 003e 05       		.uleb128 0x5
- 971 003f 49       		.uleb128 0x49
- 972 0040 13       		.uleb128 0x13
- 973 0041 00       		.byte	0
- 974 0042 00       		.byte	0
- 975 0043 06       		.uleb128 0x6
- 976 0044 04       		.uleb128 0x4
- 977 0045 01       		.byte	0x1
- 978 0046 0B       		.uleb128 0xb
- 979 0047 0B       		.uleb128 0xb
- 980 0048 49       		.uleb128 0x49
- 981 0049 13       		.uleb128 0x13
- 982 004a 3A       		.uleb128 0x3a
- 983 004b 0B       		.uleb128 0xb
- 984 004c 3B       		.uleb128 0x3b
- 985 004d 0B       		.uleb128 0xb
- 986 004e 01       		.uleb128 0x1
- 987 004f 13       		.uleb128 0x13
- 988 0050 00       		.byte	0
- 989 0051 00       		.byte	0
- 990 0052 07       		.uleb128 0x7
- 991 0053 28       		.uleb128 0x28
- 992 0054 00       		.byte	0
- 993 0055 03       		.uleb128 0x3
- 994 0056 0E       		.uleb128 0xe
- 995 0057 1C       		.uleb128 0x1c
- 996 0058 0B       		.uleb128 0xb
- 997 0059 00       		.byte	0
- 998 005a 00       		.byte	0
- 999 005b 08       		.uleb128 0x8
- 1000 005c 2E       		.uleb128 0x2e
- 1001 005d 01       		.byte	0x1
- 1002 005e 03       		.uleb128 0x3
- 1003 005f 0E       		.uleb128 0xe
- 1004 0060 3A       		.uleb128 0x3a
- 1005 0061 0B       		.uleb128 0xb
- 1006 0062 3B       		.uleb128 0x3b
- 1007 0063 0B       		.uleb128 0xb
- 1008 0064 27       		.uleb128 0x27
- 1009 0065 19       		.uleb128 0x19
- 1010 0066 11       		.uleb128 0x11
- 1011 0067 01       		.uleb128 0x1
- 1012 0068 12       		.uleb128 0x12
- 1013 0069 06       		.uleb128 0x6
- 1014 006a 40       		.uleb128 0x40
- 1015 006b 18       		.uleb128 0x18
- 1016 006c 9642     		.uleb128 0x2116
- 1017 006e 19       		.uleb128 0x19
- 1018 006f 01       		.uleb128 0x1
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 21
+ 909 003e 05       		.uleb128 0x5
+ 910 003f 49       		.uleb128 0x49
+ 911 0040 13       		.uleb128 0x13
+ 912 0041 00       		.byte	0
+ 913 0042 00       		.byte	0
+ 914 0043 06       		.uleb128 0x6
+ 915 0044 04       		.uleb128 0x4
+ 916 0045 01       		.byte	0x1
+ 917 0046 0B       		.uleb128 0xb
+ 918 0047 0B       		.uleb128 0xb
+ 919 0048 49       		.uleb128 0x49
+ 920 0049 13       		.uleb128 0x13
+ 921 004a 3A       		.uleb128 0x3a
+ 922 004b 0B       		.uleb128 0xb
+ 923 004c 3B       		.uleb128 0x3b
+ 924 004d 0B       		.uleb128 0xb
+ 925 004e 01       		.uleb128 0x1
+ 926 004f 13       		.uleb128 0x13
+ 927 0050 00       		.byte	0
+ 928 0051 00       		.byte	0
+ 929 0052 07       		.uleb128 0x7
+ 930 0053 28       		.uleb128 0x28
+ 931 0054 00       		.byte	0
+ 932 0055 03       		.uleb128 0x3
+ 933 0056 0E       		.uleb128 0xe
+ 934 0057 1C       		.uleb128 0x1c
+ 935 0058 0B       		.uleb128 0xb
+ 936 0059 00       		.byte	0
+ 937 005a 00       		.byte	0
+ 938 005b 08       		.uleb128 0x8
+ 939 005c 2E       		.uleb128 0x2e
+ 940 005d 01       		.byte	0x1
+ 941 005e 03       		.uleb128 0x3
+ 942 005f 0E       		.uleb128 0xe
+ 943 0060 3A       		.uleb128 0x3a
+ 944 0061 0B       		.uleb128 0xb
+ 945 0062 3B       		.uleb128 0x3b
+ 946 0063 0B       		.uleb128 0xb
+ 947 0064 27       		.uleb128 0x27
+ 948 0065 19       		.uleb128 0x19
+ 949 0066 11       		.uleb128 0x11
+ 950 0067 01       		.uleb128 0x1
+ 951 0068 12       		.uleb128 0x12
+ 952 0069 06       		.uleb128 0x6
+ 953 006a 40       		.uleb128 0x40
+ 954 006b 18       		.uleb128 0x18
+ 955 006c 9642     		.uleb128 0x2116
+ 956 006e 19       		.uleb128 0x19
+ 957 006f 01       		.uleb128 0x1
+ 958 0070 13       		.uleb128 0x13
+ 959 0071 00       		.byte	0
+ 960 0072 00       		.byte	0
+ 961 0073 09       		.uleb128 0x9
+ 962 0074 05       		.uleb128 0x5
+ 963 0075 00       		.byte	0
+ 964 0076 03       		.uleb128 0x3
+ 965 0077 08       		.uleb128 0x8
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 20
 
 
- 1019 0070 13       		.uleb128 0x13
- 1020 0071 00       		.byte	0
- 1021 0072 00       		.byte	0
- 1022 0073 09       		.uleb128 0x9
- 1023 0074 05       		.uleb128 0x5
- 1024 0075 00       		.byte	0
- 1025 0076 03       		.uleb128 0x3
- 1026 0077 08       		.uleb128 0x8
- 1027 0078 3A       		.uleb128 0x3a
- 1028 0079 0B       		.uleb128 0xb
- 1029 007a 3B       		.uleb128 0x3b
- 1030 007b 0B       		.uleb128 0xb
- 1031 007c 49       		.uleb128 0x49
- 1032 007d 13       		.uleb128 0x13
- 1033 007e 02       		.uleb128 0x2
- 1034 007f 18       		.uleb128 0x18
- 1035 0080 00       		.byte	0
- 1036 0081 00       		.byte	0
- 1037 0082 0A       		.uleb128 0xa
- 1038 0083 2E       		.uleb128 0x2e
- 1039 0084 01       		.byte	0x1
- 1040 0085 3F       		.uleb128 0x3f
- 1041 0086 19       		.uleb128 0x19
- 1042 0087 03       		.uleb128 0x3
- 1043 0088 0E       		.uleb128 0xe
- 1044 0089 3A       		.uleb128 0x3a
- 1045 008a 0B       		.uleb128 0xb
- 1046 008b 3B       		.uleb128 0x3b
- 1047 008c 0B       		.uleb128 0xb
- 1048 008d 27       		.uleb128 0x27
- 1049 008e 19       		.uleb128 0x19
- 1050 008f 11       		.uleb128 0x11
- 1051 0090 01       		.uleb128 0x1
- 1052 0091 12       		.uleb128 0x12
- 1053 0092 06       		.uleb128 0x6
- 1054 0093 40       		.uleb128 0x40
- 1055 0094 18       		.uleb128 0x18
- 1056 0095 9642     		.uleb128 0x2116
- 1057 0097 19       		.uleb128 0x19
- 1058 0098 01       		.uleb128 0x1
- 1059 0099 13       		.uleb128 0x13
- 1060 009a 00       		.byte	0
- 1061 009b 00       		.byte	0
- 1062 009c 0B       		.uleb128 0xb
- 1063 009d 34       		.uleb128 0x34
- 1064 009e 00       		.byte	0
- 1065 009f 03       		.uleb128 0x3
- 1066 00a0 0E       		.uleb128 0xe
- 1067 00a1 3A       		.uleb128 0x3a
- 1068 00a2 0B       		.uleb128 0xb
- 1069 00a3 3B       		.uleb128 0x3b
- 1070 00a4 0B       		.uleb128 0xb
- 1071 00a5 49       		.uleb128 0x49
- 1072 00a6 13       		.uleb128 0x13
- 1073 00a7 02       		.uleb128 0x2
- 1074 00a8 18       		.uleb128 0x18
- 1075 00a9 00       		.byte	0
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 22
+ 966 0078 3A       		.uleb128 0x3a
+ 967 0079 0B       		.uleb128 0xb
+ 968 007a 3B       		.uleb128 0x3b
+ 969 007b 0B       		.uleb128 0xb
+ 970 007c 49       		.uleb128 0x49
+ 971 007d 13       		.uleb128 0x13
+ 972 007e 02       		.uleb128 0x2
+ 973 007f 18       		.uleb128 0x18
+ 974 0080 00       		.byte	0
+ 975 0081 00       		.byte	0
+ 976 0082 0A       		.uleb128 0xa
+ 977 0083 2E       		.uleb128 0x2e
+ 978 0084 01       		.byte	0x1
+ 979 0085 3F       		.uleb128 0x3f
+ 980 0086 19       		.uleb128 0x19
+ 981 0087 03       		.uleb128 0x3
+ 982 0088 0E       		.uleb128 0xe
+ 983 0089 3A       		.uleb128 0x3a
+ 984 008a 0B       		.uleb128 0xb
+ 985 008b 3B       		.uleb128 0x3b
+ 986 008c 0B       		.uleb128 0xb
+ 987 008d 27       		.uleb128 0x27
+ 988 008e 19       		.uleb128 0x19
+ 989 008f 11       		.uleb128 0x11
+ 990 0090 01       		.uleb128 0x1
+ 991 0091 12       		.uleb128 0x12
+ 992 0092 06       		.uleb128 0x6
+ 993 0093 40       		.uleb128 0x40
+ 994 0094 18       		.uleb128 0x18
+ 995 0095 9642     		.uleb128 0x2116
+ 996 0097 19       		.uleb128 0x19
+ 997 0098 01       		.uleb128 0x1
+ 998 0099 13       		.uleb128 0x13
+ 999 009a 00       		.byte	0
+ 1000 009b 00       		.byte	0
+ 1001 009c 0B       		.uleb128 0xb
+ 1002 009d 34       		.uleb128 0x34
+ 1003 009e 00       		.byte	0
+ 1004 009f 03       		.uleb128 0x3
+ 1005 00a0 0E       		.uleb128 0xe
+ 1006 00a1 3A       		.uleb128 0x3a
+ 1007 00a2 0B       		.uleb128 0xb
+ 1008 00a3 3B       		.uleb128 0x3b
+ 1009 00a4 0B       		.uleb128 0xb
+ 1010 00a5 49       		.uleb128 0x49
+ 1011 00a6 13       		.uleb128 0x13
+ 1012 00a7 02       		.uleb128 0x2
+ 1013 00a8 18       		.uleb128 0x18
+ 1014 00a9 00       		.byte	0
+ 1015 00aa 00       		.byte	0
+ 1016 00ab 0C       		.uleb128 0xc
+ 1017 00ac 2E       		.uleb128 0x2e
+ 1018 00ad 00       		.byte	0
+ 1019 00ae 3F       		.uleb128 0x3f
+ 1020 00af 19       		.uleb128 0x19
+ 1021 00b0 03       		.uleb128 0x3
+ 1022 00b1 0E       		.uleb128 0xe
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 21
 
 
- 1076 00aa 00       		.byte	0
- 1077 00ab 0C       		.uleb128 0xc
- 1078 00ac 34       		.uleb128 0x34
- 1079 00ad 00       		.byte	0
- 1080 00ae 03       		.uleb128 0x3
- 1081 00af 08       		.uleb128 0x8
- 1082 00b0 3A       		.uleb128 0x3a
- 1083 00b1 0B       		.uleb128 0xb
- 1084 00b2 3B       		.uleb128 0x3b
- 1085 00b3 0B       		.uleb128 0xb
- 1086 00b4 49       		.uleb128 0x49
- 1087 00b5 13       		.uleb128 0x13
- 1088 00b6 02       		.uleb128 0x2
- 1089 00b7 18       		.uleb128 0x18
- 1090 00b8 00       		.byte	0
- 1091 00b9 00       		.byte	0
- 1092 00ba 0D       		.uleb128 0xd
- 1093 00bb 01       		.uleb128 0x1
- 1094 00bc 01       		.byte	0x1
- 1095 00bd 49       		.uleb128 0x49
- 1096 00be 13       		.uleb128 0x13
- 1097 00bf 01       		.uleb128 0x1
- 1098 00c0 13       		.uleb128 0x13
- 1099 00c1 00       		.byte	0
- 1100 00c2 00       		.byte	0
- 1101 00c3 0E       		.uleb128 0xe
- 1102 00c4 21       		.uleb128 0x21
- 1103 00c5 00       		.byte	0
- 1104 00c6 49       		.uleb128 0x49
- 1105 00c7 13       		.uleb128 0x13
- 1106 00c8 2F       		.uleb128 0x2f
- 1107 00c9 0B       		.uleb128 0xb
- 1108 00ca 00       		.byte	0
- 1109 00cb 00       		.byte	0
- 1110 00cc 0F       		.uleb128 0xf
- 1111 00cd 2E       		.uleb128 0x2e
- 1112 00ce 00       		.byte	0
- 1113 00cf 3F       		.uleb128 0x3f
- 1114 00d0 19       		.uleb128 0x19
- 1115 00d1 03       		.uleb128 0x3
- 1116 00d2 0E       		.uleb128 0xe
- 1117 00d3 3A       		.uleb128 0x3a
- 1118 00d4 0B       		.uleb128 0xb
- 1119 00d5 3B       		.uleb128 0x3b
- 1120 00d6 0B       		.uleb128 0xb
- 1121 00d7 27       		.uleb128 0x27
- 1122 00d8 19       		.uleb128 0x19
- 1123 00d9 11       		.uleb128 0x11
- 1124 00da 01       		.uleb128 0x1
- 1125 00db 12       		.uleb128 0x12
- 1126 00dc 06       		.uleb128 0x6
- 1127 00dd 40       		.uleb128 0x40
- 1128 00de 18       		.uleb128 0x18
- 1129 00df 9642     		.uleb128 0x2116
- 1130 00e1 19       		.uleb128 0x19
- 1131 00e2 00       		.byte	0
- 1132 00e3 00       		.byte	0
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 23
+ 1023 00b2 3A       		.uleb128 0x3a
+ 1024 00b3 0B       		.uleb128 0xb
+ 1025 00b4 3B       		.uleb128 0x3b
+ 1026 00b5 0B       		.uleb128 0xb
+ 1027 00b6 27       		.uleb128 0x27
+ 1028 00b7 19       		.uleb128 0x19
+ 1029 00b8 11       		.uleb128 0x11
+ 1030 00b9 01       		.uleb128 0x1
+ 1031 00ba 12       		.uleb128 0x12
+ 1032 00bb 06       		.uleb128 0x6
+ 1033 00bc 40       		.uleb128 0x40
+ 1034 00bd 18       		.uleb128 0x18
+ 1035 00be 9642     		.uleb128 0x2116
+ 1036 00c0 19       		.uleb128 0x19
+ 1037 00c1 00       		.byte	0
+ 1038 00c2 00       		.byte	0
+ 1039 00c3 0D       		.uleb128 0xd
+ 1040 00c4 34       		.uleb128 0x34
+ 1041 00c5 00       		.byte	0
+ 1042 00c6 03       		.uleb128 0x3
+ 1043 00c7 08       		.uleb128 0x8
+ 1044 00c8 3A       		.uleb128 0x3a
+ 1045 00c9 0B       		.uleb128 0xb
+ 1046 00ca 3B       		.uleb128 0x3b
+ 1047 00cb 0B       		.uleb128 0xb
+ 1048 00cc 49       		.uleb128 0x49
+ 1049 00cd 13       		.uleb128 0x13
+ 1050 00ce 02       		.uleb128 0x2
+ 1051 00cf 18       		.uleb128 0x18
+ 1052 00d0 00       		.byte	0
+ 1053 00d1 00       		.byte	0
+ 1054 00d2 0E       		.uleb128 0xe
+ 1055 00d3 34       		.uleb128 0x34
+ 1056 00d4 00       		.byte	0
+ 1057 00d5 03       		.uleb128 0x3
+ 1058 00d6 0E       		.uleb128 0xe
+ 1059 00d7 3A       		.uleb128 0x3a
+ 1060 00d8 0B       		.uleb128 0xb
+ 1061 00d9 3B       		.uleb128 0x3b
+ 1062 00da 05       		.uleb128 0x5
+ 1063 00db 49       		.uleb128 0x49
+ 1064 00dc 13       		.uleb128 0x13
+ 1065 00dd 3F       		.uleb128 0x3f
+ 1066 00de 19       		.uleb128 0x19
+ 1067 00df 3C       		.uleb128 0x3c
+ 1068 00e0 19       		.uleb128 0x19
+ 1069 00e1 00       		.byte	0
+ 1070 00e2 00       		.byte	0
+ 1071 00e3 0F       		.uleb128 0xf
+ 1072 00e4 35       		.uleb128 0x35
+ 1073 00e5 00       		.byte	0
+ 1074 00e6 49       		.uleb128 0x49
+ 1075 00e7 13       		.uleb128 0x13
+ 1076 00e8 00       		.byte	0
+ 1077 00e9 00       		.byte	0
+ 1078 00ea 10       		.uleb128 0x10
+ 1079 00eb 34       		.uleb128 0x34
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 22
 
 
- 1133 00e4 10       		.uleb128 0x10
- 1134 00e5 34       		.uleb128 0x34
- 1135 00e6 00       		.byte	0
- 1136 00e7 03       		.uleb128 0x3
- 1137 00e8 0E       		.uleb128 0xe
- 1138 00e9 3A       		.uleb128 0x3a
- 1139 00ea 0B       		.uleb128 0xb
- 1140 00eb 3B       		.uleb128 0x3b
- 1141 00ec 05       		.uleb128 0x5
- 1142 00ed 49       		.uleb128 0x49
- 1143 00ee 13       		.uleb128 0x13
- 1144 00ef 3F       		.uleb128 0x3f
- 1145 00f0 19       		.uleb128 0x19
- 1146 00f1 3C       		.uleb128 0x3c
- 1147 00f2 19       		.uleb128 0x19
- 1148 00f3 00       		.byte	0
- 1149 00f4 00       		.byte	0
- 1150 00f5 11       		.uleb128 0x11
- 1151 00f6 35       		.uleb128 0x35
- 1152 00f7 00       		.byte	0
- 1153 00f8 49       		.uleb128 0x49
- 1154 00f9 13       		.uleb128 0x13
- 1155 00fa 00       		.byte	0
- 1156 00fb 00       		.byte	0
- 1157 00fc 12       		.uleb128 0x12
- 1158 00fd 34       		.uleb128 0x34
- 1159 00fe 00       		.byte	0
- 1160 00ff 03       		.uleb128 0x3
- 1161 0100 0E       		.uleb128 0xe
- 1162 0101 3A       		.uleb128 0x3a
- 1163 0102 0B       		.uleb128 0xb
- 1164 0103 3B       		.uleb128 0x3b
- 1165 0104 0B       		.uleb128 0xb
- 1166 0105 49       		.uleb128 0x49
- 1167 0106 13       		.uleb128 0x13
- 1168 0107 3F       		.uleb128 0x3f
- 1169 0108 19       		.uleb128 0x19
- 1170 0109 3C       		.uleb128 0x3c
- 1171 010a 19       		.uleb128 0x19
- 1172 010b 00       		.byte	0
- 1173 010c 00       		.byte	0
- 1174 010d 13       		.uleb128 0x13
- 1175 010e 34       		.uleb128 0x34
- 1176 010f 00       		.byte	0
- 1177 0110 03       		.uleb128 0x3
- 1178 0111 08       		.uleb128 0x8
- 1179 0112 3A       		.uleb128 0x3a
- 1180 0113 0B       		.uleb128 0xb
- 1181 0114 3B       		.uleb128 0x3b
- 1182 0115 0B       		.uleb128 0xb
- 1183 0116 49       		.uleb128 0x49
- 1184 0117 13       		.uleb128 0x13
- 1185 0118 3F       		.uleb128 0x3f
- 1186 0119 19       		.uleb128 0x19
- 1187 011a 02       		.uleb128 0x2
- 1188 011b 18       		.uleb128 0x18
- 1189 011c 00       		.byte	0
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 24
+ 1080 00ec 00       		.byte	0
+ 1081 00ed 03       		.uleb128 0x3
+ 1082 00ee 0E       		.uleb128 0xe
+ 1083 00ef 3A       		.uleb128 0x3a
+ 1084 00f0 0B       		.uleb128 0xb
+ 1085 00f1 3B       		.uleb128 0x3b
+ 1086 00f2 0B       		.uleb128 0xb
+ 1087 00f3 49       		.uleb128 0x49
+ 1088 00f4 13       		.uleb128 0x13
+ 1089 00f5 3F       		.uleb128 0x3f
+ 1090 00f6 19       		.uleb128 0x19
+ 1091 00f7 3C       		.uleb128 0x3c
+ 1092 00f8 19       		.uleb128 0x19
+ 1093 00f9 00       		.byte	0
+ 1094 00fa 00       		.byte	0
+ 1095 00fb 11       		.uleb128 0x11
+ 1096 00fc 34       		.uleb128 0x34
+ 1097 00fd 00       		.byte	0
+ 1098 00fe 03       		.uleb128 0x3
+ 1099 00ff 08       		.uleb128 0x8
+ 1100 0100 3A       		.uleb128 0x3a
+ 1101 0101 0B       		.uleb128 0xb
+ 1102 0102 3B       		.uleb128 0x3b
+ 1103 0103 0B       		.uleb128 0xb
+ 1104 0104 49       		.uleb128 0x49
+ 1105 0105 13       		.uleb128 0x13
+ 1106 0106 3F       		.uleb128 0x3f
+ 1107 0107 19       		.uleb128 0x19
+ 1108 0108 02       		.uleb128 0x2
+ 1109 0109 18       		.uleb128 0x18
+ 1110 010a 00       		.byte	0
+ 1111 010b 00       		.byte	0
+ 1112 010c 12       		.uleb128 0x12
+ 1113 010d 34       		.uleb128 0x34
+ 1114 010e 00       		.byte	0
+ 1115 010f 03       		.uleb128 0x3
+ 1116 0110 0E       		.uleb128 0xe
+ 1117 0111 3A       		.uleb128 0x3a
+ 1118 0112 0B       		.uleb128 0xb
+ 1119 0113 3B       		.uleb128 0x3b
+ 1120 0114 0B       		.uleb128 0xb
+ 1121 0115 49       		.uleb128 0x49
+ 1122 0116 13       		.uleb128 0x13
+ 1123 0117 3F       		.uleb128 0x3f
+ 1124 0118 19       		.uleb128 0x19
+ 1125 0119 02       		.uleb128 0x2
+ 1126 011a 18       		.uleb128 0x18
+ 1127 011b 00       		.byte	0
+ 1128 011c 00       		.byte	0
+ 1129 011d 00       		.byte	0
+ 1130              		.section	.debug_aranges,"",%progbits
+ 1131 0000 3C000000 		.4byte	0x3c
+ 1132 0004 0200     		.2byte	0x2
+ 1133 0006 00000000 		.4byte	.Ldebug_info0
+ 1134 000a 04       		.byte	0x4
+ 1135 000b 00       		.byte	0
+ 1136 000c 0000     		.2byte	0
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 23
 
 
- 1190 011d 00       		.byte	0
- 1191 011e 14       		.uleb128 0x14
- 1192 011f 34       		.uleb128 0x34
- 1193 0120 00       		.byte	0
- 1194 0121 03       		.uleb128 0x3
- 1195 0122 0E       		.uleb128 0xe
- 1196 0123 3A       		.uleb128 0x3a
- 1197 0124 0B       		.uleb128 0xb
- 1198 0125 3B       		.uleb128 0x3b
- 1199 0126 0B       		.uleb128 0xb
- 1200 0127 49       		.uleb128 0x49
- 1201 0128 13       		.uleb128 0x13
- 1202 0129 3F       		.uleb128 0x3f
- 1203 012a 19       		.uleb128 0x19
- 1204 012b 02       		.uleb128 0x2
- 1205 012c 18       		.uleb128 0x18
- 1206 012d 00       		.byte	0
- 1207 012e 00       		.byte	0
- 1208 012f 00       		.byte	0
- 1209              		.section	.debug_aranges,"",%progbits
- 1210 0000 3C000000 		.4byte	0x3c
- 1211 0004 0200     		.2byte	0x2
- 1212 0006 00000000 		.4byte	.Ldebug_info0
- 1213 000a 04       		.byte	0x4
- 1214 000b 00       		.byte	0
- 1215 000c 0000     		.2byte	0
- 1216 000e 0000     		.2byte	0
- 1217 0010 00000000 		.4byte	.LFB64
- 1218 0014 1C000000 		.4byte	.LFE64-.LFB64
- 1219 0018 00000000 		.4byte	.LFB65
- 1220 001c 1C000000 		.4byte	.LFE65-.LFB65
- 1221 0020 00000000 		.4byte	.LFB66
- 1222 0024 2C020000 		.4byte	.LFE66-.LFB66
- 1223 0028 00000000 		.4byte	.LFB67
- 1224 002c 14000000 		.4byte	.LFE67-.LFB67
- 1225 0030 00000000 		.4byte	.LFB68
- 1226 0034 84000000 		.4byte	.LFE68-.LFB68
- 1227 0038 00000000 		.4byte	0
- 1228 003c 00000000 		.4byte	0
- 1229              		.section	.debug_ranges,"",%progbits
- 1230              	.Ldebug_ranges0:
- 1231 0000 00000000 		.4byte	.LFB64
- 1232 0004 1C000000 		.4byte	.LFE64
- 1233 0008 00000000 		.4byte	.LFB65
- 1234 000c 1C000000 		.4byte	.LFE65
- 1235 0010 00000000 		.4byte	.LFB66
- 1236 0014 2C020000 		.4byte	.LFE66
- 1237 0018 00000000 		.4byte	.LFB67
- 1238 001c 14000000 		.4byte	.LFE67
- 1239 0020 00000000 		.4byte	.LFB68
- 1240 0024 84000000 		.4byte	.LFE68
- 1241 0028 00000000 		.4byte	0
- 1242 002c 00000000 		.4byte	0
- 1243              		.section	.debug_line,"",%progbits
- 1244              	.Ldebug_line0:
- 1245 0000 04020000 		.section	.debug_str,"MS",%progbits,1
- 1245      02006201 
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 25
+ 1137 000e 0000     		.2byte	0
+ 1138 0010 00000000 		.4byte	.LFB64
+ 1139 0014 1C000000 		.4byte	.LFE64-.LFB64
+ 1140 0018 00000000 		.4byte	.LFB65
+ 1141 001c 1C000000 		.4byte	.LFE65-.LFB65
+ 1142 0020 00000000 		.4byte	.LFB66
+ 1143 0024 D8010000 		.4byte	.LFE66-.LFB66
+ 1144 0028 00000000 		.4byte	.LFB67
+ 1145 002c 14000000 		.4byte	.LFE67-.LFB67
+ 1146 0030 00000000 		.4byte	.LFB68
+ 1147 0034 84000000 		.4byte	.LFE68-.LFB68
+ 1148 0038 00000000 		.4byte	0
+ 1149 003c 00000000 		.4byte	0
+ 1150              		.section	.debug_ranges,"",%progbits
+ 1151              	.Ldebug_ranges0:
+ 1152 0000 00000000 		.4byte	.LFB64
+ 1153 0004 1C000000 		.4byte	.LFE64
+ 1154 0008 00000000 		.4byte	.LFB65
+ 1155 000c 1C000000 		.4byte	.LFE65
+ 1156 0010 00000000 		.4byte	.LFB66
+ 1157 0014 D8010000 		.4byte	.LFE66
+ 1158 0018 00000000 		.4byte	.LFB67
+ 1159 001c 14000000 		.4byte	.LFE67
+ 1160 0020 00000000 		.4byte	.LFB68
+ 1161 0024 84000000 		.4byte	.LFE68
+ 1162 0028 00000000 		.4byte	0
+ 1163 002c 00000000 		.4byte	0
+ 1164              		.section	.debug_line,"",%progbits
+ 1165              	.Ldebug_line0:
+ 1166 0000 02020000 		.section	.debug_str,"MS",%progbits,1
+ 1166      02006201 
+ 1166      00000201 
+ 1166      FB0E0D00 
+ 1166      01010101 
+ 1167              	.LASF4:
+ 1168 0000 5F5F7569 		.ascii	"__uint8_t\000"
+ 1168      6E74385F 
+ 1168      7400
+ 1169              	.LASF42:
+ 1170 000a 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1170      43313120 
+ 1170      352E342E 
+ 1170      31203230 
+ 1170      31363036 
+ 1171 003d 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1171      20726576 
+ 1171      6973696F 
+ 1171      6E203233 
+ 1171      37373135 
+ 1172 0070 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1172      66756E63 
+ 1172      74696F6E 
+ 1172      2D736563 
+ 1172      74696F6E 
+ 1173              	.LASF27:
+ 1174 0098 6D6F746F 		.ascii	"motor_left\000"
+ 1174      725F6C65 
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 24
 
 
- 1245      00000201 
- 1245      FB0E0D00 
- 1245      01010101 
- 1246              	.LASF4:
- 1247 0000 5F5F7569 		.ascii	"__uint8_t\000"
- 1247      6E74385F 
- 1247      7400
- 1248              	.LASF42:
- 1249 000a 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 1249      43313120 
- 1249      352E342E 
- 1249      31203230 
- 1249      31363036 
- 1250 003d 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 1250      20726576 
- 1250      6973696F 
- 1250      6E203233 
- 1250      37373135 
- 1251 0070 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
- 1251      66756E63 
- 1251      74696F6E 
- 1251      2D736563 
- 1251      74696F6E 
- 1252              	.LASF27:
- 1253 0098 6D6F746F 		.ascii	"motor_left\000"
- 1253      725F6C65 
- 1253      667400
- 1254              	.LASF23:
- 1255 00a3 44524946 		.ascii	"DRIFTED_RIGHT\000"
- 1255      5445445F 
- 1255      52494748 
- 1255      5400
- 1256              	.LASF33:
- 1257 00b1 696E7465 		.ascii	"integral\000"
- 1257      6772616C 
- 1257      00
- 1258              	.LASF5:
- 1259 00ba 5F5F696E 		.ascii	"__int32_t\000"
- 1259      7433325F 
- 1259      7400
- 1260              	.LASF31:
- 1261 00c4 646F5F73 		.ascii	"do_straight_with_pid\000"
- 1261      74726169 
- 1261      6768745F 
- 1261      77697468 
- 1261      5F706964 
- 1262              	.LASF40:
- 1263 00d9 6C656674 		.ascii	"left_pwm\000"
- 1263      5F70776D 
- 1263      00
- 1264              	.LASF36:
- 1265 00e2 70726576 		.ascii	"previous_movement\000"
- 1265      696F7573 
- 1265      5F6D6F76 
- 1265      656D656E 
- 1265      7400
- 1266              	.LASF34:
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 26
+ 1174      667400
+ 1175              	.LASF23:
+ 1176 00a3 44524946 		.ascii	"DRIFTED_RIGHT\000"
+ 1176      5445445F 
+ 1176      52494748 
+ 1176      5400
+ 1177              	.LASF33:
+ 1178 00b1 696E7465 		.ascii	"integral\000"
+ 1178      6772616C 
+ 1178      00
+ 1179              	.LASF5:
+ 1180 00ba 5F5F696E 		.ascii	"__int32_t\000"
+ 1180      7433325F 
+ 1180      7400
+ 1181              	.LASF31:
+ 1182 00c4 646F5F73 		.ascii	"do_straight_with_pid\000"
+ 1182      74726169 
+ 1182      6768745F 
+ 1182      77697468 
+ 1182      5F706964 
+ 1183              	.LASF40:
+ 1184 00d9 6C656674 		.ascii	"left_pwm\000"
+ 1184      5F70776D 
+ 1184      00
+ 1185              	.LASF36:
+ 1186 00e2 70726576 		.ascii	"previous_movement\000"
+ 1186      696F7573 
+ 1186      5F6D6F76 
+ 1186      656D656E 
+ 1186      7400
+ 1187              	.LASF34:
+ 1188 00f4 70726576 		.ascii	"prev_error\000"
+ 1188      5F657272 
+ 1188      6F7200
+ 1189              	.LASF12:
+ 1190 00ff 696E7433 		.ascii	"int32_t\000"
+ 1190      325F7400 
+ 1191              	.LASF14:
+ 1192 0107 666C6F61 		.ascii	"float\000"
+ 1192      7400
+ 1193              	.LASF0:
+ 1194 010d 7369676E 		.ascii	"signed char\000"
+ 1194      65642063 
+ 1194      68617200 
+ 1195              	.LASF1:
+ 1196 0119 756E7369 		.ascii	"unsigned char\000"
+ 1196      676E6564 
+ 1196      20636861 
+ 1196      7200
+ 1197              	.LASF30:
+ 1198 0127 72696768 		.ascii	"right_enc\000"
+ 1198      745F656E 
+ 1198      6300
+ 1199              	.LASF21:
+ 1200 0131 52494748 		.ascii	"RIGHT_TURN\000"
+ 1200      545F5455 
+ 1200      524E00
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 25
 
 
- 1267 00f4 70726576 		.ascii	"prev_error\000"
- 1267      5F657272 
- 1267      6F7200
- 1268              	.LASF12:
- 1269 00ff 696E7433 		.ascii	"int32_t\000"
- 1269      325F7400 
- 1270              	.LASF14:
- 1271 0107 666C6F61 		.ascii	"float\000"
- 1271      7400
- 1272              	.LASF0:
- 1273 010d 7369676E 		.ascii	"signed char\000"
- 1273      65642063 
- 1273      68617200 
- 1274              	.LASF1:
- 1275 0119 756E7369 		.ascii	"unsigned char\000"
- 1275      676E6564 
- 1275      20636861 
- 1275      7200
- 1276              	.LASF30:
- 1277 0127 72696768 		.ascii	"right_enc\000"
- 1277      745F656E 
- 1277      6300
- 1278              	.LASF21:
- 1279 0131 52494748 		.ascii	"RIGHT_TURN\000"
- 1279      545F5455 
- 1279      524E00
- 1280              	.LASF32:
- 1281 013c 6D6F7665 		.ascii	"move_handling\000"
- 1281      5F68616E 
- 1281      646C696E 
- 1281      6700
- 1282              	.LASF7:
- 1283 014a 6C6F6E67 		.ascii	"long unsigned int\000"
- 1283      20756E73 
- 1283      69676E65 
- 1283      6420696E 
- 1283      7400
- 1284              	.LASF3:
- 1285 015c 73686F72 		.ascii	"short unsigned int\000"
- 1285      7420756E 
- 1285      7369676E 
- 1285      65642069 
- 1285      6E7400
- 1286              	.LASF20:
- 1287 016f 4C454654 		.ascii	"LEFT_TURN\000"
- 1287      5F545552 
- 1287      4E00
- 1288              	.LASF45:
- 1289 0179 73746F70 		.ascii	"stop\000"
- 1289      00
- 1290              	.LASF35:
- 1291 017e 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 1291      52784275 
- 1291      66666572 
- 1291      00
- 1292              	.LASF15:
- 1293 018b 646F7562 		.ascii	"double\000"
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 27
+ 1201              	.LASF32:
+ 1202 013c 6D6F7665 		.ascii	"move_handling\000"
+ 1202      5F68616E 
+ 1202      646C696E 
+ 1202      6700
+ 1203              	.LASF7:
+ 1204 014a 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1204      20756E73 
+ 1204      69676E65 
+ 1204      6420696E 
+ 1204      7400
+ 1205              	.LASF3:
+ 1206 015c 73686F72 		.ascii	"short unsigned int\000"
+ 1206      7420756E 
+ 1206      7369676E 
+ 1206      65642069 
+ 1206      6E7400
+ 1207              	.LASF20:
+ 1208 016f 4C454654 		.ascii	"LEFT_TURN\000"
+ 1208      5F545552 
+ 1208      4E00
+ 1209              	.LASF45:
+ 1210 0179 73746F70 		.ascii	"stop\000"
+ 1210      00
+ 1211              	.LASF35:
+ 1212 017e 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1212      52784275 
+ 1212      66666572 
+ 1212      00
+ 1213              	.LASF15:
+ 1214 018b 646F7562 		.ascii	"double\000"
+ 1214      6C6500
+ 1215              	.LASF24:
+ 1216 0192 53544F50 		.ascii	"STOP\000"
+ 1216      00
+ 1217              	.LASF13:
+ 1218 0197 75696E74 		.ascii	"uint16\000"
+ 1218      313600
+ 1219              	.LASF29:
+ 1220 019e 6C656674 		.ascii	"left_enc\000"
+ 1220      5F656E63 
+ 1220      00
+ 1221              	.LASF43:
+ 1222 01a7 4D4F5645 		.ascii	"MOVEMENT.c\000"
+ 1222      4D454E54 
+ 1222      2E6300
+ 1223              	.LASF10:
+ 1224 01b2 756E7369 		.ascii	"unsigned int\000"
+ 1224      676E6564 
+ 1224      20696E74 
+ 1224      00
+ 1225              	.LASF9:
+ 1226 01bf 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1226      206C6F6E 
+ 1226      6720756E 
+ 1226      7369676E 
+ 1226      65642069 
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 26
 
 
- 1293      6C6500
- 1294              	.LASF24:
- 1295 0192 53544F50 		.ascii	"STOP\000"
- 1295      00
- 1296              	.LASF13:
- 1297 0197 75696E74 		.ascii	"uint16\000"
- 1297      313600
- 1298              	.LASF29:
- 1299 019e 6C656674 		.ascii	"left_enc\000"
- 1299      5F656E63 
- 1299      00
- 1300              	.LASF43:
- 1301 01a7 4D4F5645 		.ascii	"MOVEMENT.c\000"
- 1301      4D454E54 
- 1301      2E6300
- 1302              	.LASF10:
- 1303 01b2 756E7369 		.ascii	"unsigned int\000"
- 1303      676E6564 
- 1303      20696E74 
- 1303      00
- 1304              	.LASF9:
- 1305 01bf 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1305      206C6F6E 
- 1305      6720756E 
- 1305      7369676E 
- 1305      65642069 
- 1306              	.LASF11:
- 1307 01d6 75696E74 		.ascii	"uint8_t\000"
- 1307      385F7400 
- 1308              	.LASF25:
- 1309 01de 57414954 		.ascii	"WAIT\000"
- 1309      00
- 1310              	.LASF22:
- 1311 01e3 44524946 		.ascii	"DRIFTED_LEFT\000"
- 1311      5445445F 
- 1311      4C454654 
- 1311      00
- 1312              	.LASF18:
- 1313 01f0 73697A65 		.ascii	"sizetype\000"
- 1313      74797065 
- 1313      00
- 1314              	.LASF37:
- 1315 01f9 6572726F 		.ascii	"error\000"
- 1315      7200
- 1316              	.LASF8:
- 1317 01ff 6C6F6E67 		.ascii	"long long int\000"
- 1317      206C6F6E 
- 1317      6720696E 
- 1317      7400
- 1318              	.LASF16:
- 1319 020d 63686172 		.ascii	"char\000"
- 1319      00
- 1320              	.LASF2:
- 1321 0212 73686F72 		.ascii	"short int\000"
- 1321      7420696E 
- 1321      7400
- 1322              	.LASF39:
-ARM GAS  C:\Users\cnai408\AppData\Local\Temp\ccvRGTtG.s 			page 28
+ 1227              	.LASF11:
+ 1228 01d6 75696E74 		.ascii	"uint8_t\000"
+ 1228      385F7400 
+ 1229              	.LASF25:
+ 1230 01de 57414954 		.ascii	"WAIT\000"
+ 1230      00
+ 1231              	.LASF22:
+ 1232 01e3 44524946 		.ascii	"DRIFTED_LEFT\000"
+ 1232      5445445F 
+ 1232      4C454654 
+ 1232      00
+ 1233              	.LASF18:
+ 1234 01f0 73697A65 		.ascii	"sizetype\000"
+ 1234      74797065 
+ 1234      00
+ 1235              	.LASF37:
+ 1236 01f9 6572726F 		.ascii	"error\000"
+ 1236      7200
+ 1237              	.LASF8:
+ 1238 01ff 6C6F6E67 		.ascii	"long long int\000"
+ 1238      206C6F6E 
+ 1238      6720696E 
+ 1238      7400
+ 1239              	.LASF16:
+ 1240 020d 63686172 		.ascii	"char\000"
+ 1240      00
+ 1241              	.LASF44:
+ 1242 0212 433A5C55 		.ascii	"C:\\Users\\Calvi\\Desktop\\301\\psoc firmware\\CS30"
+ 1242      73657273 
+ 1242      5C43616C 
+ 1242      76695C44 
+ 1242      65736B74 
+ 1243 023f 315F436C 		.ascii	"1_Class.cydsn\000"
+ 1243      6173732E 
+ 1243      63796473 
+ 1243      6E00
+ 1244              	.LASF2:
+ 1245 024d 73686F72 		.ascii	"short int\000"
+ 1245      7420696E 
+ 1245      7400
+ 1246              	.LASF39:
+ 1247 0257 6F757470 		.ascii	"output\000"
+ 1247      757400
+ 1248              	.LASF28:
+ 1249 025e 6D6F746F 		.ascii	"motor_right\000"
+ 1249      725F7269 
+ 1249      67687400 
+ 1250              	.LASF19:
+ 1251 026a 53545241 		.ascii	"STRAIGHT\000"
+ 1251      49474854 
+ 1251      00
+ 1252              	.LASF38:
+ 1253 0273 64657269 		.ascii	"derivative\000"
+ 1253      76617469 
+ 1253      766500
+ 1254              	.LASF6:
+ 1255 027e 6C6F6E67 		.ascii	"long int\000"
+ARM GAS  C:\Users\Calvi\AppData\Local\Temp\ccMg96Is.s 			page 27
 
 
- 1323 021c 6F757470 		.ascii	"output\000"
- 1323      757400
- 1324              	.LASF28:
- 1325 0223 6D6F746F 		.ascii	"motor_right\000"
- 1325      725F7269 
- 1325      67687400 
- 1326              	.LASF44:
- 1327 022f 433A5C55 		.ascii	"C:\\Users\\cnai408\\Downloads\\301MotorCar\\psoc fi"
- 1327      73657273 
- 1327      5C636E61 
- 1327      69343038 
- 1327      5C446F77 
- 1328 025d 726D7761 		.ascii	"rmware\\CS301_Class.cydsn\000"
- 1328      72655C43 
- 1328      53333031 
- 1328      5F436C61 
- 1328      73732E63 
- 1329              	.LASF19:
- 1330 0276 53545241 		.ascii	"STRAIGHT\000"
- 1330      49474854 
- 1330      00
- 1331              	.LASF38:
- 1332 027f 64657269 		.ascii	"derivative\000"
- 1332      76617469 
- 1332      766500
- 1333              	.LASF6:
- 1334 028a 6C6F6E67 		.ascii	"long int\000"
- 1334      20696E74 
- 1334      00
- 1335              	.LASF17:
- 1336 0293 6C6F6E67 		.ascii	"long double\000"
- 1336      20646F75 
- 1336      626C6500 
- 1337              	.LASF26:
- 1338 029f 4D6F7665 		.ascii	"MovementState\000"
- 1338      6D656E74 
- 1338      53746174 
- 1338      6500
- 1339              	.LASF41:
- 1340 02ad 72696768 		.ascii	"right_pwm\000"
- 1340      745F7077 
- 1340      6D00
- 1341              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 1255      20696E74 
+ 1255      00
+ 1256              	.LASF17:
+ 1257 0287 6C6F6E67 		.ascii	"long double\000"
+ 1257      20646F75 
+ 1257      626C6500 
+ 1258              	.LASF26:
+ 1259 0293 4D6F7665 		.ascii	"MovementState\000"
+ 1259      6D656E74 
+ 1259      53746174 
+ 1259      6500
+ 1260              	.LASF41:
+ 1261 02a1 72696768 		.ascii	"right_pwm\000"
+ 1261      745F7077 
+ 1261      6D00
+ 1262              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

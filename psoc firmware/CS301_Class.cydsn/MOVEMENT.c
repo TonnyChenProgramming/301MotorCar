@@ -34,7 +34,7 @@ void do_straight_with_pid(void)
         
         int left_enc = QuadDec_M1_GetCounter();
         int right_enc = QuadDec_M2_GetCounter();
-        error = left_enc - right_enc;
+        error = left_enc + right_enc;
 
         // PID
         integral += error;
@@ -65,12 +65,12 @@ void do_straight_with_pid(void)
     prev_error = error;
     
     //debug
-    #ifdef USE_USB
-    char buf[64];
-    sprintf(buf, "L:%d R:%d Err:%d Int:%d Der:%d Out:%d LPW:%d RPMW:%d\r\n",
-            left_enc, right_enc, error, (int)integral, (int)derivative, (int)output, left_pwm, right_pwm);
-    usbPutString(buf);
-    #endif
+    ///#ifdef USE_USB
+    //char buf[64];
+    //sprintf(buf, "L:%d R:%d Err:%d Int:%d Der:%d Out:%d LPW:%d RPMW:%d\r\n",
+     //       left_enc, right_enc, error, (int)integral, (int)derivative, (int)output, left_pwm, right_pwm);
+    //usbPutString(buf);
+    //#endif
 }
 
 
@@ -94,8 +94,8 @@ void move_handling(void)
             break;
 
         case LEFT_TURN:
-            motor_left(99);    // pivot left
-            motor_right(168);
+            motor_left(127);    // pivot left
+            motor_right(127);
             break;
 
         case RIGHT_TURN:
