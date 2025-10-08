@@ -24,17 +24,26 @@ static float prev_error = 0;
 int error;
 float derivative;
 float output;
-uint8_t left_pwm = 172;
-uint8_t right_pwm = 176;
+//uint8_t left_pwm = 172;
+//uint8_t right_pwm = 176;
+#define BASE_PWM_LEFT   172
+#define BASE_PWM_RIGHT  176
 
 void usbPutString(char *s);
 
 void do_straight_with_pid(void)
 {
+    
+        int error = 0;
         
-        int left_enc = QuadDec_M1_GetCounter();
-        int right_enc = QuadDec_M2_GetCounter();
-        error = left_enc + right_enc;
+        //int left_enc = QuadDec_M1_GetCounter();
+       // int right_enc = QuadDec_M2_GetCounter();
+        // Left sensor (Output_5): if off, we drifted left → need to turn right (positive error)
+    if (!Output_5_Read()) error += 1;
+
+    // Right sensor (Output_4): if off, we drifted right → need to turn left (negative error)
+    if (!Output_4_Read()) error -= 1;
+   
 
         // PID
         integral += error;
@@ -45,9 +54,11 @@ void do_straight_with_pid(void)
         if (integral > 500) integral = 500;
         if (integral < -500) integral = -500;
 
-        // Adjust PWM values
-        left_pwm  -= (int)output;
-        right_pwm += (int)output;
+        int left_adjust  = (int)output;
+        int right_adjust = -(int)output;
+
+        int left_pwm  = BASE_PWM_LEFT  + left_adjust;
+        int right_pwm = BASE_PWM_RIGHT + right_adjust;
 
         // Clamp
         if (left_pwm < PID_PWM_MIN) left_pwm = PID_PWM_MIN;
@@ -56,8 +67,8 @@ void do_straight_with_pid(void)
         if (right_pwm > PID_PWM_MAX) right_pwm = PID_PWM_MAX;
 
         // Reset counters
-        QuadDec_M1_SetCounter(0);
-        QuadDec_M2_SetCounter(0);
+      //  QuadDec_M1_SetCounter(0);
+      //  QuadDec_M2_SetCounter(0);
 
     motor_left(left_pwm);
     motor_right(right_pwm);
@@ -103,7 +114,7 @@ void move_handling(void)
             motor_right(99);   // pivot right
             break;
 
-        case WAIT:
+   /*     case WAIT:
            // Keep turning in the same direction until middle sensors see line again
     if (Output_5_Read() && Output_4_Read()) {
         // Line reacquired (assuming active-low sensors: 0 = line detected)
@@ -126,7 +137,7 @@ void move_handling(void)
         }
     }
     break;
-
+*/
         default:
             stop();
             break;

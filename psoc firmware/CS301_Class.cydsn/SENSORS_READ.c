@@ -33,11 +33,11 @@ MovementState GetMovement(void)
     uint8 sensors = ReadSensors();
 
     // Wing sensors first → trigger hard turns
-    if (!Output_6_Read() && previous_movement != RIGHT_TURN) {   // left wing active
+    if (Output_6_Read() && previous_movement != RIGHT_TURN) {   // left wing active
         previous_movement = LEFT_TURN;
         return LEFT_TURN;
     }
-    else if (!Output_3_Read() && previous_movement != LEFT_TURN) {  // right wing active
+    else if (Output_3_Read() && previous_movement != LEFT_TURN) {  // right wing active
         previous_movement = RIGHT_TURN;
         return RIGHT_TURN;
     }
@@ -47,9 +47,9 @@ MovementState GetMovement(void)
     {
         // Check front sensors
         if (Output_5_Read() && Output_4_Read()) {
-            return WAIT;  // stay in WAIT until line reacquired
+            previous_movement = STRAIGHT;  // stay in WAIT until line reacquired
         } else {
-            previous_movement = STRAIGHT; // line back under middle sensors
+            return previous_movement; // line back under middle sensors
         }
     }
 

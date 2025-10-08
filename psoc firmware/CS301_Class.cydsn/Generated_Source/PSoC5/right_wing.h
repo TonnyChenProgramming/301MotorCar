@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: right_wing.h
-* Version 1.71
+* Version 1.70
 *
 *  Description:
 *   Provides the function definitions for the Interrupt Controller.
