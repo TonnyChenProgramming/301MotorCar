@@ -26,8 +26,8 @@ float derivative;
 float output;
 //uint8_t left_pwm = 172;
 //uint8_t right_pwm = 176;
-#define BASE_PWM_LEFT   172
-#define BASE_PWM_RIGHT  176
+#define BASE_PWM_LEFT   165
+#define BASE_PWM_RIGHT  168
 
 void usbPutString(char *s);
 
@@ -105,13 +105,13 @@ void move_handling(void)
             break;
 
         case LEFT_TURN:
-            motor_left(127);    // pivot left
-            motor_right(127);
+            motor_left(90);    // pivot left
+            motor_right(168);
             break;
 
         case RIGHT_TURN:
             motor_left(168);
-            motor_right(99);   // pivot right
+            motor_right(90);   // pivot right
             break;
 
    /*     case WAIT:

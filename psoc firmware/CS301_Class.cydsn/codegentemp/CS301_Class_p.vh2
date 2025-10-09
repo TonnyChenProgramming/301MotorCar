@@ -1,6 +1,6 @@
 -- Project:   CS301_Class
--- Generated: 10/08/2025 21:08:04
--- PSoC Creator  4.2
+-- Generated: 10/09/2025 18:17:26
+-- PSoC Creator  4.4
 
 ENTITY CS301_Class IS
     PORT(
@@ -303,7 +303,7 @@ ARCHITECTURE __DEFAULT__ OF CS301_Class IS
     SIGNAL tmpOE__M1_IN1_net_0 : bit;
     ATTRIBUTE POWER OF tmpOE__M1_IN1_net_0 : SIGNAL IS true;
     SIGNAL \ClockBlock.dclk_glb_ff_1__sig\ : bit;
-    SIGNAL \ClockBlock.dclk_glb_ff_3__sig\ : bit;
+    SIGNAL \ClockBlock.dclk_glb_ff_2__sig\ : bit;
     SIGNAL \QuadDec_M1:Cnt16:CounterUDB:sC16:counterdp:u0.ce0__sig\ : bit;
     SIGNAL \QuadDec_M1:Cnt16:CounterUDB:sC16:counterdp:u0.cl0__sig\ : bit;
     SIGNAL \QuadDec_M1:Cnt16:CounterUDB:sC16:counterdp:u0.z0__sig\ : bit;
@@ -898,14 +898,14 @@ BEGIN
             dsi_glb_div => open,
             dclk_glb_0 => Net_1850,
             dclk_0 => Net_1850_local,
-            dclk_glb_1 => CLK24M,
-            dclk_1 => CLK24M_local,
-            dclk_glb_2 => \UART:Net_9\,
-            dclk_2 => \UART:Net_9_local\,
-            dclk_glb_3 => Net_4367,
-            dclk_3 => Net_4367_local,
+            dclk_glb_1 => Net_4367,
+            dclk_1 => Net_4367_local,
+            dclk_glb_2 => CLK24M,
+            dclk_2 => CLK24M_local,
+            dclk_glb_3 => \UART:Net_9\,
+            dclk_3 => \UART:Net_9_local\,
             dclk_glb_ff_1 => \ClockBlock.dclk_glb_ff_1__sig\,
-            dclk_glb_ff_3 => \ClockBlock.dclk_glb_ff_3__sig\);
+            dclk_glb_ff_2 => \ClockBlock.dclk_glb_ff_2__sig\);
 
     M1_IN1:logicalport
         GENERIC MAP(
@@ -4469,7 +4469,7 @@ BEGIN
         GENERIC MAP(
             cy_registers => "")
         PORT MAP(
-            clock => \ClockBlock.dclk_glb_ff_3__sig\,
+            clock => \ClockBlock.dclk_glb_ff_1__sig\,
             kill => open,
             enable => __ONE__,
             capture => open,
@@ -4765,7 +4765,7 @@ BEGIN
         GENERIC MAP(
             cy_registers => "")
         PORT MAP(
-            clock => \ClockBlock.dclk_glb_ff_1__sig\,
+            clock => \ClockBlock.dclk_glb_ff_2__sig\,
             kill => open,
             enable => __ONE__,
             capture => open,
@@ -4778,7 +4778,7 @@ BEGIN
         GENERIC MAP(
             cy_registers => "")
         PORT MAP(
-            clock => \ClockBlock.dclk_glb_ff_1__sig\,
+            clock => \ClockBlock.dclk_glb_ff_2__sig\,
             kill => open,
             enable => __ONE__,
             capture => open,

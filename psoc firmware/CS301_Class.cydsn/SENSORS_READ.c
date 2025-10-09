@@ -27,32 +27,52 @@ uint8 ReadSensors(void) {
    return sensorValues;
 }
 
+// Call this once at startup somewhere global:
+// MovementState previous_movement = STRAIGHT;
 
 MovementState GetMovement(void)
 {
-    uint8 sensors = ReadSensors();
+    uint8 o1 = Output_1_Read(); // middle-right
+    uint8 o2 = Output_2_Read(); // middle-left
+    uint8 o3 = Output_3_Read(); // right wing
+    uint8 o4 = Output_4_Read(); // front-right
+    uint8 o5 = Output_5_Read(); // front-left
+    uint8 o6 = Output_6_Read(); // left wing
 
-    // Wing sensors first → trigger hard turns
-    if (Output_6_Read() && previous_movement != RIGHT_TURN) {   // left wing active
+    // --- 1. If already turning, ignore everything except fronts ---
+    if (previous_movement == LEFT_TURN) {
+        // Stay in LEFT_TURN until both front sensors see the line
+        if ((o5 == 0) && (o4 == 0)) {
+            previous_movement = STRAIGHT;
+        } else {
+            return LEFT_TURN; // ignore right wing, middles, etc.
+        }
+    }
+    else if (previous_movement == RIGHT_TURN) {
+        // Stay in RIGHT_TURN until both front sensors see the line
+        if ((o5 == 0) && (o4 == 0)) {
+            previous_movement = STRAIGHT;
+        } else {
+            return RIGHT_TURN; // ignore left wing, middles, etc.
+        }
+    }
+
+    // --- 2. Start turns (only when NOT already turning) ---
+    if (o6 == 0) { // left wing active, right wing clear
         previous_movement = LEFT_TURN;
         return LEFT_TURN;
     }
-    else if (Output_3_Read() && previous_movement != LEFT_TURN) {  // right wing active
+    if (o3 == 0) { // right wing active, left wing clear
         previous_movement = RIGHT_TURN;
         return RIGHT_TURN;
     }
 
-    // If we were turning, but middle sensors are not back yet → WAIT
-    if ((previous_movement == LEFT_TURN || previous_movement == RIGHT_TURN)) 
-    {
-        // Check front sensors
-        if (Output_5_Read() && Output_4_Read()) {
-            previous_movement = STRAIGHT;  // stay in WAIT until line reacquired
-        } else {
-            return previous_movement; // line back under middle sensors
-        }
+    // --- 3. Both front sensors black → straight ---
+    if ((o5 == 0) && (o4 == 0)) {
+        previous_movement = STRAIGHT;
+        return STRAIGHT;
     }
 
-    previous_movement = STRAIGHT;
-    return STRAIGHT;
+    // --- 4. Otherwise, keep last movement (usually STRAIGHT) ---
+    return previous_movement;
 }

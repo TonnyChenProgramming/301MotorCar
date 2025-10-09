@@ -98,7 +98,7 @@ for(;;) {
    // if (timer_flag) {
      //   timer_flag = 0;
       //  MovementState m = GetMovement();
-        move_handling(); 
+        move_handling();  
         
                      // Debug print current state
        // char buf[64];
