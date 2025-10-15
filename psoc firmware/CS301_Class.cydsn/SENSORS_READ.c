@@ -32,13 +32,12 @@ uint8 ReadSensors(void) {
 
 MovementState GetMovement(void)
 {
-    uint8 o1 = Output_1_Read(); // middle-right
-    uint8 o2 = Output_2_Read(); // middle-left
     uint8 o3 = Output_3_Read(); // right wing
     uint8 o4 = Output_4_Read(); // front-right
     uint8 o5 = Output_5_Read(); // front-left
     uint8 o6 = Output_6_Read(); // left wing
-
+    
+    /*
     // --- 1. If already turning, ignore everything except fronts ---
     if (previous_movement == LEFT_TURN) {
         // Stay in LEFT_TURN until both front sensors see the line
@@ -56,7 +55,9 @@ MovementState GetMovement(void)
             return RIGHT_TURN; // ignore left wing, middles, etc.
         }
     }
-
+    
+    */
+    
     // --- 2. Start turns (only when NOT already turning) ---
     if (o6 == 0) { // left wing active, right wing clear
         previous_movement = LEFT_TURN;
@@ -68,11 +69,11 @@ MovementState GetMovement(void)
     }
 
     // --- 3. Both front sensors black → straight ---
-    if ((o5 == 0) && (o4 == 0)) {
+    if ((o5 == 0) || (o4 == 0)) {
         previous_movement = STRAIGHT;
         return STRAIGHT;
     }
 
     // --- 4. Otherwise, keep last movement (usually STRAIGHT) ---
-    return previous_movement;
+    return STRAIGHT;
 }

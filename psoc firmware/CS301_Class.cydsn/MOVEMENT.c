@@ -74,14 +74,6 @@ void do_straight_with_pid(void)
     motor_right(right_pwm);
 
     prev_error = error;
-    
-    //debug
-    ///#ifdef USE_USB
-    //char buf[64];
-    //sprintf(buf, "L:%d R:%d Err:%d Int:%d Der:%d Out:%d LPW:%d RPMW:%d\r\n",
-     //       left_enc, right_enc, error, (int)integral, (int)derivative, (int)output, left_pwm, right_pwm);
-    //usbPutString(buf);
-    //#endif
 }
 
 
@@ -105,39 +97,14 @@ void move_handling(void)
             break;
 
         case LEFT_TURN:
-            motor_left(90);    // pivot left
+            motor_left(70);    // pivot left
             motor_right(168);
             break;
 
         case RIGHT_TURN:
             motor_left(168);
-            motor_right(90);   // pivot right
+            motor_right(70);   // pivot right
             break;
-
-   /*     case WAIT:
-           // Keep turning in the same direction until middle sensors see line again
-    if (Output_5_Read() && Output_4_Read()) {
-        // Line reacquired (assuming active-low sensors: 0 = line detected)
-        do_straight_with_pid();
-        previous_movement = STRAIGHT;
-    } 
-    else {
-        // Continue the previous turn direction
-        if (previous_movement == LEFT_TURN) {
-            motor_left(127);
-            motor_right(168);   // keep turning left
-        } 
-        else if (previous_movement == RIGHT_TURN) {
-            motor_left(168);
-            motor_right(99);    // keep turning right
-        } 
-        else {
-            // Default to stop if no previous movement known
-            stop();
-        }
-    }
-    break;
-*/
         default:
             stop();
             break;
