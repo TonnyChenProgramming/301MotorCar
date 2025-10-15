@@ -1,9 +1,9 @@
 #include "SENSORS_READ.h"
 
-
 uint8 sensorValues;
 MovementState previous_movement;
 MovementState current_movement;
+
 struct MyStructure {   // Structure declaration
     uint8_t output1;
     uint8_t output2;
@@ -27,52 +27,47 @@ uint8 ReadSensors(void) {
    return sensorValues;
 }
 
-// Call this once at startup somewhere global:
-// MovementState previous_movement = STRAIGHT;
-
 MovementState GetMovement(void)
 {
-    uint8 o1 = Output_1_Read(); // middle-right
-    uint8 o2 = Output_2_Read(); // middle-left
     uint8 o3 = Output_3_Read(); // right wing
+    uint8 o6 = Output_6_Read(); // left wing
     uint8 o4 = Output_4_Read(); // front-right
     uint8 o5 = Output_5_Read(); // front-left
-    uint8 o6 = Output_6_Read(); // left wing
-
-    // --- 1. If already turning, ignore everything except fronts ---
-    if (previous_movement == LEFT_TURN) {
-        // Stay in LEFT_TURN until both front sensors see the line
-        if ((o5 == 0) && (o4 == 0)) {
-            previous_movement = STRAIGHT;
-        } else {
-            return LEFT_TURN; // ignore right wing, middles, etc.
-        }
-    }
-    else if (previous_movement == RIGHT_TURN) {
-        // Stay in RIGHT_TURN until both front sensors see the line
-        if ((o5 == 0) && (o4 == 0)) {
-            previous_movement = STRAIGHT;
-        } else {
-            return RIGHT_TURN; // ignore left wing, middles, etc.
-        }
-    }
-
-    // --- 2. Start turns (only when NOT already turning) ---
-    if (o6 == 0) { // left wing active, right wing clear
-        previous_movement = LEFT_TURN;
+    
+    // First: clear all LEDs every loop to avoid ghosting
+    LED1_Write(0);
+    LED2_Write(0);
+    LED3_Write(0);
+    LED4_Write(0);
+    LED5_Write(0);
+    LED6_Write(0);
+    
+    // --- Wing sensors ---
+    
+    // Left Wing
+    if (o6 == 0) {
+        LED2_Write(1);
+        
         return LEFT_TURN;
     }
-    if (o3 == 0) { // right wing active, left wing clear
-        previous_movement = RIGHT_TURN;
+    
+    // Right Wing
+    if (o3 == 0) {
+        LED4_Write(1); 
+        
         return RIGHT_TURN;
     }
-
-    // --- 3. Both front sensors black → straight ---
-    if ((o5 == 0) && (o4 == 0)) {
-        previous_movement = STRAIGHT;
+    
+    // --- Front sensors ---
+    
+    // front-left & front right
+    if (o5 == 0 || o4 == 0) {
+        LED1_Write(1); 
+        LED6_Write(1);
+        
         return STRAIGHT;
     }
 
-    // --- 4. Otherwise, keep last movement (usually STRAIGHT) ---
-    return previous_movement;
+
+    return STRAIGHT;
 }

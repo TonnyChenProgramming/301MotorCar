@@ -14,6 +14,10 @@
 #include "SENSORS_READ.h"
 #include "MOVEMENT.h"
 
+volatile uint16 tick_count = 0;      // increases in ISR
+volatile uint8 delay_active = 0;     // 1 = we are pausing
+volatile uint16 delay_target = 0;    // how long to pause (in ticks)
+
 
 #define ENCODER_CPR 500
 #define QUAD_MULT 4        
@@ -59,8 +63,8 @@ void handle_usb();
 /* Timer ISR */
 CY_ISR(Timer_TS_ISR_Handler)
 {
-    timer_flag = 1;    
-    }
+    timer_flag = 1;   
+}
 
 
 // helpers
@@ -73,17 +77,13 @@ CY_ISR(Timer_TS_ISR_Handler)
 int main(void)
 {
     CyGlobalIntEnable;
+    
     PWM_1_Start();
     PWM_2_Start();
     
     
     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
     Timer_TS_Start();                      // then start
-    
-    front_left_Start();
-    front_right_Start();
-    mid_left_Start();
-    mid_right_Start();
     
     QuadDec_M1_Start();
     QuadDec_M2_Start();
@@ -95,29 +95,69 @@ int main(void)
 #endif
 
 for(;;) {
-   // if (timer_flag) {
-     //   timer_flag = 0;
-      //  MovementState m = GetMovement();
-        move_handling();  
+    
+    if (timer_flag) {
+       timer_flag = 0;
+       MovementState m = GetMovement();
+      //  uint8 o1 = Output_1_Read(); // middle-right
+      //      uint8 o2 = Output_2_Read(); // middle-left
+      //      uint8 o3 = Output_3_Read(); // right wing
+      //      uint8 o4 = Output_4_Read(); // front-right
+      //      uint8 o5 = Output_5_Read(); // front-left
+      //      uint8 o6 = Output_6_Read(); // left wing
+      //      
+                    // Remember last readings
+     //   static uint8 prev_o1 = 1, prev_o2 = 1, prev_o3 = 1, prev_o4 = 1, prev_o5 = 1, prev_o6 = 1;
+    //    static uint8 stable_counter = 0;
+            
+            
+ 
+          // detect any change
+  //      uint8 changed = (o1 != prev_o1) || (o2 != prev_o2) || (o3 != prev_o3) ||
+//                        (o4 != prev_o4) || (o5 != prev_o5) || (o6 != prev_o6);
+
+       // if (changed) {
+       //     stable_counter++;
+       // } else {
+       //     stable_counter = 0;
+       // }      
+         //   if (stable_counter == 3) {   
+         //   char buf[120];
+         //   sprintf(buf, "mid right:%d  midleft:%d  right wing:%d  front right:%d  front left:%d  left wing:%d\r\n",
+        //            o1, o2, o3, o4, o5, o6);
+        //    usbPutString(buf);
+            
+        //     prev_o1 = o1;
+        //    prev_o2 = o2;
+        //    prev_o3 = o3;
+        //    prev_o4 = o4;
+         //   prev_o5 = o5;
+        //    prev_o6 = o6;
+        //    
+      //      stable_counter = 0;
+    //        }
+  //  }
+            //  if (timer_flag) {
+    //    timer_flag = 0;
+      //  move_handling();   // runs every 5 ms
+  //  }
         
                      // Debug print current state
-       // char buf[64];
+      //  char buf[64];
        // switch(m)
-       // {
-            //case STOP:        sprintf(buf, "STATE: STOP\r\n"); break;
-            //case STRAIGHT:    sprintf(buf, "STATE: STRAIGHT\r\n"); break;
-            //case LEFT_TURN:   sprintf(buf, "STATE: LEFT TURN\r\n"); break;
-           // case RIGHT_TURN:  sprintf(buf, "STATE: RIGHT TURN\r\n"); break;
-          //  case WAIT:        sprintf(buf, "STATE: WAIT\r\n"); break;
-         //   default:          sprintf(buf, "STATE: UNKNOWN\r\n"); break;
+        //{
+         //   case STOP:        sprintf(buf, "STATE: STOP\r\n"); break;
+          //  case STRAIGHT:    sprintf(buf, "STATE: STRAIGHT\r\n"); break;
+           // case LEFT_TURN:   sprintf(buf, "STATE: LEFT TURN\r\n"); break;
+          //  case RIGHT_TURN:  sprintf(buf, "STATE: RIGHT TURN\r\n"); break;
+           // case WAIT:        sprintf(buf, "STATE: WAIT\r\n"); break;
+          //  default:          sprintf(buf, "STATE: UNKNOWN\r\n"); break;
         //}
-       // usbPutString(buf);
+        //usbPutString(buf);
 
-     //   CyDelay(500); // small delay so it doesn't spam the terminal
-   // }
+    //    CyDelay(500); // small delay so it doesn't spam the terminal
+    }
     
-}
-
 }
  
 

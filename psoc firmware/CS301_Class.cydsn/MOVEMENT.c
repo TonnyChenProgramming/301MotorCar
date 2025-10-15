@@ -4,6 +4,30 @@
 #include "main.h"
 #include "SENSORS_READ.h"
 
+extern volatile uint16 tick_count;
+extern volatile uint8 delay_active;
+extern volatile uint16 delay_target;
+
+#define TICK_MS 5                        // one tick = 5 ms (if 200 Hz ISR)
+#define TICKS_MS(ms)  ((ms) / TICK_MS)   // convert ms to ticks
+
+static inline void start_delay(uint16 ms)
+{
+    delay_target = tick_count + TICKS_MS(ms);
+    delay_active = 1;
+}
+
+static inline uint8 delay_elapsed(void)
+{
+    if (delay_active && (tick_count >= delay_target))
+    {
+        delay_active = 0;
+        return 1;
+    }
+    return 0;
+}
+
+
 extern MovementState previous_movement;
 
 // PWM values
@@ -24,9 +48,9 @@ static float prev_error = 0;
 int error;
 float derivative;
 float output;
-//uint8_t left_pwm = 172;
-//uint8_t right_pwm = 176;
-#define BASE_PWM_LEFT   165
+//uint8_t left_pwm = 163;
+//uint8_t right_pwm = 168;
+#define BASE_PWM_LEFT   163
 #define BASE_PWM_RIGHT  168
 
 void usbPutString(char *s);
@@ -93,57 +117,98 @@ void stop(void)
 
 void move_handling(void)
 {
+    static MovementState last = STRAIGHT;
+    static uint8 pause_mode = 0;   // 1 = pre-turn, 2 = post-turn
     MovementState m = GetMovement();
 
-    switch (m) {
+    // --- 1. Intersection rule (both wings black) ---
+    if (Output_6_Read() == 0 && Output_3_Read() == 0) {
+        m = RIGHT_TURN;   // always take right turn
+    }
+
+    // --- 2. Handle active delay ---
+if (delay_active)
+{
+    motor_left(PWM_STOP);
+    motor_right(PWM_STOP);
+
+    if (delay_elapsed())
+    {
+        pause_mode = 0;
+        previous_movement = STRAIGHT;   // ✅ reset after pause
+    }
+
+    return; // skip rest until pause ends
+}
+
+
+    // --- 3. Execute main movement ---
+    switch (m)
+    {
         case STOP:
-            stop();
+            motor_left(PWM_STOP);
+            motor_right(PWM_STOP);
             break;
 
         case STRAIGHT:
-            do_straight_with_pid();  // PID active for straight line
+            do_straight_with_pid();  // keep moving straight
             break;
 
         case LEFT_TURN:
-            motor_left(90);    // pivot left
+            delay_active = 0;
+            pause_mode = 0;
+
+            if ((last == STRAIGHT) && pause_mode == 0) {
+                // pre-turn pause
+                start_delay(300);
+                pause_mode = 1;
+                return;
+            }
+
+            motor_left(70);
             motor_right(168);
+
+            if (Output_4_Read() == 0 && Output_5_Read() == 0) {
+                // post-turn pause when front sensors reacquire
+                motor_left(PWM_STOP);
+                motor_right(PWM_STOP);
+                start_delay(300);
+                pause_mode = 2;
+                m = STRAIGHT;
+            }
             break;
 
         case RIGHT_TURN:
+            
+            delay_active = 0;
+            pause_mode = 0;
+
+            if ((last == STRAIGHT) && pause_mode == 0) {
+                // pre-turn pause
+                start_delay(300);
+                pause_mode = 1;
+                return;
+            }
+
             motor_left(168);
-            motor_right(90);   // pivot right
+            motor_right(70);
+
+            if (Output_4_Read() == 0 && Output_5_Read() == 0) {
+                // post-turn pause
+                motor_left(PWM_STOP);
+                motor_right(PWM_STOP);
+                start_delay(300);
+                pause_mode = 2;
+                m = STRAIGHT;
+            }
             break;
 
-   /*     case WAIT:
-           // Keep turning in the same direction until middle sensors see line again
-    if (Output_5_Read() && Output_4_Read()) {
-        // Line reacquired (assuming active-low sensors: 0 = line detected)
-        do_straight_with_pid();
-        previous_movement = STRAIGHT;
-    } 
-    else {
-        // Continue the previous turn direction
-        if (previous_movement == LEFT_TURN) {
-            motor_left(127);
-            motor_right(168);   // keep turning left
-        } 
-        else if (previous_movement == RIGHT_TURN) {
-            motor_left(168);
-            motor_right(99);    // keep turning right
-        } 
-        else {
-            // Default to stop if no previous movement known
-            stop();
-        }
-    }
-    break;
-*/
         default:
-            stop();
+            do_straight_with_pid();
             break;
-         
-        }
-        if (m != WAIT) {
-            previous_movement = m;
     }
+
+    // --- 4. Update previous state ---
+    last = m;
+    previous_movement = m;
 }
