@@ -95,11 +95,12 @@ int main(void)
 #endif
 
 for(;;) {
-    
+    /*
     if (timer_flag) {
        timer_flag = 0;
        MovementState m = GetMovement();
        static MovementState prev_m = STOP;
+       
 
       if (m != prev_m) {              
         char buf[64];
@@ -118,6 +119,8 @@ for(;;) {
  
     }
 }
+    */
+    move_handling();
 }
 }
  

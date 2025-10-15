@@ -25,6 +25,10 @@ MovementState GetMovement(void)
     
     // --- Wing sensors ---
     
+    if ((o6 == 0) && (o3 == 0)) {
+        return RIGHT_TURN;
+    }
+    
     // Left Wing
     if (o6 == 0) {
         LED2_Write(1);
@@ -60,7 +64,7 @@ MovementState GetMovement(void)
     // --- Front sensors ---
     
     // front-left & front right
-    if (o5 == 0 || o4 == 0) {
+    if (o5 == 0 && o4 == 0) {
         LED1_Write(1); 
         LED6_Write(1);
         
