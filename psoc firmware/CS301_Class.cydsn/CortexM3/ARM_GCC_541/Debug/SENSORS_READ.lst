@@ -1,0 +1,1351 @@
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"SENSORS_READ.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.comm	sensorValues,1,1
+  20              		.comm	previous_movement,1,1
+  21              		.comm	current_movement,1,1
+  22              		.global	this_struct
+  23              		.bss
+  24              		.align	2
+  25              		.type	this_struct, %object
+  26              		.size	this_struct, 6
+  27              	this_struct:
+  28 0000 00000000 		.space	6
+  28      0000
+  29              		.section	.text.ReadSensors,"ax",%progbits
+  30              		.align	2
+  31              		.global	ReadSensors
+  32              		.thumb
+  33              		.thumb_func
+  34              		.type	ReadSensors, %function
+  35              	ReadSensors:
+  36              	.LFB64:
+  37              		.file 1 "SENSORS_READ.c"
+   1:SENSORS_READ.c **** #include "SENSORS_READ.h"
+   2:SENSORS_READ.c **** #include "main.h"
+   3:SENSORS_READ.c **** 
+   4:SENSORS_READ.c **** uint8 sensorValues;
+   5:SENSORS_READ.c **** MovementState previous_movement;
+   6:SENSORS_READ.c **** MovementState current_movement;
+   7:SENSORS_READ.c **** struct MyStructure {   // Structure declaration
+   8:SENSORS_READ.c ****     uint8_t output1;
+   9:SENSORS_READ.c ****     uint8_t output2;
+  10:SENSORS_READ.c ****     uint8_t output3;
+  11:SENSORS_READ.c ****     uint8_t output4;
+  12:SENSORS_READ.c ****     uint8_t output5;
+  13:SENSORS_READ.c ****     uint8_t output6;
+  14:SENSORS_READ.c **** };
+  15:SENSORS_READ.c **** struct MyStructure this_struct = {0,0,0,0,0,0};
+  16:SENSORS_READ.c **** // Read 6 output pins are turn into a pattern
+  17:SENSORS_READ.c **** uint8 ReadSensors(void) {
+  38              		.loc 1 17 0
+  39              		.cfi_startproc
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 2
+
+
+  40              		@ args = 0, pretend = 0, frame = 8
+  41              		@ frame_needed = 1, uses_anonymous_args = 0
+  42 0000 80B5     		push	{r7, lr}
+  43              		.cfi_def_cfa_offset 8
+  44              		.cfi_offset 7, -8
+  45              		.cfi_offset 14, -4
+  46 0002 82B0     		sub	sp, sp, #8
+  47              		.cfi_def_cfa_offset 16
+  48 0004 00AF     		add	r7, sp, #0
+  49              		.cfi_def_cfa_register 7
+  18:SENSORS_READ.c ****     uint8 sensorValues = 0;
+  50              		.loc 1 18 0
+  51 0006 0023     		movs	r3, #0
+  52 0008 FB71     		strb	r3, [r7, #7]
+  19:SENSORS_READ.c ****     
+  20:SENSORS_READ.c ****    sensorValues |= Output_5_Read() << 0; // Right
+  53              		.loc 1 20 0
+  54 000a FFF7FEFF 		bl	Output_5_Read
+  55 000e 0346     		mov	r3, r0
+  56 0010 5AB2     		sxtb	r2, r3
+  57 0012 97F90730 		ldrsb	r3, [r7, #7]
+  58 0016 1343     		orrs	r3, r3, r2
+  59 0018 5BB2     		sxtb	r3, r3
+  60 001a FB71     		strb	r3, [r7, #7]
+  21:SENSORS_READ.c ****    sensorValues |= Output_6_Read() << 1;
+  61              		.loc 1 21 0
+  62 001c FFF7FEFF 		bl	Output_6_Read
+  63 0020 0346     		mov	r3, r0
+  64 0022 5B00     		lsls	r3, r3, #1
+  65 0024 5AB2     		sxtb	r2, r3
+  66 0026 97F90730 		ldrsb	r3, [r7, #7]
+  67 002a 1343     		orrs	r3, r3, r2
+  68 002c 5BB2     		sxtb	r3, r3
+  69 002e FB71     		strb	r3, [r7, #7]
+  22:SENSORS_READ.c ****    sensorValues |= Output_1_Read() << 2;
+  70              		.loc 1 22 0
+  71 0030 FFF7FEFF 		bl	Output_1_Read
+  72 0034 0346     		mov	r3, r0
+  73 0036 9B00     		lsls	r3, r3, #2
+  74 0038 5AB2     		sxtb	r2, r3
+  75 003a 97F90730 		ldrsb	r3, [r7, #7]
+  76 003e 1343     		orrs	r3, r3, r2
+  77 0040 5BB2     		sxtb	r3, r3
+  78 0042 FB71     		strb	r3, [r7, #7]
+  23:SENSORS_READ.c ****    sensorValues |= Output_3_Read() << 3;
+  79              		.loc 1 23 0
+  80 0044 FFF7FEFF 		bl	Output_3_Read
+  81 0048 0346     		mov	r3, r0
+  82 004a DB00     		lsls	r3, r3, #3
+  83 004c 5AB2     		sxtb	r2, r3
+  84 004e 97F90730 		ldrsb	r3, [r7, #7]
+  85 0052 1343     		orrs	r3, r3, r2
+  86 0054 5BB2     		sxtb	r3, r3
+  87 0056 FB71     		strb	r3, [r7, #7]
+  24:SENSORS_READ.c ****    sensorValues |= Output_2_Read() << 4;
+  88              		.loc 1 24 0
+  89 0058 FFF7FEFF 		bl	Output_2_Read
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 3
+
+
+  90 005c 0346     		mov	r3, r0
+  91 005e 1B01     		lsls	r3, r3, #4
+  92 0060 5AB2     		sxtb	r2, r3
+  93 0062 97F90730 		ldrsb	r3, [r7, #7]
+  94 0066 1343     		orrs	r3, r3, r2
+  95 0068 5BB2     		sxtb	r3, r3
+  96 006a FB71     		strb	r3, [r7, #7]
+  25:SENSORS_READ.c ****    sensorValues |= Output_4_Read() << 5; // Left
+  97              		.loc 1 25 0
+  98 006c FFF7FEFF 		bl	Output_4_Read
+  99 0070 0346     		mov	r3, r0
+ 100 0072 5B01     		lsls	r3, r3, #5
+ 101 0074 5AB2     		sxtb	r2, r3
+ 102 0076 97F90730 		ldrsb	r3, [r7, #7]
+ 103 007a 1343     		orrs	r3, r3, r2
+ 104 007c 5BB2     		sxtb	r3, r3
+ 105 007e FB71     		strb	r3, [r7, #7]
+  26:SENSORS_READ.c ****     
+  27:SENSORS_READ.c ****    return sensorValues;
+ 106              		.loc 1 27 0
+ 107 0080 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  28:SENSORS_READ.c **** }
+ 108              		.loc 1 28 0
+ 109 0082 1846     		mov	r0, r3
+ 110 0084 0837     		adds	r7, r7, #8
+ 111              		.cfi_def_cfa_offset 8
+ 112 0086 BD46     		mov	sp, r7
+ 113              		.cfi_def_cfa_register 13
+ 114              		@ sp needed
+ 115 0088 80BD     		pop	{r7, pc}
+ 116              		.cfi_endproc
+ 117              	.LFE64:
+ 118              		.size	ReadSensors, .-ReadSensors
+ 119 008a 00BF     		.section	.text.GetMovement,"ax",%progbits
+ 120              		.align	2
+ 121              		.global	GetMovement
+ 122              		.thumb
+ 123              		.thumb_func
+ 124              		.type	GetMovement, %function
+ 125              	GetMovement:
+ 126              	.LFB65:
+  29:SENSORS_READ.c **** 
+  30:SENSORS_READ.c **** // Call this once at startup somewhere global:
+  31:SENSORS_READ.c **** // MovementState previous_movement = STRAIGHT;
+  32:SENSORS_READ.c **** 
+  33:SENSORS_READ.c **** MovementState GetMovement(uint8_t o1,uint8_t o2, uint8_t o3, uint8_t o4, uint8_t o5, uint8_t o6)
+  34:SENSORS_READ.c **** {
+ 127              		.loc 1 34 0
+ 128              		.cfi_startproc
+ 129              		@ args = 8, pretend = 0, frame = 8
+ 130              		@ frame_needed = 1, uses_anonymous_args = 0
+ 131 0000 90B5     		push	{r4, r7, lr}
+ 132              		.cfi_def_cfa_offset 12
+ 133              		.cfi_offset 4, -12
+ 134              		.cfi_offset 7, -8
+ 135              		.cfi_offset 14, -4
+ 136 0002 83B0     		sub	sp, sp, #12
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 4
+
+
+ 137              		.cfi_def_cfa_offset 24
+ 138 0004 00AF     		add	r7, sp, #0
+ 139              		.cfi_def_cfa_register 7
+ 140 0006 0446     		mov	r4, r0
+ 141 0008 0846     		mov	r0, r1
+ 142 000a 1146     		mov	r1, r2
+ 143 000c 1A46     		mov	r2, r3
+ 144 000e 2346     		mov	r3, r4
+ 145 0010 FB71     		strb	r3, [r7, #7]
+ 146 0012 0346     		mov	r3, r0
+ 147 0014 BB71     		strb	r3, [r7, #6]
+ 148 0016 0B46     		mov	r3, r1
+ 149 0018 7B71     		strb	r3, [r7, #5]
+ 150 001a 1346     		mov	r3, r2
+ 151 001c 3B71     		strb	r3, [r7, #4]
+  35:SENSORS_READ.c ****     //uint8 o1 = Output_1_Read(); // middle-right
+  36:SENSORS_READ.c ****     //uint8 o2 = Output_2_Read(); // middle-left
+  37:SENSORS_READ.c ****     //uint8 o3 = Output_3_Read(); // right wing
+  38:SENSORS_READ.c ****     //uint8 o4 = Output_4_Read(); // front-right
+  39:SENSORS_READ.c ****     //uint8 o5 = Output_5_Read(); // front-left
+  40:SENSORS_READ.c ****     //uint8 o6 = Output_6_Read(); // left wing
+  41:SENSORS_READ.c **** 
+  42:SENSORS_READ.c ****     // --- 1. If already turning, ignore everything except fronts ---
+  43:SENSORS_READ.c ****     if (previous_movement == LEFT_TURN) {
+ 152              		.loc 1 43 0
+ 153 001e 344B     		ldr	r3, .L16
+ 154 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 155 0022 012B     		cmp	r3, #1
+ 156 0024 10D1     		bne	.L4
+  44:SENSORS_READ.c ****         // Stay in LEFT_TURN until both front sensors see the line
+  45:SENSORS_READ.c ****         if ((o5 == 0) && (o4 == 0)) {
+ 157              		.loc 1 45 0
+ 158 0026 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 159 0028 002B     		cmp	r3, #0
+ 160 002a 0BD1     		bne	.L5
+ 161              		.loc 1 45 0 is_stmt 0 discriminator 1
+ 162 002c 3B79     		ldrb	r3, [r7, #4]	@ zero_extendqisi2
+ 163 002e 002B     		cmp	r3, #0
+ 164 0030 08D1     		bne	.L5
+  46:SENSORS_READ.c ****             block_turn_flag = 1;
+ 165              		.loc 1 46 0 is_stmt 1
+ 166 0032 304B     		ldr	r3, .L16+4
+ 167 0034 0122     		movs	r2, #1
+ 168 0036 1A70     		strb	r2, [r3]
+  47:SENSORS_READ.c ****             Turn_Timer_Start();
+ 169              		.loc 1 47 0
+ 170 0038 FFF7FEFF 		bl	Turn_Timer_Start
+  48:SENSORS_READ.c ****             
+  49:SENSORS_READ.c ****             previous_movement = STRAIGHT;
+ 171              		.loc 1 49 0
+ 172 003c 2C4B     		ldr	r3, .L16
+ 173 003e 0022     		movs	r2, #0
+ 174 0040 1A70     		strb	r2, [r3]
+ 175 0042 16E0     		b	.L6
+ 176              	.L5:
+  50:SENSORS_READ.c ****         } else {
+  51:SENSORS_READ.c ****             return LEFT_TURN; // ignore right wing, middles, etc.
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 5
+
+
+ 177              		.loc 1 51 0
+ 178 0044 0123     		movs	r3, #1
+ 179 0046 4FE0     		b	.L7
+ 180              	.L4:
+  52:SENSORS_READ.c ****         }
+  53:SENSORS_READ.c ****     }
+  54:SENSORS_READ.c ****     else if (previous_movement == RIGHT_TURN) {
+ 181              		.loc 1 54 0
+ 182 0048 294B     		ldr	r3, .L16
+ 183 004a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 184 004c 022B     		cmp	r3, #2
+ 185 004e 10D1     		bne	.L6
+  55:SENSORS_READ.c ****         // Stay in RIGHT_TURN until both front sensors see the line
+  56:SENSORS_READ.c ****         if ((o5 == 0) && (o4 == 0)) {
+ 186              		.loc 1 56 0
+ 187 0050 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 188 0052 002B     		cmp	r3, #0
+ 189 0054 0BD1     		bne	.L8
+ 190              		.loc 1 56 0 is_stmt 0 discriminator 1
+ 191 0056 3B79     		ldrb	r3, [r7, #4]	@ zero_extendqisi2
+ 192 0058 002B     		cmp	r3, #0
+ 193 005a 08D1     		bne	.L8
+  57:SENSORS_READ.c ****             block_turn_flag = 1;
+ 194              		.loc 1 57 0 is_stmt 1
+ 195 005c 254B     		ldr	r3, .L16+4
+ 196 005e 0122     		movs	r2, #1
+ 197 0060 1A70     		strb	r2, [r3]
+  58:SENSORS_READ.c ****             Turn_Timer_Start();
+ 198              		.loc 1 58 0
+ 199 0062 FFF7FEFF 		bl	Turn_Timer_Start
+  59:SENSORS_READ.c ****             
+  60:SENSORS_READ.c ****             previous_movement = STRAIGHT;
+ 200              		.loc 1 60 0
+ 201 0066 224B     		ldr	r3, .L16
+ 202 0068 0022     		movs	r2, #0
+ 203 006a 1A70     		strb	r2, [r3]
+ 204 006c 01E0     		b	.L6
+ 205              	.L8:
+  61:SENSORS_READ.c ****         } else {
+  62:SENSORS_READ.c ****             return RIGHT_TURN; // ignore left wing, middles, etc.
+ 206              		.loc 1 62 0
+ 207 006e 0223     		movs	r3, #2
+ 208 0070 3AE0     		b	.L7
+ 209              	.L6:
+  63:SENSORS_READ.c ****         }
+  64:SENSORS_READ.c ****     }
+  65:SENSORS_READ.c **** 
+  66:SENSORS_READ.c ****     // --- 2. Start turns (only when NOT already turning) ---
+  67:SENSORS_READ.c ****     if ((o6 == 0 || edges.left_wing_edge)&& !block_turn_flag) { // left wing active, right wing cle
+ 210              		.loc 1 67 0
+ 211 0072 3B7F     		ldrb	r3, [r7, #28]	@ zero_extendqisi2
+ 212 0074 002B     		cmp	r3, #0
+ 213 0076 03D0     		beq	.L9
+ 214              		.loc 1 67 0 is_stmt 0 discriminator 2
+ 215 0078 1F4B     		ldr	r3, .L16+8
+ 216 007a 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 217 007c 002B     		cmp	r3, #0
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 6
+
+
+ 218 007e 0FD0     		beq	.L10
+ 219              	.L9:
+ 220              		.loc 1 67 0 discriminator 3
+ 221 0080 1C4B     		ldr	r3, .L16+4
+ 222 0082 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 223 0084 002B     		cmp	r3, #0
+ 224 0086 0BD1     		bne	.L10
+  68:SENSORS_READ.c ****         previous_movement = LEFT_TURN;
+ 225              		.loc 1 68 0 is_stmt 1
+ 226 0088 194B     		ldr	r3, .L16
+ 227 008a 0122     		movs	r2, #1
+ 228 008c 1A70     		strb	r2, [r3]
+  69:SENSORS_READ.c ****         //PWM_1_WriteCompare(127);
+  70:SENSORS_READ.c ****         //PWM_2_WriteCompare(127);
+  71:SENSORS_READ.c ****         //CyDelay(1000); 
+  72:SENSORS_READ.c ****         if(edges.left_wing_edge)
+ 229              		.loc 1 72 0
+ 230 008e 1A4B     		ldr	r3, .L16+8
+ 231 0090 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 232 0092 002B     		cmp	r3, #0
+ 233 0094 02D0     		beq	.L11
+  73:SENSORS_READ.c ****         {edges.left_wing_edge = 0;
+ 234              		.loc 1 73 0
+ 235 0096 184B     		ldr	r3, .L16+8
+ 236 0098 0022     		movs	r2, #0
+ 237 009a 5A71     		strb	r2, [r3, #5]
+ 238              	.L11:
+  74:SENSORS_READ.c ****         }
+  75:SENSORS_READ.c ****         return LEFT_TURN;
+ 239              		.loc 1 75 0
+ 240 009c 0123     		movs	r3, #1
+ 241 009e 23E0     		b	.L7
+ 242              	.L10:
+  76:SENSORS_READ.c ****     }
+  77:SENSORS_READ.c ****     if ((o3 == 0|| edges.right_wing_edge)&& !block_turn_flag) { // right wing active, left wing cle
+ 243              		.loc 1 77 0
+ 244 00a0 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 245 00a2 002B     		cmp	r3, #0
+ 246 00a4 03D0     		beq	.L12
+ 247              		.loc 1 77 0 is_stmt 0 discriminator 2
+ 248 00a6 144B     		ldr	r3, .L16+8
+ 249 00a8 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 250 00aa 002B     		cmp	r3, #0
+ 251 00ac 0FD0     		beq	.L13
+ 252              	.L12:
+ 253              		.loc 1 77 0 discriminator 3
+ 254 00ae 114B     		ldr	r3, .L16+4
+ 255 00b0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 256 00b2 002B     		cmp	r3, #0
+ 257 00b4 0BD1     		bne	.L13
+  78:SENSORS_READ.c ****         previous_movement = RIGHT_TURN;
+ 258              		.loc 1 78 0 is_stmt 1
+ 259 00b6 0E4B     		ldr	r3, .L16
+ 260 00b8 0222     		movs	r2, #2
+ 261 00ba 1A70     		strb	r2, [r3]
+  79:SENSORS_READ.c ****         //PWM_1_WriteCompare(127);
+  80:SENSORS_READ.c ****         //PWM_2_WriteCompare(127);
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 7
+
+
+  81:SENSORS_READ.c ****         //CyDelay(1000); 
+  82:SENSORS_READ.c ****         if(edges.right_wing_edge)
+ 262              		.loc 1 82 0
+ 263 00bc 0E4B     		ldr	r3, .L16+8
+ 264 00be 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 265 00c0 002B     		cmp	r3, #0
+ 266 00c2 02D0     		beq	.L14
+  83:SENSORS_READ.c ****         {edges.right_wing_edge = 0;
+ 267              		.loc 1 83 0
+ 268 00c4 0C4B     		ldr	r3, .L16+8
+ 269 00c6 0022     		movs	r2, #0
+ 270 00c8 1A71     		strb	r2, [r3, #4]
+ 271              	.L14:
+  84:SENSORS_READ.c ****         }
+  85:SENSORS_READ.c ****         return RIGHT_TURN;
+ 272              		.loc 1 85 0
+ 273 00ca 0223     		movs	r3, #2
+ 274 00cc 0CE0     		b	.L7
+ 275              	.L13:
+  86:SENSORS_READ.c ****     }
+  87:SENSORS_READ.c **** 
+  88:SENSORS_READ.c ****     // --- 3. Both front sensors black → straight ---
+  89:SENSORS_READ.c ****     if ((o5 == 0) && (o4 == 0)) {
+ 276              		.loc 1 89 0
+ 277 00ce 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 278 00d0 002B     		cmp	r3, #0
+ 279 00d2 07D1     		bne	.L15
+ 280              		.loc 1 89 0 is_stmt 0 discriminator 1
+ 281 00d4 3B79     		ldrb	r3, [r7, #4]	@ zero_extendqisi2
+ 282 00d6 002B     		cmp	r3, #0
+ 283 00d8 04D1     		bne	.L15
+  90:SENSORS_READ.c ****         previous_movement = STRAIGHT;
+ 284              		.loc 1 90 0 is_stmt 1
+ 285 00da 054B     		ldr	r3, .L16
+ 286 00dc 0022     		movs	r2, #0
+ 287 00de 1A70     		strb	r2, [r3]
+  91:SENSORS_READ.c ****         return STRAIGHT;
+ 288              		.loc 1 91 0
+ 289 00e0 0023     		movs	r3, #0
+ 290 00e2 01E0     		b	.L7
+ 291              	.L15:
+  92:SENSORS_READ.c ****     }
+  93:SENSORS_READ.c **** 
+  94:SENSORS_READ.c ****     // --- 4. Otherwise, keep last movement (usually STRAIGHT) ---
+  95:SENSORS_READ.c ****     return previous_movement;
+ 292              		.loc 1 95 0
+ 293 00e4 024B     		ldr	r3, .L16
+ 294 00e6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 295              	.L7:
+  96:SENSORS_READ.c **** }
+ 296              		.loc 1 96 0
+ 297 00e8 1846     		mov	r0, r3
+ 298 00ea 0C37     		adds	r7, r7, #12
+ 299              		.cfi_def_cfa_offset 12
+ 300 00ec BD46     		mov	sp, r7
+ 301              		.cfi_def_cfa_register 13
+ 302              		@ sp needed
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 8
+
+
+ 303 00ee 90BD     		pop	{r4, r7, pc}
+ 304              	.L17:
+ 305              		.align	2
+ 306              	.L16:
+ 307 00f0 00000000 		.word	previous_movement
+ 308 00f4 00000000 		.word	block_turn_flag
+ 309 00f8 00000000 		.word	edges
+ 310              		.cfi_endproc
+ 311              	.LFE65:
+ 312              		.size	GetMovement, .-GetMovement
+ 313              		.text
+ 314              	.Letext0:
+ 315              		.file 2 "c:\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.1\\arm-none-eabi\\inc
+ 316              		.file 3 "c:\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.1\\arm-none-eabi\\inc
+ 317              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 318              		.file 5 "SENSORS_READ.h"
+ 319              		.file 6 "main.h"
+ 320              		.file 7 "Generated_Source\\PSoC5/core_cm3.h"
+ 321              		.section	.debug_info,"",%progbits
+ 322              	.Ldebug_info0:
+ 323 0000 B5020000 		.4byte	0x2b5
+ 324 0004 0400     		.2byte	0x4
+ 325 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 326 000a 04       		.byte	0x4
+ 327 000b 01       		.uleb128 0x1
+ 328 000c 0A000000 		.4byte	.LASF51
+ 329 0010 0C       		.byte	0xc
+ 330 0011 A8000000 		.4byte	.LASF52
+ 331 0015 B7010000 		.4byte	.LASF53
+ 332 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 333 001d 00000000 		.4byte	0
+ 334 0021 00000000 		.4byte	.Ldebug_line0
+ 335 0025 02       		.uleb128 0x2
+ 336 0026 01       		.byte	0x1
+ 337 0027 06       		.byte	0x6
+ 338 0028 DB020000 		.4byte	.LASF0
+ 339 002c 03       		.uleb128 0x3
+ 340 002d 00000000 		.4byte	.LASF4
+ 341 0031 02       		.byte	0x2
+ 342 0032 1D       		.byte	0x1d
+ 343 0033 37000000 		.4byte	0x37
+ 344 0037 02       		.uleb128 0x2
+ 345 0038 01       		.byte	0x1
+ 346 0039 08       		.byte	0x8
+ 347 003a 4D010000 		.4byte	.LASF1
+ 348 003e 02       		.uleb128 0x2
+ 349 003f 02       		.byte	0x2
+ 350 0040 05       		.byte	0x5
+ 351 0041 98020000 		.4byte	.LASF2
+ 352 0045 02       		.uleb128 0x2
+ 353 0046 02       		.byte	0x2
+ 354 0047 07       		.byte	0x7
+ 355 0048 78010000 		.4byte	.LASF3
+ 356 004c 03       		.uleb128 0x3
+ 357 004d DB000000 		.4byte	.LASF5
+ 358 0051 02       		.byte	0x2
+ 359 0052 3F       		.byte	0x3f
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 9
+
+
+ 360 0053 57000000 		.4byte	0x57
+ 361 0057 02       		.uleb128 0x2
+ 362 0058 04       		.byte	0x4
+ 363 0059 05       		.byte	0x5
+ 364 005a B9020000 		.4byte	.LASF6
+ 365 005e 02       		.uleb128 0x2
+ 366 005f 04       		.byte	0x4
+ 367 0060 07       		.byte	0x7
+ 368 0061 66010000 		.4byte	.LASF7
+ 369 0065 02       		.uleb128 0x2
+ 370 0066 08       		.byte	0x8
+ 371 0067 05       		.byte	0x5
+ 372 0068 64020000 		.4byte	.LASF8
+ 373 006c 02       		.uleb128 0x2
+ 374 006d 08       		.byte	0x8
+ 375 006e 07       		.byte	0x7
+ 376 006f 0F020000 		.4byte	.LASF9
+ 377 0073 04       		.uleb128 0x4
+ 378 0074 04       		.byte	0x4
+ 379 0075 05       		.byte	0x5
+ 380 0076 696E7400 		.ascii	"int\000"
+ 381 007a 02       		.uleb128 0x2
+ 382 007b 04       		.byte	0x4
+ 383 007c 07       		.byte	0x7
+ 384 007d 02020000 		.4byte	.LASF10
+ 385 0081 03       		.uleb128 0x3
+ 386 0082 F5000000 		.4byte	.LASF11
+ 387 0086 03       		.byte	0x3
+ 388 0087 18       		.byte	0x18
+ 389 0088 2C000000 		.4byte	0x2c
+ 390 008c 03       		.uleb128 0x3
+ 391 008d 1E010000 		.4byte	.LASF12
+ 392 0091 03       		.byte	0x3
+ 393 0092 2C       		.byte	0x2c
+ 394 0093 4C000000 		.4byte	0x4c
+ 395 0097 05       		.uleb128 0x5
+ 396 0098 A2020000 		.4byte	.LASF13
+ 397 009c 04       		.byte	0x4
+ 398 009d E901     		.2byte	0x1e9
+ 399 009f 37000000 		.4byte	0x37
+ 400 00a3 02       		.uleb128 0x2
+ 401 00a4 04       		.byte	0x4
+ 402 00a5 04       		.byte	0x4
+ 403 00a6 37010000 		.4byte	.LASF14
+ 404 00aa 02       		.uleb128 0x2
+ 405 00ab 08       		.byte	0x8
+ 406 00ac 04       		.byte	0x4
+ 407 00ad A1010000 		.4byte	.LASF15
+ 408 00b1 02       		.uleb128 0x2
+ 409 00b2 01       		.byte	0x1
+ 410 00b3 08       		.byte	0x8
+ 411 00b4 7C020000 		.4byte	.LASF16
+ 412 00b8 02       		.uleb128 0x2
+ 413 00b9 08       		.byte	0x8
+ 414 00ba 04       		.byte	0x4
+ 415 00bb CF020000 		.4byte	.LASF17
+ 416 00bf 02       		.uleb128 0x2
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 10
+
+
+ 417 00c0 04       		.byte	0x4
+ 418 00c1 07       		.byte	0x7
+ 419 00c2 81020000 		.4byte	.LASF18
+ 420 00c6 06       		.uleb128 0x6
+ 421 00c7 01       		.byte	0x1
+ 422 00c8 37000000 		.4byte	0x37
+ 423 00cc 05       		.byte	0x5
+ 424 00cd 1B       		.byte	0x1b
+ 425 00ce FD000000 		.4byte	0xfd
+ 426 00d2 07       		.uleb128 0x7
+ 427 00d3 A8020000 		.4byte	.LASF19
+ 428 00d7 00       		.byte	0
+ 429 00d8 07       		.uleb128 0x7
+ 430 00d9 8B010000 		.4byte	.LASF20
+ 431 00dd 01       		.byte	0x1
+ 432 00de 07       		.uleb128 0x7
+ 433 00df 5B010000 		.4byte	.LASF21
+ 434 00e3 02       		.byte	0x2
+ 435 00e4 07       		.uleb128 0x7
+ 436 00e5 3D020000 		.4byte	.LASF22
+ 437 00e9 03       		.byte	0x3
+ 438 00ea 07       		.uleb128 0x7
+ 439 00eb E7020000 		.4byte	.LASF23
+ 440 00ef 04       		.byte	0x4
+ 441 00f0 07       		.uleb128 0x7
+ 442 00f1 F0010000 		.4byte	.LASF24
+ 443 00f5 05       		.byte	0x5
+ 444 00f6 07       		.uleb128 0x7
+ 445 00f7 26020000 		.4byte	.LASF25
+ 446 00fb 06       		.byte	0x6
+ 447 00fc 00       		.byte	0
+ 448 00fd 03       		.uleb128 0x3
+ 449 00fe 56020000 		.4byte	.LASF26
+ 450 0102 05       		.byte	0x5
+ 451 0103 23       		.byte	0x23
+ 452 0104 C6000000 		.4byte	0xc6
+ 453 0108 08       		.uleb128 0x8
+ 454 0109 72020000 		.4byte	.LASF34
+ 455 010d 06       		.byte	0x6
+ 456 010e 06       		.byte	0x6
+ 457 010f 12       		.byte	0x12
+ 458 0110 5D010000 		.4byte	0x15d
+ 459 0114 09       		.uleb128 0x9
+ 460 0115 06030000 		.4byte	.LASF27
+ 461 0119 06       		.byte	0x6
+ 462 011a 13       		.byte	0x13
+ 463 011b 81000000 		.4byte	0x81
+ 464 011f 00       		.byte	0
+ 465 0120 09       		.uleb128 0x9
+ 466 0121 26010000 		.4byte	.LASF28
+ 467 0125 06       		.byte	0x6
+ 468 0126 14       		.byte	0x14
+ 469 0127 81000000 		.4byte	0x81
+ 470 012b 01       		.byte	0x1
+ 471 012c 09       		.uleb128 0x9
+ 472 012d 8A020000 		.4byte	.LASF29
+ 473 0131 06       		.byte	0x6
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 11
+
+
+ 474 0132 15       		.byte	0x15
+ 475 0133 81000000 		.4byte	0x81
+ 476 0137 02       		.byte	0x2
+ 477 0138 09       		.uleb128 0x9
+ 478 0139 0F010000 		.4byte	.LASF30
+ 479 013d 06       		.byte	0x6
+ 480 013e 16       		.byte	0x16
+ 481 013f 81000000 		.4byte	0x81
+ 482 0143 03       		.byte	0x3
+ 483 0144 09       		.uleb128 0x9
+ 484 0145 3D010000 		.4byte	.LASF31
+ 485 0149 06       		.byte	0x6
+ 486 014a 17       		.byte	0x17
+ 487 014b 81000000 		.4byte	0x81
+ 488 014f 04       		.byte	0x4
+ 489 0150 09       		.uleb128 0x9
+ 490 0151 A8010000 		.4byte	.LASF32
+ 491 0155 06       		.byte	0x6
+ 492 0156 18       		.byte	0x18
+ 493 0157 81000000 		.4byte	0x81
+ 494 015b 05       		.byte	0x5
+ 495 015c 00       		.byte	0
+ 496 015d 03       		.uleb128 0x3
+ 497 015e 2B020000 		.4byte	.LASF33
+ 498 0162 06       		.byte	0x6
+ 499 0163 1A       		.byte	0x1a
+ 500 0164 08010000 		.4byte	0x108
+ 501 0168 08       		.uleb128 0x8
+ 502 0169 B7000000 		.4byte	.LASF35
+ 503 016d 06       		.byte	0x6
+ 504 016e 01       		.byte	0x1
+ 505 016f 07       		.byte	0x7
+ 506 0170 BD010000 		.4byte	0x1bd
+ 507 0174 09       		.uleb128 0x9
+ 508 0175 C3000000 		.4byte	.LASF36
+ 509 0179 01       		.byte	0x1
+ 510 017a 08       		.byte	0x8
+ 511 017b 81000000 		.4byte	0x81
+ 512 017f 00       		.byte	0
+ 513 0180 09       		.uleb128 0x9
+ 514 0181 CB000000 		.4byte	.LASF37
+ 515 0185 01       		.byte	0x1
+ 516 0186 09       		.byte	0x9
+ 517 0187 81000000 		.4byte	0x81
+ 518 018b 01       		.byte	0x1
+ 519 018c 09       		.uleb128 0x9
+ 520 018d D3000000 		.4byte	.LASF38
+ 521 0191 01       		.byte	0x1
+ 522 0192 0A       		.byte	0xa
+ 523 0193 81000000 		.4byte	0x81
+ 524 0197 02       		.byte	0x2
+ 525 0198 09       		.uleb128 0x9
+ 526 0199 B1020000 		.4byte	.LASF39
+ 527 019d 01       		.byte	0x1
+ 528 019e 0B       		.byte	0xb
+ 529 019f 81000000 		.4byte	0x81
+ 530 01a3 03       		.byte	0x3
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 12
+
+
+ 531 01a4 09       		.uleb128 0x9
+ 532 01a5 E5000000 		.4byte	.LASF40
+ 533 01a9 01       		.byte	0x1
+ 534 01aa 0C       		.byte	0xc
+ 535 01ab 81000000 		.4byte	0x81
+ 536 01af 04       		.byte	0x4
+ 537 01b0 09       		.uleb128 0x9
+ 538 01b1 ED000000 		.4byte	.LASF41
+ 539 01b5 01       		.byte	0x1
+ 540 01b6 0D       		.byte	0xd
+ 541 01b7 81000000 		.4byte	0x81
+ 542 01bb 05       		.byte	0x5
+ 543 01bc 00       		.byte	0
+ 544 01bd 0A       		.uleb128 0xa
+ 545 01be 4A020000 		.4byte	.LASF42
+ 546 01c2 01       		.byte	0x1
+ 547 01c3 11       		.byte	0x11
+ 548 01c4 97000000 		.4byte	0x97
+ 549 01c8 00000000 		.4byte	.LFB64
+ 550 01cc 8A000000 		.4byte	.LFE64-.LFB64
+ 551 01d0 01       		.uleb128 0x1
+ 552 01d1 9C       		.byte	0x9c
+ 553 01d2 E5010000 		.4byte	0x1e5
+ 554 01d6 0B       		.uleb128 0xb
+ 555 01d7 C2020000 		.4byte	.LASF45
+ 556 01db 01       		.byte	0x1
+ 557 01dc 12       		.byte	0x12
+ 558 01dd 97000000 		.4byte	0x97
+ 559 01e1 02       		.uleb128 0x2
+ 560 01e2 91       		.byte	0x91
+ 561 01e3 77       		.sleb128 -9
+ 562 01e4 00       		.byte	0
+ 563 01e5 0A       		.uleb128 0xa
+ 564 01e6 95010000 		.4byte	.LASF43
+ 565 01ea 01       		.byte	0x1
+ 566 01eb 21       		.byte	0x21
+ 567 01ec FD000000 		.4byte	0xfd
+ 568 01f0 00000000 		.4byte	.LFB65
+ 569 01f4 FC000000 		.4byte	.LFE65-.LFB65
+ 570 01f8 01       		.uleb128 0x1
+ 571 01f9 9C       		.byte	0x9c
+ 572 01fa 4D020000 		.4byte	0x24d
+ 573 01fe 0C       		.uleb128 0xc
+ 574 01ff 6F3100   		.ascii	"o1\000"
+ 575 0202 01       		.byte	0x1
+ 576 0203 21       		.byte	0x21
+ 577 0204 81000000 		.4byte	0x81
+ 578 0208 02       		.uleb128 0x2
+ 579 0209 91       		.byte	0x91
+ 580 020a 6F       		.sleb128 -17
+ 581 020b 0C       		.uleb128 0xc
+ 582 020c 6F3200   		.ascii	"o2\000"
+ 583 020f 01       		.byte	0x1
+ 584 0210 21       		.byte	0x21
+ 585 0211 81000000 		.4byte	0x81
+ 586 0215 02       		.uleb128 0x2
+ 587 0216 91       		.byte	0x91
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 13
+
+
+ 588 0217 6E       		.sleb128 -18
+ 589 0218 0C       		.uleb128 0xc
+ 590 0219 6F3300   		.ascii	"o3\000"
+ 591 021c 01       		.byte	0x1
+ 592 021d 21       		.byte	0x21
+ 593 021e 81000000 		.4byte	0x81
+ 594 0222 02       		.uleb128 0x2
+ 595 0223 91       		.byte	0x91
+ 596 0224 6D       		.sleb128 -19
+ 597 0225 0C       		.uleb128 0xc
+ 598 0226 6F3400   		.ascii	"o4\000"
+ 599 0229 01       		.byte	0x1
+ 600 022a 21       		.byte	0x21
+ 601 022b 81000000 		.4byte	0x81
+ 602 022f 02       		.uleb128 0x2
+ 603 0230 91       		.byte	0x91
+ 604 0231 6C       		.sleb128 -20
+ 605 0232 0C       		.uleb128 0xc
+ 606 0233 6F3500   		.ascii	"o5\000"
+ 607 0236 01       		.byte	0x1
+ 608 0237 21       		.byte	0x21
+ 609 0238 81000000 		.4byte	0x81
+ 610 023c 02       		.uleb128 0x2
+ 611 023d 91       		.byte	0x91
+ 612 023e 00       		.sleb128 0
+ 613 023f 0C       		.uleb128 0xc
+ 614 0240 6F3600   		.ascii	"o6\000"
+ 615 0243 01       		.byte	0x1
+ 616 0244 21       		.byte	0x21
+ 617 0245 81000000 		.4byte	0x81
+ 618 0249 02       		.uleb128 0x2
+ 619 024a 91       		.byte	0x91
+ 620 024b 04       		.sleb128 4
+ 621 024c 00       		.byte	0
+ 622 024d 0D       		.uleb128 0xd
+ 623 024e F5010000 		.4byte	.LASF44
+ 624 0252 07       		.byte	0x7
+ 625 0253 1207     		.2byte	0x712
+ 626 0255 59020000 		.4byte	0x259
+ 627 0259 0E       		.uleb128 0xe
+ 628 025a 8C000000 		.4byte	0x8c
+ 629 025e 0F       		.uleb128 0xf
+ 630 025f C2020000 		.4byte	.LASF45
+ 631 0263 01       		.byte	0x1
+ 632 0264 04       		.byte	0x4
+ 633 0265 97000000 		.4byte	0x97
+ 634 0269 05       		.uleb128 0x5
+ 635 026a 03       		.byte	0x3
+ 636 026b 00000000 		.4byte	sensorValues
+ 637 026f 10       		.uleb128 0x10
+ 638 0270 37020000 		.4byte	.LASF46
+ 639 0274 06       		.byte	0x6
+ 640 0275 24       		.byte	0x24
+ 641 0276 5D010000 		.4byte	0x15d
+ 642 027a 10       		.uleb128 0x10
+ 643 027b 98000000 		.4byte	.LASF47
+ 644 027f 06       		.byte	0x6
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 14
+
+
+ 645 0280 26       		.byte	0x26
+ 646 0281 81000000 		.4byte	0x81
+ 647 0285 0F       		.uleb128 0xf
+ 648 0286 FD000000 		.4byte	.LASF48
+ 649 028a 01       		.byte	0x1
+ 650 028b 05       		.byte	0x5
+ 651 028c FD000000 		.4byte	0xfd
+ 652 0290 05       		.uleb128 0x5
+ 653 0291 03       		.byte	0x3
+ 654 0292 00000000 		.4byte	previous_movement
+ 655 0296 0F       		.uleb128 0xf
+ 656 0297 F5020000 		.4byte	.LASF49
+ 657 029b 01       		.byte	0x1
+ 658 029c 06       		.byte	0x6
+ 659 029d FD000000 		.4byte	0xfd
+ 660 02a1 05       		.uleb128 0x5
+ 661 02a2 03       		.byte	0x3
+ 662 02a3 00000000 		.4byte	current_movement
+ 663 02a7 0F       		.uleb128 0xf
+ 664 02a8 16030000 		.4byte	.LASF50
+ 665 02ac 01       		.byte	0x1
+ 666 02ad 0F       		.byte	0xf
+ 667 02ae 68010000 		.4byte	0x168
+ 668 02b2 05       		.uleb128 0x5
+ 669 02b3 03       		.byte	0x3
+ 670 02b4 00000000 		.4byte	this_struct
+ 671 02b8 00       		.byte	0
+ 672              		.section	.debug_abbrev,"",%progbits
+ 673              	.Ldebug_abbrev0:
+ 674 0000 01       		.uleb128 0x1
+ 675 0001 11       		.uleb128 0x11
+ 676 0002 01       		.byte	0x1
+ 677 0003 25       		.uleb128 0x25
+ 678 0004 0E       		.uleb128 0xe
+ 679 0005 13       		.uleb128 0x13
+ 680 0006 0B       		.uleb128 0xb
+ 681 0007 03       		.uleb128 0x3
+ 682 0008 0E       		.uleb128 0xe
+ 683 0009 1B       		.uleb128 0x1b
+ 684 000a 0E       		.uleb128 0xe
+ 685 000b 55       		.uleb128 0x55
+ 686 000c 17       		.uleb128 0x17
+ 687 000d 11       		.uleb128 0x11
+ 688 000e 01       		.uleb128 0x1
+ 689 000f 10       		.uleb128 0x10
+ 690 0010 17       		.uleb128 0x17
+ 691 0011 00       		.byte	0
+ 692 0012 00       		.byte	0
+ 693 0013 02       		.uleb128 0x2
+ 694 0014 24       		.uleb128 0x24
+ 695 0015 00       		.byte	0
+ 696 0016 0B       		.uleb128 0xb
+ 697 0017 0B       		.uleb128 0xb
+ 698 0018 3E       		.uleb128 0x3e
+ 699 0019 0B       		.uleb128 0xb
+ 700 001a 03       		.uleb128 0x3
+ 701 001b 0E       		.uleb128 0xe
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 15
+
+
+ 702 001c 00       		.byte	0
+ 703 001d 00       		.byte	0
+ 704 001e 03       		.uleb128 0x3
+ 705 001f 16       		.uleb128 0x16
+ 706 0020 00       		.byte	0
+ 707 0021 03       		.uleb128 0x3
+ 708 0022 0E       		.uleb128 0xe
+ 709 0023 3A       		.uleb128 0x3a
+ 710 0024 0B       		.uleb128 0xb
+ 711 0025 3B       		.uleb128 0x3b
+ 712 0026 0B       		.uleb128 0xb
+ 713 0027 49       		.uleb128 0x49
+ 714 0028 13       		.uleb128 0x13
+ 715 0029 00       		.byte	0
+ 716 002a 00       		.byte	0
+ 717 002b 04       		.uleb128 0x4
+ 718 002c 24       		.uleb128 0x24
+ 719 002d 00       		.byte	0
+ 720 002e 0B       		.uleb128 0xb
+ 721 002f 0B       		.uleb128 0xb
+ 722 0030 3E       		.uleb128 0x3e
+ 723 0031 0B       		.uleb128 0xb
+ 724 0032 03       		.uleb128 0x3
+ 725 0033 08       		.uleb128 0x8
+ 726 0034 00       		.byte	0
+ 727 0035 00       		.byte	0
+ 728 0036 05       		.uleb128 0x5
+ 729 0037 16       		.uleb128 0x16
+ 730 0038 00       		.byte	0
+ 731 0039 03       		.uleb128 0x3
+ 732 003a 0E       		.uleb128 0xe
+ 733 003b 3A       		.uleb128 0x3a
+ 734 003c 0B       		.uleb128 0xb
+ 735 003d 3B       		.uleb128 0x3b
+ 736 003e 05       		.uleb128 0x5
+ 737 003f 49       		.uleb128 0x49
+ 738 0040 13       		.uleb128 0x13
+ 739 0041 00       		.byte	0
+ 740 0042 00       		.byte	0
+ 741 0043 06       		.uleb128 0x6
+ 742 0044 04       		.uleb128 0x4
+ 743 0045 01       		.byte	0x1
+ 744 0046 0B       		.uleb128 0xb
+ 745 0047 0B       		.uleb128 0xb
+ 746 0048 49       		.uleb128 0x49
+ 747 0049 13       		.uleb128 0x13
+ 748 004a 3A       		.uleb128 0x3a
+ 749 004b 0B       		.uleb128 0xb
+ 750 004c 3B       		.uleb128 0x3b
+ 751 004d 0B       		.uleb128 0xb
+ 752 004e 01       		.uleb128 0x1
+ 753 004f 13       		.uleb128 0x13
+ 754 0050 00       		.byte	0
+ 755 0051 00       		.byte	0
+ 756 0052 07       		.uleb128 0x7
+ 757 0053 28       		.uleb128 0x28
+ 758 0054 00       		.byte	0
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 16
+
+
+ 759 0055 03       		.uleb128 0x3
+ 760 0056 0E       		.uleb128 0xe
+ 761 0057 1C       		.uleb128 0x1c
+ 762 0058 0B       		.uleb128 0xb
+ 763 0059 00       		.byte	0
+ 764 005a 00       		.byte	0
+ 765 005b 08       		.uleb128 0x8
+ 766 005c 13       		.uleb128 0x13
+ 767 005d 01       		.byte	0x1
+ 768 005e 03       		.uleb128 0x3
+ 769 005f 0E       		.uleb128 0xe
+ 770 0060 0B       		.uleb128 0xb
+ 771 0061 0B       		.uleb128 0xb
+ 772 0062 3A       		.uleb128 0x3a
+ 773 0063 0B       		.uleb128 0xb
+ 774 0064 3B       		.uleb128 0x3b
+ 775 0065 0B       		.uleb128 0xb
+ 776 0066 01       		.uleb128 0x1
+ 777 0067 13       		.uleb128 0x13
+ 778 0068 00       		.byte	0
+ 779 0069 00       		.byte	0
+ 780 006a 09       		.uleb128 0x9
+ 781 006b 0D       		.uleb128 0xd
+ 782 006c 00       		.byte	0
+ 783 006d 03       		.uleb128 0x3
+ 784 006e 0E       		.uleb128 0xe
+ 785 006f 3A       		.uleb128 0x3a
+ 786 0070 0B       		.uleb128 0xb
+ 787 0071 3B       		.uleb128 0x3b
+ 788 0072 0B       		.uleb128 0xb
+ 789 0073 49       		.uleb128 0x49
+ 790 0074 13       		.uleb128 0x13
+ 791 0075 38       		.uleb128 0x38
+ 792 0076 0B       		.uleb128 0xb
+ 793 0077 00       		.byte	0
+ 794 0078 00       		.byte	0
+ 795 0079 0A       		.uleb128 0xa
+ 796 007a 2E       		.uleb128 0x2e
+ 797 007b 01       		.byte	0x1
+ 798 007c 3F       		.uleb128 0x3f
+ 799 007d 19       		.uleb128 0x19
+ 800 007e 03       		.uleb128 0x3
+ 801 007f 0E       		.uleb128 0xe
+ 802 0080 3A       		.uleb128 0x3a
+ 803 0081 0B       		.uleb128 0xb
+ 804 0082 3B       		.uleb128 0x3b
+ 805 0083 0B       		.uleb128 0xb
+ 806 0084 27       		.uleb128 0x27
+ 807 0085 19       		.uleb128 0x19
+ 808 0086 49       		.uleb128 0x49
+ 809 0087 13       		.uleb128 0x13
+ 810 0088 11       		.uleb128 0x11
+ 811 0089 01       		.uleb128 0x1
+ 812 008a 12       		.uleb128 0x12
+ 813 008b 06       		.uleb128 0x6
+ 814 008c 40       		.uleb128 0x40
+ 815 008d 18       		.uleb128 0x18
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 17
+
+
+ 816 008e 9642     		.uleb128 0x2116
+ 817 0090 19       		.uleb128 0x19
+ 818 0091 01       		.uleb128 0x1
+ 819 0092 13       		.uleb128 0x13
+ 820 0093 00       		.byte	0
+ 821 0094 00       		.byte	0
+ 822 0095 0B       		.uleb128 0xb
+ 823 0096 34       		.uleb128 0x34
+ 824 0097 00       		.byte	0
+ 825 0098 03       		.uleb128 0x3
+ 826 0099 0E       		.uleb128 0xe
+ 827 009a 3A       		.uleb128 0x3a
+ 828 009b 0B       		.uleb128 0xb
+ 829 009c 3B       		.uleb128 0x3b
+ 830 009d 0B       		.uleb128 0xb
+ 831 009e 49       		.uleb128 0x49
+ 832 009f 13       		.uleb128 0x13
+ 833 00a0 02       		.uleb128 0x2
+ 834 00a1 18       		.uleb128 0x18
+ 835 00a2 00       		.byte	0
+ 836 00a3 00       		.byte	0
+ 837 00a4 0C       		.uleb128 0xc
+ 838 00a5 05       		.uleb128 0x5
+ 839 00a6 00       		.byte	0
+ 840 00a7 03       		.uleb128 0x3
+ 841 00a8 08       		.uleb128 0x8
+ 842 00a9 3A       		.uleb128 0x3a
+ 843 00aa 0B       		.uleb128 0xb
+ 844 00ab 3B       		.uleb128 0x3b
+ 845 00ac 0B       		.uleb128 0xb
+ 846 00ad 49       		.uleb128 0x49
+ 847 00ae 13       		.uleb128 0x13
+ 848 00af 02       		.uleb128 0x2
+ 849 00b0 18       		.uleb128 0x18
+ 850 00b1 00       		.byte	0
+ 851 00b2 00       		.byte	0
+ 852 00b3 0D       		.uleb128 0xd
+ 853 00b4 34       		.uleb128 0x34
+ 854 00b5 00       		.byte	0
+ 855 00b6 03       		.uleb128 0x3
+ 856 00b7 0E       		.uleb128 0xe
+ 857 00b8 3A       		.uleb128 0x3a
+ 858 00b9 0B       		.uleb128 0xb
+ 859 00ba 3B       		.uleb128 0x3b
+ 860 00bb 05       		.uleb128 0x5
+ 861 00bc 49       		.uleb128 0x49
+ 862 00bd 13       		.uleb128 0x13
+ 863 00be 3F       		.uleb128 0x3f
+ 864 00bf 19       		.uleb128 0x19
+ 865 00c0 3C       		.uleb128 0x3c
+ 866 00c1 19       		.uleb128 0x19
+ 867 00c2 00       		.byte	0
+ 868 00c3 00       		.byte	0
+ 869 00c4 0E       		.uleb128 0xe
+ 870 00c5 35       		.uleb128 0x35
+ 871 00c6 00       		.byte	0
+ 872 00c7 49       		.uleb128 0x49
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 18
+
+
+ 873 00c8 13       		.uleb128 0x13
+ 874 00c9 00       		.byte	0
+ 875 00ca 00       		.byte	0
+ 876 00cb 0F       		.uleb128 0xf
+ 877 00cc 34       		.uleb128 0x34
+ 878 00cd 00       		.byte	0
+ 879 00ce 03       		.uleb128 0x3
+ 880 00cf 0E       		.uleb128 0xe
+ 881 00d0 3A       		.uleb128 0x3a
+ 882 00d1 0B       		.uleb128 0xb
+ 883 00d2 3B       		.uleb128 0x3b
+ 884 00d3 0B       		.uleb128 0xb
+ 885 00d4 49       		.uleb128 0x49
+ 886 00d5 13       		.uleb128 0x13
+ 887 00d6 3F       		.uleb128 0x3f
+ 888 00d7 19       		.uleb128 0x19
+ 889 00d8 02       		.uleb128 0x2
+ 890 00d9 18       		.uleb128 0x18
+ 891 00da 00       		.byte	0
+ 892 00db 00       		.byte	0
+ 893 00dc 10       		.uleb128 0x10
+ 894 00dd 34       		.uleb128 0x34
+ 895 00de 00       		.byte	0
+ 896 00df 03       		.uleb128 0x3
+ 897 00e0 0E       		.uleb128 0xe
+ 898 00e1 3A       		.uleb128 0x3a
+ 899 00e2 0B       		.uleb128 0xb
+ 900 00e3 3B       		.uleb128 0x3b
+ 901 00e4 0B       		.uleb128 0xb
+ 902 00e5 49       		.uleb128 0x49
+ 903 00e6 13       		.uleb128 0x13
+ 904 00e7 3F       		.uleb128 0x3f
+ 905 00e8 19       		.uleb128 0x19
+ 906 00e9 3C       		.uleb128 0x3c
+ 907 00ea 19       		.uleb128 0x19
+ 908 00eb 00       		.byte	0
+ 909 00ec 00       		.byte	0
+ 910 00ed 00       		.byte	0
+ 911              		.section	.debug_aranges,"",%progbits
+ 912 0000 24000000 		.4byte	0x24
+ 913 0004 0200     		.2byte	0x2
+ 914 0006 00000000 		.4byte	.Ldebug_info0
+ 915 000a 04       		.byte	0x4
+ 916 000b 00       		.byte	0
+ 917 000c 0000     		.2byte	0
+ 918 000e 0000     		.2byte	0
+ 919 0010 00000000 		.4byte	.LFB64
+ 920 0014 8A000000 		.4byte	.LFE64-.LFB64
+ 921 0018 00000000 		.4byte	.LFB65
+ 922 001c FC000000 		.4byte	.LFE65-.LFB65
+ 923 0020 00000000 		.4byte	0
+ 924 0024 00000000 		.4byte	0
+ 925              		.section	.debug_ranges,"",%progbits
+ 926              	.Ldebug_ranges0:
+ 927 0000 00000000 		.4byte	.LFB64
+ 928 0004 8A000000 		.4byte	.LFE64
+ 929 0008 00000000 		.4byte	.LFB65
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 19
+
+
+ 930 000c FC000000 		.4byte	.LFE65
+ 931 0010 00000000 		.4byte	0
+ 932 0014 00000000 		.4byte	0
+ 933              		.section	.debug_line,"",%progbits
+ 934              	.Ldebug_line0:
+ 935 0000 BF010000 		.section	.debug_str,"MS",%progbits,1
+ 935      02004801 
+ 935      00000201 
+ 935      FB0E0D00 
+ 935      01010101 
+ 936              	.LASF4:
+ 937 0000 5F5F7569 		.ascii	"__uint8_t\000"
+ 937      6E74385F 
+ 937      7400
+ 938              	.LASF51:
+ 939 000a 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 939      43313120 
+ 939      352E342E 
+ 939      31203230 
+ 939      31363036 
+ 940 003d 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 940      20726576 
+ 940      6973696F 
+ 940      6E203233 
+ 940      37373135 
+ 941 0070 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 941      66756E63 
+ 941      74696F6E 
+ 941      2D736563 
+ 941      74696F6E 
+ 942              	.LASF47:
+ 943 0098 626C6F63 		.ascii	"block_turn_flag\000"
+ 943      6B5F7475 
+ 943      726E5F66 
+ 943      6C616700 
+ 944              	.LASF52:
+ 945 00a8 53454E53 		.ascii	"SENSORS_READ.c\000"
+ 945      4F52535F 
+ 945      52454144 
+ 945      2E6300
+ 946              	.LASF35:
+ 947 00b7 4D795374 		.ascii	"MyStructure\000"
+ 947      72756374 
+ 947      75726500 
+ 948              	.LASF36:
+ 949 00c3 6F757470 		.ascii	"output1\000"
+ 949      75743100 
+ 950              	.LASF37:
+ 951 00cb 6F757470 		.ascii	"output2\000"
+ 951      75743200 
+ 952              	.LASF38:
+ 953 00d3 6F757470 		.ascii	"output3\000"
+ 953      75743300 
+ 954              	.LASF5:
+ 955 00db 5F5F696E 		.ascii	"__int32_t\000"
+ 955      7433325F 
+ 955      7400
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 20
+
+
+ 956              	.LASF40:
+ 957 00e5 6F757470 		.ascii	"output5\000"
+ 957      75743500 
+ 958              	.LASF41:
+ 959 00ed 6F757470 		.ascii	"output6\000"
+ 959      75743600 
+ 960              	.LASF11:
+ 961 00f5 75696E74 		.ascii	"uint8_t\000"
+ 961      385F7400 
+ 962              	.LASF48:
+ 963 00fd 70726576 		.ascii	"previous_movement\000"
+ 963      696F7573 
+ 963      5F6D6F76 
+ 963      656D656E 
+ 963      7400
+ 964              	.LASF30:
+ 965 010f 6D69645F 		.ascii	"mid_right_edge\000"
+ 965      72696768 
+ 965      745F6564 
+ 965      676500
+ 966              	.LASF12:
+ 967 011e 696E7433 		.ascii	"int32_t\000"
+ 967      325F7400 
+ 968              	.LASF28:
+ 969 0126 66726F6E 		.ascii	"front_right_edge\000"
+ 969      745F7269 
+ 969      6768745F 
+ 969      65646765 
+ 969      00
+ 970              	.LASF14:
+ 971 0137 666C6F61 		.ascii	"float\000"
+ 971      7400
+ 972              	.LASF31:
+ 973 013d 72696768 		.ascii	"right_wing_edge\000"
+ 973      745F7769 
+ 973      6E675F65 
+ 973      64676500 
+ 974              	.LASF1:
+ 975 014d 756E7369 		.ascii	"unsigned char\000"
+ 975      676E6564 
+ 975      20636861 
+ 975      7200
+ 976              	.LASF21:
+ 977 015b 52494748 		.ascii	"RIGHT_TURN\000"
+ 977      545F5455 
+ 977      524E00
+ 978              	.LASF7:
+ 979 0166 6C6F6E67 		.ascii	"long unsigned int\000"
+ 979      20756E73 
+ 979      69676E65 
+ 979      6420696E 
+ 979      7400
+ 980              	.LASF3:
+ 981 0178 73686F72 		.ascii	"short unsigned int\000"
+ 981      7420756E 
+ 981      7369676E 
+ 981      65642069 
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 21
+
+
+ 981      6E7400
+ 982              	.LASF20:
+ 983 018b 4C454654 		.ascii	"LEFT_TURN\000"
+ 983      5F545552 
+ 983      4E00
+ 984              	.LASF43:
+ 985 0195 4765744D 		.ascii	"GetMovement\000"
+ 985      6F76656D 
+ 985      656E7400 
+ 986              	.LASF15:
+ 987 01a1 646F7562 		.ascii	"double\000"
+ 987      6C6500
+ 988              	.LASF32:
+ 989 01a8 6C656674 		.ascii	"left_wing_edge\000"
+ 989      5F77696E 
+ 989      675F6564 
+ 989      676500
+ 990              	.LASF53:
+ 991 01b7 433A5C4C 		.ascii	"C:\\LocalCode\\301MotorCar\\psoc firmware\\CS301_Cl"
+ 991      6F63616C 
+ 991      436F6465 
+ 991      5C333031 
+ 991      4D6F746F 
+ 992 01e6 6173732E 		.ascii	"ass.cydsn\000"
+ 992      63796473 
+ 992      6E00
+ 993              	.LASF24:
+ 994 01f0 53544F50 		.ascii	"STOP\000"
+ 994      00
+ 995              	.LASF44:
+ 996 01f5 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 996      52784275 
+ 996      66666572 
+ 996      00
+ 997              	.LASF10:
+ 998 0202 756E7369 		.ascii	"unsigned int\000"
+ 998      676E6564 
+ 998      20696E74 
+ 998      00
+ 999              	.LASF9:
+ 1000 020f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1000      206C6F6E 
+ 1000      6720756E 
+ 1000      7369676E 
+ 1000      65642069 
+ 1001              	.LASF25:
+ 1002 0226 57414954 		.ascii	"WAIT\000"
+ 1002      00
+ 1003              	.LASF33:
+ 1004 022b 65646765 		.ascii	"edge_pack_t\000"
+ 1004      5F706163 
+ 1004      6B5F7400 
+ 1005              	.LASF46:
+ 1006 0237 65646765 		.ascii	"edges\000"
+ 1006      7300
+ 1007              	.LASF22:
+ 1008 023d 44524946 		.ascii	"DRIFTED_LEFT\000"
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 22
+
+
+ 1008      5445445F 
+ 1008      4C454654 
+ 1008      00
+ 1009              	.LASF42:
+ 1010 024a 52656164 		.ascii	"ReadSensors\000"
+ 1010      53656E73 
+ 1010      6F727300 
+ 1011              	.LASF26:
+ 1012 0256 4D6F7665 		.ascii	"MovementState\000"
+ 1012      6D656E74 
+ 1012      53746174 
+ 1012      6500
+ 1013              	.LASF8:
+ 1014 0264 6C6F6E67 		.ascii	"long long int\000"
+ 1014      206C6F6E 
+ 1014      6720696E 
+ 1014      7400
+ 1015              	.LASF34:
+ 1016 0272 65646765 		.ascii	"edge_pack\000"
+ 1016      5F706163 
+ 1016      6B00
+ 1017              	.LASF16:
+ 1018 027c 63686172 		.ascii	"char\000"
+ 1018      00
+ 1019              	.LASF18:
+ 1020 0281 73697A65 		.ascii	"sizetype\000"
+ 1020      74797065 
+ 1020      00
+ 1021              	.LASF29:
+ 1022 028a 6D69645F 		.ascii	"mid_left_edge\000"
+ 1022      6C656674 
+ 1022      5F656467 
+ 1022      6500
+ 1023              	.LASF2:
+ 1024 0298 73686F72 		.ascii	"short int\000"
+ 1024      7420696E 
+ 1024      7400
+ 1025              	.LASF13:
+ 1026 02a2 75696E74 		.ascii	"uint8\000"
+ 1026      3800
+ 1027              	.LASF19:
+ 1028 02a8 53545241 		.ascii	"STRAIGHT\000"
+ 1028      49474854 
+ 1028      00
+ 1029              	.LASF39:
+ 1030 02b1 6F757470 		.ascii	"output4\000"
+ 1030      75743400 
+ 1031              	.LASF6:
+ 1032 02b9 6C6F6E67 		.ascii	"long int\000"
+ 1032      20696E74 
+ 1032      00
+ 1033              	.LASF45:
+ 1034 02c2 73656E73 		.ascii	"sensorValues\000"
+ 1034      6F725661 
+ 1034      6C756573 
+ 1034      00
+ 1035              	.LASF17:
+ARM GAS  C:\Users\cta10\AppData\Local\Temp\ccXvtbPA.s 			page 23
+
+
+ 1036 02cf 6C6F6E67 		.ascii	"long double\000"
+ 1036      20646F75 
+ 1036      626C6500 
+ 1037              	.LASF0:
+ 1038 02db 7369676E 		.ascii	"signed char\000"
+ 1038      65642063 
+ 1038      68617200 
+ 1039              	.LASF23:
+ 1040 02e7 44524946 		.ascii	"DRIFTED_RIGHT\000"
+ 1040      5445445F 
+ 1040      52494748 
+ 1040      5400
+ 1041              	.LASF49:
+ 1042 02f5 63757272 		.ascii	"current_movement\000"
+ 1042      656E745F 
+ 1042      6D6F7665 
+ 1042      6D656E74 
+ 1042      00
+ 1043              	.LASF27:
+ 1044 0306 66726F6E 		.ascii	"front_left_edge\000"
+ 1044      745F6C65 
+ 1044      66745F65 
+ 1044      64676500 
+ 1045              	.LASF50:
+ 1046 0316 74686973 		.ascii	"this_struct\000"
+ 1046      5F737472 
+ 1046      75637400 
+ 1047              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
