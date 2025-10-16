@@ -64,12 +64,12 @@ int main(void)
 
 /*
 while (1) {
-    motor_left(160);
-    motor_right(162);
+    motor_left(161);
+    motor_right(164);
     CyDelay(1000);
 }
-
 */
+
 
 
 for(;;) {
