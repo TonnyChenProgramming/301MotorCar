@@ -65,7 +65,7 @@ MovementState GetMovement(void)
             right_on = 0;
         }
         */
-        turn_cooldown = 25;
+        turn_cooldown = 40; //25
         return RIGHT_TURN;
     }
     }
