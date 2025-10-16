@@ -32,12 +32,12 @@ static volatile float   spd_rpm  = 0.0f;
 
 static volatile uint8_t flag_print = 0;
 
-volatile uint8 front_left_flag = 0;
-volatile uint8 front_right_flag = 0;
-volatile uint8 mid_left_flag = 0;
-volatile uint8 mid_right_flag = 0;
-volatile uint8 left_wing_flag = 0;
-volatile uint8 right_wing_flag = 0;
+uint8 front_left_flag = 0;
+uint8 front_right_flag = 0;
+uint8 mid_left_flag = 0;
+uint8 mid_right_flag = 0;
+uint8 left_wing_flag = 0;
+uint8 right_wing_flag = 0;
 
 uint16_t pwm_counter = 0;
 uint8_t calculate_pwm_flag = 0;
@@ -46,12 +46,12 @@ uint8_t during_calculation = 0;
 uint8 block_turn_flag = 0;
 uint8 run_flag = 0;
 
-uint8_t o1 = 1;
-uint8_t o2 = 1;
-uint8_t o3 = 1;
-uint8_t o4 = 1;
-uint8_t o5 = 1;
-uint8_t o6 = 1;
+uint16_t o1 = 1;
+uint16_t o2 = 1;
+uint16_t o3 = 1;
+uint16_t o4 = 1;
+uint16_t o5 = 1;
+uint16_t o6 = 1;
 
 static volatile int16 left_wheel_val; // positive
 static volatile int16 right_wheel_val;//negative
@@ -68,6 +68,10 @@ edge_pack_t edges = {0,0,0,0, 0, 0};
 MovementFiniteState movement_finite_state = STOP_STATE;
 MovementState current_move;
 
+
+
+
+static inline int clamp(int v, int lo, int hi){ return v<lo?lo:(v>hi?hi:v); }
 // static void print_telemetry(void);
 void usbPutString(char *s);
 void usbPutChar(char c);
@@ -87,7 +91,11 @@ CY_ISR(Timer_TS_ISR_Handler)
         if (Output_5_Read() == 0) s_blk[4]++;
         if (Output_6_Read() == 0) s_blk[5]++;
         
-        if (pwm_counter++ >= 1000) calculate_pwm_flag = 1;
+        if (pwm_counter++ >= 1000) {
+            
+             calculate_pwm_flag = 1;
+        }
+
     }
 
 }
@@ -108,11 +116,11 @@ int main(void)
     PWM_2_Start();
     
     
-    isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
-    Timer_TS_Start();                      // then start
+    //isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
+    //Timer_TS_Start();                      // then start
     
-    isr_2_Start();
-
+    //isr_2_Start();
+    //Turn_Timer_Start();
 
     
     front_left_Start();
@@ -128,35 +136,16 @@ int main(void)
 #ifdef USE_USB
    USBUART_Start(0, USBUART_5V_OPERATION);
 #endif
-    Turn_Timer_Start();
+
 for(;;) {
    // if (timer_flag) {
      //   timer_flag = 0;
       //  MovementState m = GetMovement();
     
-    if (run_flag)
-    {
-        if (calculate_pwm_flag)
-        {
-            during_calculation = 1;
-            o1 = (s_blk[0] >= 750) ? 0 : 1;   // active-low: 0 = black
-            o2 = (s_blk[1] >= 750) ? 0 : 1;
-            o3 = (s_blk[2] >= 750) ? 0 : 1;
-            o4 = (s_blk[3] >= 750) ? 0 : 1;
-            o5 = (s_blk[4] >= 750) ? 0 : 1;
-            o6 = (s_blk[5] >= 750) ? 0 : 1;
 
-            //move_handling(GetMovement(o1,o2,o3,o4,o5,o6));
-            do_straight_with_pid(o1, o2,  o3,
-                          o4, o5, o6);
-            calculate_pwm_flag = 0;
-            for (int i = 0; i < 6; ++i) s_blk[i] = 0;
-            pwm_counter = 0;
-            
-            during_calculation = 0;
-        }
-          
-    }
+        move_handling(GetMovement());
+
+
         
     
 }

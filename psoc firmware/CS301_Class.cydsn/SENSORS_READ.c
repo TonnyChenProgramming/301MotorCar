@@ -30,14 +30,14 @@ uint8 ReadSensors(void) {
 // Call this once at startup somewhere global:
 // MovementState previous_movement = STRAIGHT;
 
-MovementState GetMovement(uint8_t o1,uint8_t o2, uint8_t o3, uint8_t o4, uint8_t o5, uint8_t o6)
+MovementState GetMovement(void)
 {
-    //uint8 o1 = Output_1_Read(); // middle-right
-    //uint8 o2 = Output_2_Read(); // middle-left
-    //uint8 o3 = Output_3_Read(); // right wing
-    //uint8 o4 = Output_4_Read(); // front-right
-    //uint8 o5 = Output_5_Read(); // front-left
-    //uint8 o6 = Output_6_Read(); // left wing
+    uint8 o1 = Output_1_Read(); // middle-right
+    uint8 o2 = Output_2_Read(); // middle-left
+    uint8 o3 = Output_3_Read(); // right wing
+    uint8 o4 = Output_4_Read(); // front-right
+    uint8 o5 = Output_5_Read(); // front-left
+    uint8 o6 = Output_6_Read(); // left wing
 
     // --- 1. If already turning, ignore everything except fronts ---
     if (previous_movement == LEFT_TURN) {

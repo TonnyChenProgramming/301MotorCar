@@ -20,7 +20,7 @@ void stop(void);
 
 // Follow line until STOP or intersection
 void move_handling(MovementState m);
-void do_straight_with_pid(uint16_t o1, uint16_t o2, uint16_t o3,
-                          uint16_t o4, uint16_t o5, uint16_t o6);
+
+void do_straight_with_pid(void);
 #endif
 /* [] END OF FILE */
