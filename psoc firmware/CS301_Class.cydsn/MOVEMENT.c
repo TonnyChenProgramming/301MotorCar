@@ -28,6 +28,7 @@ static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 //float Ki = 0.1;
 //float Kd = 0.05;
 float Kp = 0.78;
+//float Kp = 0.65;
 float Ki = 0.10;
 float Kd = 0.06;
 static float integral = 0;
@@ -36,16 +37,18 @@ int error;
 float derivative;
 float output;
 int bias = 0;
-//uint8_t left_pwm = 172;
-//uint8_t right_pwm = 176;
-#define BASE_PWM_LEFT   200
-#define BASE_PWM_RIGHT  195
-//#define BASE_PWM_LEFT   160
-//#define BASE_PWM_RIGHT  155
-//#define PID_PWM_MIN 155
-//#define PID_PWM_MAX 165
-#define PID_PWM_MIN 195
-#define PID_PWM_MAX 205
+uint8_t left_pwm = 175;
+uint8_t right_pwm = 170;
+//#define BASE_PWM_LEFT   200
+//#define BASE_PWM_RIGHT  195
+//#define PID_PWM_MIN 195
+//#define PID_PWM_MAX 205  
+//20 error
+#define BASE_PWM_LEFT   175
+#define BASE_PWM_RIGHT  170
+#define PID_PWM_MIN 170
+#define PID_PWM_MAX 180
+#define CHANGE_IN_ERROR 120
 
 void usbPutString(char *s);
 
@@ -72,12 +75,12 @@ void do_straight_with_pid(void)
         if (edges.front_right_edge)
         {
             edges.front_right_edge = 0;
-            error -= 20;
+            error -= CHANGE_IN_ERROR;
         }
         if (edges.mid_left_edge)
         {
             edges.mid_left_edge = 0;
-            error -= 20;
+            error -= CHANGE_IN_ERROR;
         }
         if (Output_4_Read())
         {
@@ -88,12 +91,12 @@ void do_straight_with_pid(void)
         if (edges.front_left_edge)
         {
             edges.front_left_edge = 0;
-            error += 20;
+            error += CHANGE_IN_ERROR;
         }
         if (edges.mid_right_edge)
         {
             edges.mid_right_edge = 0;
-            error += 20;
+            error += CHANGE_IN_ERROR;
         }
         if (Output_5_Read())
         {

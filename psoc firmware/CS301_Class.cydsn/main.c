@@ -111,6 +111,8 @@ CY_ISR(Timer_TS_ISR_Handler)
 /* ================= Main ================= */
 int main(void)
 {
+
+    
     CyGlobalIntEnable;
     PWM_1_Start();
     PWM_2_Start();
