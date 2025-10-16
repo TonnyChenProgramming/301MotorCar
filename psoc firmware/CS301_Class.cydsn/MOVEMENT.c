@@ -10,7 +10,7 @@ static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
 static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
 uint8_t left_pwm = 160; //170
-uint8_t right_pwm = 161; //171
+uint8_t right_pwm = 162; //171
 
 uint8_t drift_right_pwm = 169; //179
 uint8_t drift_left_pwm = 169;  //179
@@ -72,9 +72,9 @@ void move_handling(void)
             // 54, 195
             //80, 170
             motor_left(80);
-            motor_right(170);
+            motor_right(167);
 
-            while ((Output_5_Read() == 1) && (Output_4_Read() == 1)) {
+            while ((Output_5_Read() == 1)) {
                 m = LEFT_TURN;
             }
             
@@ -86,10 +86,11 @@ void move_handling(void)
 
         case RIGHT_TURN:
             //164,80
-            motor_left(158); //170, 80
+            
+            motor_left(151); //170, 80
             motor_right(94);// 154, 90
             
-            while (Output_5_Read() == 1 && (Output_4_Read() == 1)) {
+            while (Output_4_Read() == 1) {
                 m = RIGHT_TURN;
             }
             
