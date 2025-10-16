@@ -9,11 +9,11 @@ extern MovementState previous_movement;
 static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
 static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
-uint8_t left_pwm = 170; //168
-uint8_t right_pwm = 171; //170
+uint8_t left_pwm = 160; //170
+uint8_t right_pwm = 161; //171
 
-uint8_t drift_right_pwm = 179; //180
-uint8_t drift_left_pwm = 179;  //180
+uint8_t drift_right_pwm = 169; //179
+uint8_t drift_left_pwm = 169;  //179
 
 
 void usbPutString(char *s);
@@ -70,8 +70,9 @@ void move_handling(void)
 
         case LEFT_TURN:
             // 54, 195
-            motor_left(80);
-            motor_right(170);
+            //80, 170
+            motor_left(90);
+            motor_right(160);
 
             while ((Output_5_Read() == 1) && (Output_4_Read() == 1)) {
                 m = LEFT_TURN;
@@ -84,10 +85,11 @@ void move_handling(void)
             break;
 
         case RIGHT_TURN:
-            motor_left(164); //170, 80
-            motor_right(80);
+            //164,80
+            motor_left(154); //170, 80
+            motor_right(90);// 154, 90
             
-            while (Output_4_Read() == 1) {
+            while (Output_5_Read() == 1) {
                 m = RIGHT_TURN;
             }
             
