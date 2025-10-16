@@ -36,12 +36,12 @@ static volatile float   spd_rpm  = 0.0f;
 
 static volatile uint8_t flag_print = 0;
 
-volatile uint8 front_left_flag = 0;
-volatile uint8 front_right_flag = 0;
-volatile uint8 mid_left_flag = 0;
-volatile uint8 mid_right_flag = 0;
-volatile uint8 left_wing_flag = 0;
-volatile uint8 right_wing_flag = 0;
+uint8 front_left_flag = 0;
+uint8 front_right_flag = 0;
+uint8 mid_left_flag = 0;
+uint8 mid_right_flag = 0;
+uint8 left_wing_flag = 0;
+uint8 right_wing_flag = 0;
 
 static volatile int16 left_wheel_val; // positive
 static volatile int16 right_wheel_val;//negative
