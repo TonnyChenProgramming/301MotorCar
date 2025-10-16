@@ -14,45 +14,19 @@
 #include "SENSORS_READ.h"
 #include "MOVEMENT.h"
 
-volatile uint16 tick_count = 0;      // increases in ISR
-volatile uint8 delay_active = 0;     // 1 = we are pausing
-volatile uint16 delay_target = 0;    // how long to pause (in ticks)
 
-
-#define ENCODER_CPR 500
-#define QUAD_MULT 4        
-#define COUNTS_PER_REV (ENCODER_CPR * QUAD_MULT)
 
 #define TIMER_BASE_HZ 100000UL
 
-#define PWM_FWD  168
-#define PWM_STOP 127
-
-static volatile int32_t enc_last = 0;      
-static volatile int32_t enc_pos  = 0;      
-static volatile float   spd_cps  = 0.0f;   
-static volatile float   spd_rps  = 0.0f;   
-static volatile float   spd_rpm  = 0.0f;   
-
-static volatile uint8_t flag_print = 0;
-
-uint8 front_left_flag = 0;
-uint8 front_right_flag = 0;
-uint8 mid_left_flag = 0;
-uint8 mid_right_flag = 0;
-uint8 left_wing_flag = 0;
-uint8 right_wing_flag = 0;
+ 
 
 static volatile int16 left_wheel_val; // positive
 static volatile int16 right_wheel_val;//negative
-static volatile int16 wheel_sum; // when wheel_sum is postive,left wheel is faster. otherwise. right wheel is faster
 
 static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
 static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
 uint8_t timer_flag = 0;
-edge_pack_t edges = {0,0,0,0, 0, 0};
-MovementFiniteState movement_finite_state = STOP_STATE;
 MovementState current_move;
 
 // static void print_telemetry(void);
@@ -81,18 +55,22 @@ int main(void)
     PWM_1_Start();
     PWM_2_Start();
     
-    
     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
     Timer_TS_Start();                      // then start
-    
-    QuadDec_M1_Start();
-    QuadDec_M2_Start();
-    QuadDec_M1_SetCounter(0);
-    QuadDec_M2_SetCounter(0);
 
 #ifdef USE_USB
    USBUART_Start(0, USBUART_5V_OPERATION);
 #endif
+
+/*
+while (1) {
+    motor_left(30);
+    motor_right(127);
+    CyDelay(1000);
+}
+*/
+
+
 
 for(;;) {
     /*

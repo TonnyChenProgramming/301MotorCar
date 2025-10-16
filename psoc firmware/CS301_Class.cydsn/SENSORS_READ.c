@@ -3,6 +3,7 @@
 uint8 sensorValues;
 MovementState previous_movement;
 MovementState current_movement;
+static uint8 turn_cooldown = 0;
 
 MovementState GetMovement(void)
 {
@@ -16,6 +17,10 @@ MovementState GetMovement(void)
    // static MovementState current_state = STRAIGHT;
     
     // First: clear all LEDs every loop to avoid ghosting
+   
+    if (turn_cooldown > 0)
+        turn_cooldown--;
+    
     LED1_Write(0);
     LED2_Write(0);
     LED3_Write(0);
@@ -25,7 +30,11 @@ MovementState GetMovement(void)
     
     // --- Wing sensors ---
     
+    if (turn_cooldown == 0) 
+    {
+        
     if ((o6 == 0) && (o3 == 0)) {
+        turn_cooldown = 25;
         return RIGHT_TURN;
     }
     
@@ -41,6 +50,7 @@ MovementState GetMovement(void)
         }
         */
         
+        turn_cooldown = 25;
         return LEFT_TURN;
     }
     
@@ -55,8 +65,9 @@ MovementState GetMovement(void)
             right_on = 0;
         }
         */
-        
+        turn_cooldown = 25;
         return RIGHT_TURN;
+    }
     }
     
    // if (right_on >= 5)
