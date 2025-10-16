@@ -71,8 +71,8 @@ void move_handling(void)
         case LEFT_TURN:
             // 54, 195
             //80, 170
-            motor_left(90);
-            motor_right(160);
+            motor_left(80);
+            motor_right(170);
 
             while ((Output_5_Read() == 1) && (Output_4_Read() == 1)) {
                 m = LEFT_TURN;
@@ -86,10 +86,10 @@ void move_handling(void)
 
         case RIGHT_TURN:
             //164,80
-            motor_left(154); //170, 80
-            motor_right(90);// 154, 90
+            motor_left(158); //170, 80
+            motor_right(94);// 154, 90
             
-            while (Output_5_Read() == 1) {
+            while (Output_5_Read() == 1 && (Output_4_Read() == 1)) {
                 m = RIGHT_TURN;
             }
             

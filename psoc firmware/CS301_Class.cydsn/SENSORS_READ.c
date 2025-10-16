@@ -34,7 +34,7 @@ MovementState GetMovement(void)
     {
         
     if ((o6 == 0) && (o3 == 0)) {
-        turn_cooldown = 25;
+        turn_cooldown = 70;
         return RIGHT_TURN;
     }
     
@@ -50,7 +50,7 @@ MovementState GetMovement(void)
         }
         */
         
-        turn_cooldown = 25;
+        turn_cooldown = 70;
         return LEFT_TURN;
     }
     
@@ -65,7 +65,7 @@ MovementState GetMovement(void)
             right_on = 0;
         }
         */
-        turn_cooldown = 40; //25
+        turn_cooldown = 70; //25
         return RIGHT_TURN;
     }
     }
