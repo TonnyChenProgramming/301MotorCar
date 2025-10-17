@@ -91,6 +91,16 @@ int main(void)
             case INSTR_GO_STRAIGHT:
                 move_forward_until_intersection();
                 break;
+            case INSTR_SKIP_LEFT:
+                // Approach until a left turn is available, then go straight past it
+                move_until_left_turn();
+                move_forward_until_intersection();
+                break;
+            case INSTR_SKIP_RIGHT:
+                // Approach until a right turn is available, then go straight past it
+                move_until_right_turn();
+                move_forward_until_intersection();
+                break;
             case INSTR_TURN_LEFT:
                 turn_left_until_line();
                 break;
