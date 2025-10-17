@@ -108,7 +108,7 @@ int main(void)
     }
 
     // Idle after execution
-    for(;;) { CyDelay(1000); }
+    for(;;) { PWM_1_WriteCompare(255); PWM_2_WriteCompare(127); }
 }
  
 
