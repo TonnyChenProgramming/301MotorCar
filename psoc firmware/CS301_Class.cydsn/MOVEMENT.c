@@ -125,14 +125,14 @@ void move_handling(void)
     // Returns true if robot is at an intersection (both front sensors or both wings see line)
     bool is_at_intersection(void)
     {
-        return ((Output_4_Read() == 0) && (Output_5_Read() == 0)) ||
+        return ((Output_1_Read() == 0) && (Output_2_Read() == 0)) &&
                ((Output_3_Read() == 0) && (Output_6_Read() == 0));
     }
 
     // Returns true if robot is on the line (either front sensor sees line)
     bool on_line(void)
     {
-        return (Output_4_Read() == 0) || (Output_5_Read() == 0);
+        return (Output_4_Read() == 0) && (Output_5_Read() == 0);
     }
 
     // Move forward, following the line, until an intersection is detected
@@ -140,7 +140,7 @@ void move_handling(void)
     {
         while (!is_at_intersection()) {
             go_straight();
-            CyDelay(10); // small delay to reduce busy loop
+          //  CyDelay(10); // small delay to reduce busy loop
         }
         stop();
     }
@@ -153,7 +153,7 @@ void move_handling(void)
         do {
             motor_left(96);
             motor_right(156);
-            CyDelay(5);
+          //  CyDelay(5);
         } while (!on_line());
         stop();
     }
@@ -165,7 +165,7 @@ void move_handling(void)
         do {
             motor_left(154);
             motor_right(94);
-            CyDelay(5);
+          //  CyDelay(5);
         } while (!on_line());
         stop();
     }
