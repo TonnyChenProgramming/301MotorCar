@@ -67,7 +67,7 @@ int main(void)
     int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS);
 
     // Optional: print plan
-   /* for (int i = 0; i < num_instructions; ++i) {
+   for (int i = 0; i < num_instructions; ++i) {
         switch (instructions[i].type) {
             case INSTR_FORWARD_UNTIL_INTERSECTION: usbPutString("Plan: forward-until-intersection\r\n"); break;
             case INSTR_TURN_LEFT:                  usbPutString("Plan: turn-left\r\n"); break;
@@ -76,7 +76,7 @@ int main(void)
             case INSTR_STOP_FOR_FOOD:              usbPutString("Plan: stop-for-food\r\n"); break;
             default:                               usbPutString("Plan: unknown\r\n"); break;
         }
-    }*/
+    }
 
     // Wait 5 seconds before starting movement
   //  CyDelay(5000);

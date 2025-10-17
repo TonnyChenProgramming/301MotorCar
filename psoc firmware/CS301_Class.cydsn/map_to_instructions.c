@@ -1,25 +1,9 @@
 #include "map.h"
+#include "map_to_instructions.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-
-// Instruction types for intersection-based navigation
-typedef enum {
-    INSTR_FORWARD_UNTIL_INTERSECTION,
-    INSTR_TURN_LEFT,
-    INSTR_TURN_RIGHT,
-    INSTR_GO_STRAIGHT,
-    INSTR_SKIP_LEFT,
-    INSTR_SKIP_RIGHT,
-    INSTR_STOP_FOR_FOOD
-} RobotInstrType;
-
-typedef struct {
-    RobotInstrType type;
-} RobotInstr;
-
-#define MAX_INSTRUCTIONS 256
 
 // Direction: 0=E, 1=S, 2=W, 3=N
 static const int dr[4] = {0, 1, 0, -1};
@@ -32,12 +16,25 @@ static bool is_free(int r, int c) {
 
 // Helper: check if cell is an intersection (more than 2 free neighbors)
 static bool is_intersection(int r, int c) {
-    int count = 0;
+    int count = 0; 
     for (int d = 0; d < 4; ++d) {
         int nr = r + dr[d], nc = c + dc[d];
         if (is_free(nr, nc)) count++;
     }
     return count > 2;
+}
+
+// Relative branch availability from a cell given heading (0=E,1=S,2=W,3=N)
+static inline bool has_straight_opt(int r, int c, int heading) {
+    return is_free(r + dr[heading], c + dc[heading]);
+}
+static inline bool has_left_opt(int r, int c, int heading) {
+    int ld = (heading + 3) & 3;
+    return is_free(r + dr[ld], c + dc[ld]);
+}
+static inline bool has_right_opt(int r, int c, int heading) {
+    int rd = (heading + 1) & 3;
+    return is_free(r + dr[rd], c + dc[rd]);
 }
 
 // Dijkstra's algorithm for shortest path (no priority queue for small grid)
@@ -88,7 +85,7 @@ int generate_instructions_from_map(RobotInstr instr[], int max_instr) {
             int tpr = prev[pr][pc][0], tpc = prev[pr][pc][1];
             pr = tpr; pc = tpc;
         }
-        // Convert path to intersection-based instructions
+        // Convert path to instruction stream
         int last_dir = cur_dir;
         for (int i = 1; i <= path_len; ++i) {
             int r0 = path[i-1][0], c0 = path[i-1][1];
@@ -97,21 +94,28 @@ int generate_instructions_from_map(RobotInstr instr[], int max_instr) {
             for (int d = 0; d < 4; ++d) {
                 if (r0 + dr[d] == r1 && c0 + dc[d] == c1) { step_dir = d; break; }
             }
-            if (is_intersection(r1, c1) || (r1 == goal_r && c1 == goal_c)) {
-                // At intersection or food
-                if (step_dir == last_dir) {
-                    instr[total_instr++] = (RobotInstr){INSTR_GO_STRAIGHT};
-                } else if ((step_dir - last_dir + 4) % 4 == 1) {
-                    instr[total_instr++] = (RobotInstr){INSTR_TURN_RIGHT};
-                } else if ((last_dir - step_dir + 4) % 4 == 1) {
-                    instr[total_instr++] = (RobotInstr){INSTR_TURN_LEFT};
-                }
-                last_dir = step_dir;
+            // At each arrived cell (r1,c1), decide what instruction reflects the structure
+            if (r1 == goal_r && c1 == goal_c) {
+                // Goal reached: handled after loop with STOP_FOR_FOOD
+            } else if (step_dir == last_dir) {
+                // Continuing straight: emit skip-left/right for any side branches here
+                bool leftAvail = has_left_opt(r1, c1, step_dir);
+                bool rightAvail = has_right_opt(r1, c1, step_dir);
+                if (leftAvail)  instr[total_instr++] = (RobotInstr){INSTR_SKIP_LEFT};
+                if (rightAvail) instr[total_instr++] = (RobotInstr){INSTR_SKIP_RIGHT};
+                // No generic FORWARD here; we will only emit FORWARD_UNTIL_INTERSECTION for real T-turns
             } else {
-                // Continue forward
-                if (i == 1 || step_dir == last_dir) {
+                // Direction change: real turn ahead (T/corner)
+                // Emit a single forward-until-intersection before the turn, then the turn
+                if (has_straight_opt(r0, c0, last_dir)) {
+                    // We were moving along a corridor; now we must turn
                     instr[total_instr++] = (RobotInstr){INSTR_FORWARD_UNTIL_INTERSECTION};
                 }
+                int diff = (step_dir - last_dir + 4) & 3;
+                if (diff == 1) instr[total_instr++] = (RobotInstr){INSTR_TURN_RIGHT};
+                else if (diff == 3) instr[total_instr++] = (RobotInstr){INSTR_TURN_LEFT};
+                // Update heading
+                last_dir = step_dir;
             }
             if (total_instr >= max_instr) break;
         }

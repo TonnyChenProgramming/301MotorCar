@@ -10,8 +10,8 @@ extern uint8_t timer_flag; // from main.c Timer ISR
 
 static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
 static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
-#define counter_left 20000
-#define counter_right 20000
+#define counter_left 200
+#define counter_right 200
 uint8_t left_pwm = 154; //163
 uint8_t right_pwm = 157; //165 
 
@@ -171,31 +171,45 @@ void move_forward_until_intersection(void)
 // At a decision point, turn left until front sensors reacquire the line
 void turn_left_until_line(void)
 {
-    int stable = 0;
-    while (stable < 3) {
-        if (timer_flag) {
-            timer_flag = 0;
-            if (on_line()) stable++; else stable = 0;
-        }
-        motor_left(96);
-        motor_right(156);
-    }
-    stop();
+    // 54, 195
+            //80, 170
+            motor_left(96);
+            motor_right(156);
+
+            while ((Output_4_Read() == 1) && (Output_5_Read() == 1)) {
+                count_down = counter_left;
+            }
+            while (count_down > 0)
+            {
+                count_down--;
+            }
+            
+            motor_left(127);
+            motor_right(127);
+            go_straight();
+            
+            
 }
 
 // At a decision point, turn right until front sensors reacquire the line
 void turn_right_until_line(void)
 {
-    int stable = 0;
-    while (stable < 3) {
-        if (timer_flag) {
-            timer_flag = 0;
-            if (on_line()) stable++; else stable = 0;
-        }
-        motor_left(154);
-        motor_right(94);
-    }
-    stop();
+     //164,80
+            
+            motor_left(154); //170, 80
+            motor_right(94);// 154, 90
+            
+            while ((Output_5_Read() == 1) && (Output_4_Read() == 1)) {
+                count_down = counter_right;
+            }
+            while (count_down > 0)
+            {
+                count_down--;
+            }
+            
+            motor_left(127);
+            motor_right(127);
+            go_straight();
 }
 
 // Move forward, following the line, until a left turn becomes available (with or without straight)
