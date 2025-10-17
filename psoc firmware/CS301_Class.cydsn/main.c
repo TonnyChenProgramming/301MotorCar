@@ -67,16 +67,44 @@ int main(void)
     int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS);
 
     // Optional: print plan
-   for (int i = 0; i < num_instructions; ++i) {
-        switch (instructions[i].type) {
-            case INSTR_FORWARD_UNTIL_INTERSECTION: usbPutString("Plan: forward-until-intersection\r\n"); break;
-            case INSTR_TURN_LEFT:                  usbPutString("Plan: turn-left\r\n"); break;
-            case INSTR_TURN_RIGHT:                 usbPutString("Plan: turn-right\r\n"); break;
-            case INSTR_GO_STRAIGHT:                usbPutString("Plan: go-straight\r\n"); break;
-            case INSTR_STOP_FOR_FOOD:              usbPutString("Plan: stop-for-food\r\n"); break;
-            default:                               usbPutString("Plan: unknown\r\n"); break;
-        }
+for (int i = 0; i < num_instructions; ++i) {
+    switch (instructions[i].type) {
+        case INSTR_FORWARD_UNTIL_INTERSECTION:
+            usbPutString("Plan: forward-until-intersection\r\n");
+            break;
+        case INSTR_GO_STRAIGHT:
+            usbPutString("Plan: go-straight\r\n");
+            break;
+        case INSTR_TAKE_LEFT:
+            usbPutString("Plan: take-left\r\n");
+            break;
+        case INSTR_TAKE_RIGHT:
+            usbPutString("Plan: take-right\r\n");
+            break;
+        case INSTR_SKIP_LEFT:
+            usbPutString("Plan: skip-left\r\n");
+            break;
+        case INSTR_SKIP_RIGHT:
+            usbPutString("Plan: skip-right\r\n");
+            break;
+        case INSTR_SKIP_4WAY:
+            usbPutString("Plan: skip-4way\r\n");
+            break;
+        case INSTR_TURN_LEFT:
+            usbPutString("Plan: turn-left\r\n");
+            break;
+        case INSTR_TURN_RIGHT:
+            usbPutString("Plan: turn-right\r\n");
+            break;
+        case INSTR_STOP_FOR_FOOD:
+            usbPutString("Plan: stop-for-food\r\n");
+            break;
+        default:
+            usbPutString("Plan: unknown\r\n");
+            break;
     }
+}
+
 
     // Wait 5 seconds before starting movement
   //  CyDelay(5000);
