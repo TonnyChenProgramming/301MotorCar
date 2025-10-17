@@ -13,7 +13,7 @@
 #include "isr_1.h"
 #include "SENSORS_READ.h"
 #include "MOVEMENT.h"
-#include "map_to_instructions.c" 
+#include "map_to_instructions.h" 
 
 
 
@@ -68,15 +68,7 @@ int main(void)
 
         // Wait 5 seconds before starting movement
         CyDelay(5000);
-        print_instructions_uart(instructions, num_instructions);
-for(;;) {
-   
-    move_handling();
-}
-}
- 
-void print_instructions_uart(const RobotInstr *instructions, int num_instructions) {
-    for (int i = 0; i < num_instructions; ++i) {
+         for (int i = 0; i < num_instructions; ++i) {
         switch (instructions[i].type) {
             case INSTR_FORWARD_UNTIL_INTERSECTION:
                 usbPutString("Move forward until intersection\r\n");
@@ -98,7 +90,13 @@ void print_instructions_uart(const RobotInstr *instructions, int num_instruction
                 break;
         }
     }
+for(;;) {
+   
+    move_handling();
 }
+}
+ 
+
 
 void usbPutString(char *s)
 {
