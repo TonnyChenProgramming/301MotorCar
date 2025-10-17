@@ -119,3 +119,53 @@ void move_handling(void)
     // --- 4. Update previous state ---
     previous_movement = m;
 }
+
+    // --- Minimal intersection-based helpers for instruction execution ---
+
+    // Returns true if robot is at an intersection (both front sensors or both wings see line)
+    bool is_at_intersection(void)
+    {
+        return ((Output_4_Read() == 0) && (Output_5_Read() == 0)) ||
+               ((Output_3_Read() == 0) && (Output_6_Read() == 0));
+    }
+
+    // Returns true if robot is on the line (either front sensor sees line)
+    bool on_line(void)
+    {
+        return (Output_4_Read() == 0) || (Output_5_Read() == 0);
+    }
+
+    // Move forward, following the line, until an intersection is detected
+    void move_forward_until_intersection(void)
+    {
+        while (!is_at_intersection()) {
+            go_straight();
+            CyDelay(10); // small delay to reduce busy loop
+        }
+        stop();
+    }
+
+    // At intersection, turn left until front sensors reacquire the line
+    void turn_left_until_line(void)
+    {
+        // Use the same PWM values as LEFT_TURN case
+        // Start the turn and keep turning until we detect the line again
+        do {
+            motor_left(96);
+            motor_right(156);
+            CyDelay(5);
+        } while (!on_line());
+        stop();
+    }
+
+    // At intersection, turn right until front sensors reacquire the line
+    void turn_right_until_line(void)
+    {
+        // Use the same PWM values as RIGHT_TURN case
+        do {
+            motor_left(154);
+            motor_right(94);
+            CyDelay(5);
+        } while (!on_line());
+        stop();
+    }

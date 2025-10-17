@@ -64,36 +64,48 @@ int main(void)
     #endif
 
     RobotInstr instructions[MAX_INSTRUCTIONS];
-        int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS);
+    int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS);
 
-        // Wait 5 seconds before starting movement
-        CyDelay(5000);
-         for (int i = 0; i < num_instructions; ++i) {
+    // Optional: print plan
+    for (int i = 0; i < num_instructions; ++i) {
+        switch (instructions[i].type) {
+            case INSTR_FORWARD_UNTIL_INTERSECTION: usbPutString("Plan: forward-until-intersection\r\n"); break;
+            case INSTR_TURN_LEFT:                  usbPutString("Plan: turn-left\r\n"); break;
+            case INSTR_TURN_RIGHT:                 usbPutString("Plan: turn-right\r\n"); break;
+            case INSTR_GO_STRAIGHT:                usbPutString("Plan: go-straight\r\n"); break;
+            case INSTR_STOP_FOR_FOOD:              usbPutString("Plan: stop-for-food\r\n"); break;
+            default:                               usbPutString("Plan: unknown\r\n"); break;
+        }
+    }
+
+    // Wait 5 seconds before starting movement
+    CyDelay(5000);
+
+    // Execute plan
+    for (int i = 0; i < num_instructions; ++i) {
         switch (instructions[i].type) {
             case INSTR_FORWARD_UNTIL_INTERSECTION:
-                usbPutString("Move forward until intersection\r\n");
+            case INSTR_GO_STRAIGHT:
+                move_forward_until_intersection();
                 break;
             case INSTR_TURN_LEFT:
-                usbPutString("At intersection, turn left\r\n");
+                turn_left_until_line();
                 break;
             case INSTR_TURN_RIGHT:
-                usbPutString("At intersection, turn right\r\n");
-                break;
-            case INSTR_GO_STRAIGHT:
-                usbPutString("At intersection, go straight\r\n");
+                turn_right_until_line();
                 break;
             case INSTR_STOP_FOR_FOOD:
-                usbPutString("Stop for 1 second (food collected)\r\n");
+                stop();
+                CyDelay(1000);
                 break;
             default:
-                usbPutString("Unknown instruction\r\n");
+                stop();
                 break;
         }
     }
-for(;;) {
-   
-    move_handling();
-}
+
+    // Idle after execution
+    for(;;) { CyDelay(1000); }
 }
  
 
