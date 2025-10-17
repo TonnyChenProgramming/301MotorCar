@@ -13,6 +13,9 @@ typedef enum {
     INSTR_GO_STRAIGHT,
     INSTR_SKIP_LEFT,
     INSTR_SKIP_RIGHT,
+    INSTR_TAKE_LEFT,
+    INSTR_TAKE_RIGHT,
+    INSTR_SKIP_4WAY,
     INSTR_STOP_FOR_FOOD
 } RobotInstrType;
 
