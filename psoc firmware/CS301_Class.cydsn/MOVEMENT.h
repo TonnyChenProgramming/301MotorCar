@@ -26,6 +26,10 @@ void move_forward_until_intersection(void);
 void turn_left_until_line(void);
 void turn_right_until_line(void);
 
+// Specific navigation helpers
+void move_until_left_turn(void);
+void move_until_right_turn(void);
+
 
 // Follow line until STOP or intersection
 void move_handling(void);

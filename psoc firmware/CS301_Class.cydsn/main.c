@@ -99,7 +99,7 @@ int main(void)
                 break;
             case INSTR_STOP_FOR_FOOD:
                 stop();
-               // CyDelay(1000);
+                CyDelay(1000);
                 break;
             default:
                 stop();
