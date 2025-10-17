@@ -13,6 +13,7 @@
 #include "isr_1.h"
 #include "SENSORS_READ.h"
 #include "MOVEMENT.h"
+#include "map_to_instructions.c" 
 
 
 
@@ -58,50 +59,46 @@ int main(void)
     isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
     Timer_TS_Start();                      // then start
 
-#ifdef USE_USB
-   USBUART_Start(0, USBUART_5V_OPERATION);
-#endif
+    #ifdef USE_USB
+    USBUART_Start(0, USBUART_5V_OPERATION);
+    #endif
 
-/*
-while (1) {
-    motor_left(161);
-    motor_right(164);
-    CyDelay(1000);
-}
-*/
+    RobotInstr instructions[MAX_INSTRUCTIONS];
+        int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS);
 
-
-
+        // Wait 5 seconds before starting movement
+        CyDelay(5000);
+        print_instructions_uart(instructions, num_instructions);
 for(;;) {
-    /*
-    if (timer_flag) {
-       timer_flag = 0;
-       MovementState m = GetMovement();
-       static MovementState prev_m = STOP;
-       
-
-      if (m != prev_m) {              
-        char buf[64];
-        switch(m)
-        {
-            case STOP:        sprintf(buf, "STATE: STOP\r\n"); break;
-            case STRAIGHT:    sprintf(buf, "STATE: STRAIGHT\r\n"); break;
-            case LEFT_TURN:   sprintf(buf, "STATE: LEFT TURN\r\n"); break;
-            case RIGHT_TURN:  sprintf(buf, "STATE: RIGHT TURN\r\n"); break;
-            case WAIT:        sprintf(buf, "STATE: WAIT\r\n"); break;
-            default:          sprintf(buf, "STATE: UNKNOWN\r\n"); break;
-        }
-        usbPutString(buf);
-        
-        prev_m = m;
- 
-    }
-}
-    */
+   
     move_handling();
 }
 }
  
+void print_instructions_uart(const RobotInstr *instructions, int num_instructions) {
+    for (int i = 0; i < num_instructions; ++i) {
+        switch (instructions[i].type) {
+            case INSTR_FORWARD_UNTIL_INTERSECTION:
+                usbPutString("Move forward until intersection\r\n");
+                break;
+            case INSTR_TURN_LEFT:
+                usbPutString("At intersection, turn left\r\n");
+                break;
+            case INSTR_TURN_RIGHT:
+                usbPutString("At intersection, turn right\r\n");
+                break;
+            case INSTR_GO_STRAIGHT:
+                usbPutString("At intersection, go straight\r\n");
+                break;
+            case INSTR_STOP_FOR_FOOD:
+                usbPutString("Stop for 1 second (food collected)\r\n");
+                break;
+            default:
+                usbPutString("Unknown instruction\r\n");
+                break;
+        }
+    }
+}
 
 void usbPutString(char *s)
 {
