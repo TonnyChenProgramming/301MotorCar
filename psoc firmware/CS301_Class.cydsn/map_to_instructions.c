@@ -65,7 +65,6 @@ static void emit_plan_for_path(const int path[][2], int len,
     int idx = *count;
     int heading = *heading_ptr;
 
-    // If heading unknown, infer from first step
     if (heading == -1) {
         int r0 = path[0][0], c0 = path[0][1];
         int r1 = path[1][0], c1 = path[1][1];
@@ -76,7 +75,7 @@ static void emit_plan_for_path(const int path[][2], int len,
 
     int straight_decisions = 0;
 
-    for (int i = 1; i < len; ++i) {
+    for (int i = 1; i < len && idx < max_instr; ++i) {
         int r_prev = path[i - 1][0], c_prev = path[i - 1][1];
         int r_here = path[i][0],      c_here = path[i][1];
 
@@ -93,30 +92,40 @@ static void emit_plan_for_path(const int path[][2], int len,
 
         int diff = (step_dir - heading + 4) & 3;
 
-        if (diff == 0) {
-            if (decision_point) straight_decisions++;
-        } else {
-            int pre_straights = straight_decisions + (decision_point ? 1 : 0);
-            for (int k = 0; k < pre_straights && idx < max_instr; ++k)
+        if (diff != 0) {
+            // emit any pending straights first
+            for (int k = 0; k < straight_decisions && idx < max_instr; ++k)
                 instr[idx++].type = iSTRAIGHT;
+            straight_decisions = 0;
 
+            // now emit the turn
             if (diff == 1 && idx < max_instr)      instr[idx++].type = iRIGHT;
             else if (diff == 3 && idx < max_instr) instr[idx++].type = iLEFT;
             else if (diff == 2 && idx < max_instr) instr[idx++].type = iTURN_AROUND;
 
             heading = step_dir;
-            straight_decisions = 0;
+        } 
+        else if (decision_point) {
+            // we went straight through a junction or goal
+            straight_decisions++;
         }
 
-        if (idx >= max_instr - 3) break;
+        if (idx >= max_instr - 3)
+            break;
     }
 
+    // emit leftover straights
     for (int k = 0; k < straight_decisions && idx < max_instr; ++k)
         instr[idx++].type = iSTRAIGHT;
+
+    // always stop at end of leg
+    if (idx < max_instr)
+        instr[idx++].type = iSTOP;
 
     *count = idx;
     *heading_ptr = heading;
 }
+
 
 int generate_instructions_from_map(RobotInstr instr[], int max_instr)
 {
