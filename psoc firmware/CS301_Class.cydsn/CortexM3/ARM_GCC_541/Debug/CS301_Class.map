@@ -988,7 +988,7 @@ END GROUP
                 0x00001724                __cy_regions = .
                 0x00001724        0x4 LONG 0x1738 __cy_region_init_ram
                 0x00001728        0x4 LONG 0x1fff80c8 __cy_region_start_data
-                0x0000172c        0x4 LONG 0x1c8 __cy_region_init_size_ram
+                0x0000172c        0x4 LONG 0x1c0 __cy_region_init_size_ram
                 0x00001730        0x4 LONG 0x30 __cy_region_zero_size_ram
                 0x00001734                __cy_regions_end = .
                 0x00001738                . = ALIGN (0x8)
@@ -1011,7 +1011,7 @@ END GROUP
  .noinit        0x1fff80c4        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(CyLib.o)
                 0x1fff80c4                CyResetStatus
 
-.data           0x1fff80c8      0x1c8 load address 0x00001738
+.data           0x1fff80c8      0x1c0 load address 0x00001738
                 0x1fff80c8                __cy_region_start_data = .
  *(.jcr)
  .jcr           0x1fff80c8        0x0 c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
@@ -1020,72 +1020,73 @@ END GROUP
  *(.got)
  *(.shdata)
  *(.data .data.* .gnu.linkonce.d.*)
- .data          0x1fff80cc      0x14c .\CortexM3\ARM_GCC_541\Debug\main.o
+ .data          0x1fff80cc      0x140 .\CortexM3\ARM_GCC_541\Debug\main.o
                 0x1fff80cc                map
                 0x1fff81ec                start_pos
                 0x1fff81f0                food_list
                 0x1fff81fa                previous_movement
                 0x1fff81fc                food_distances
                 0x1fff8208                instructions
-                0x1fff8217                num_instructions
- .data          0x1fff8218        0x4 .\CortexM3\ARM_GCC_541\Debug\MOVEMENT.o
-                0x1fff8218                left_pwm
-                0x1fff8219                right_pwm
-                0x1fff821a                drift_left_pwm
-                0x1fff821b                drift_right_pwm
- .data          0x1fff821c       0x10 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(CyLib.o)
-                0x1fff821c                cydelay_freq_hz
-                0x1fff8220                cydelay_freq_khz
-                0x1fff8224                cydelay_freq_mhz
-                0x1fff8228                cydelay_32k_ms
+                0x1fff820b                num_instructions
+ .data          0x1fff820c        0x4 .\CortexM3\ARM_GCC_541\Debug\MOVEMENT.o
+                0x1fff820c                left_pwm
+                0x1fff820d                right_pwm
+                0x1fff820e                drift_left_pwm
+                0x1fff820f                drift_right_pwm
+ .data          0x1fff8210       0x10 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(CyLib.o)
+                0x1fff8210                cydelay_freq_hz
+                0x1fff8214                cydelay_freq_khz
+                0x1fff8218                cydelay_freq_mhz
+                0x1fff821c                cydelay_32k_ms
  .data.impure_data
-                0x1fff822c       0x60 c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
+                0x1fff8220       0x60 c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
  .data._impure_ptr
-                0x1fff828c        0x4 c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
-                0x1fff828c                _impure_ptr
-                0x1fff8290                . = ALIGN (0x8)
+                0x1fff8280        0x4 c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
+                0x1fff8280                _impure_ptr
+                0x1fff8288                . = ALIGN (0x8)
+ *fill*         0x1fff8284        0x4 
  *(.ram)
-                0x1fff8290                _edata = .
+                0x1fff8288                _edata = .
 
-.igot.plt       0x1fff8290        0x0 load address 0x00001900
- .igot.plt      0x1fff8290        0x0 c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.igot.plt       0x1fff8288        0x0 load address 0x000018f8
+ .igot.plt      0x1fff8288        0x0 c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
-.bss            0x1fff8290       0x30 load address 0x00001900
-                0x1fff8290                PROVIDE (__bss_start__, .)
+.bss            0x1fff8288       0x30 load address 0x000018f8
+                0x1fff8288                PROVIDE (__bss_start__, .)
  *(.shbss)
  *(.bss .bss.* .gnu.linkonce.b.*)
- .bss           0x1fff8290       0x1c c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
- .bss           0x1fff82ac        0x8 .\CortexM3\ARM_GCC_541\Debug\MOVEMENT.o
-                0x1fff82ac                food_index
- .bss           0x1fff82b4        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(PWM_1.o)
-                0x1fff82b4                PWM_1_initVar
- .bss           0x1fff82b5        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(PWM_2.o)
-                0x1fff82b5                PWM_2_initVar
- .bss           0x1fff82b6        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(QuadDec_M1.o)
-                0x1fff82b6                QuadDec_M1_initVar
- .bss           0x1fff82b7        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(QuadDec_M2.o)
-                0x1fff82b7                QuadDec_M2_initVar
- .bss           0x1fff82b8        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(QuadDec_M1_Cnt16.o)
-                0x1fff82b8                QuadDec_M1_Cnt16_initVar
- .bss           0x1fff82b9        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(QuadDec_M2_Cnt16.o)
-                0x1fff82b9                QuadDec_M2_Cnt16_initVar
+ .bss           0x1fff8288       0x1c c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+ .bss           0x1fff82a4        0x8 .\CortexM3\ARM_GCC_541\Debug\MOVEMENT.o
+                0x1fff82a4                food_index
+ .bss           0x1fff82ac        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(PWM_1.o)
+                0x1fff82ac                PWM_1_initVar
+ .bss           0x1fff82ad        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(PWM_2.o)
+                0x1fff82ad                PWM_2_initVar
+ .bss           0x1fff82ae        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(QuadDec_M1.o)
+                0x1fff82ae                QuadDec_M1_initVar
+ .bss           0x1fff82af        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(QuadDec_M2.o)
+                0x1fff82af                QuadDec_M2_initVar
+ .bss           0x1fff82b0        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(QuadDec_M1_Cnt16.o)
+                0x1fff82b0                QuadDec_M1_Cnt16_initVar
+ .bss           0x1fff82b1        0x1 .\CortexM3\ARM_GCC_541\Debug\CS301_Class.a(QuadDec_M2_Cnt16.o)
+                0x1fff82b1                QuadDec_M2_Cnt16_initVar
  *(COMMON)
-                0x1fff82c0                . = ALIGN (0x8)
- *fill*         0x1fff82ba        0x6 
+                0x1fff82b8                . = ALIGN (0x8)
+ *fill*         0x1fff82b2        0x6 
  *(.ram.b)
-                0x1fff82c0                _end = .
-                0x1fff82c0                __end = .
-                0x1fff82c0                PROVIDE (end, .)
-                0x1fff82c0                PROVIDE (__bss_end__, .)
+                0x1fff82b8                _end = .
+                0x1fff82b8                __end = .
+                0x1fff82b8                PROVIDE (end, .)
+                0x1fff82b8                PROVIDE (__bss_end__, .)
                 0x00001738                __cy_region_init_ram = LOADADDR (.data)
-                0x000001c8                __cy_region_init_size_ram = (_edata - ADDR (.data))
+                0x000001c0                __cy_region_init_size_ram = (_edata - ADDR (.data))
                 0x00000030                __cy_region_zero_size_ram = (_end - _edata)
 
-.heap           0x1fff82c0       0x80 load address 0x00001900
-                0x1fff82c0                . = _end
-                0x1fff8340                . = (. + 0x80)
- *fill*         0x1fff82c0       0x80 
-                0x1fff8340                __cy_heap_limit = .
+.heap           0x1fff82b8       0x80 load address 0x000018f8
+                0x1fff82b8                . = _end
+                0x1fff8338                . = (. + 0x80)
+ *fill*         0x1fff82b8       0x80 
+                0x1fff8338                __cy_heap_limit = .
 
 .stack          0x20007800      0x800
                 0x20007800                __cy_stack_limit = .
@@ -1132,8 +1133,8 @@ END GROUP
  .cymeta        0x90500000        0xc .\CortexM3\ARM_GCC_541\Debug\cymetadata.o
                 0x90500000                cy_metadata
 
-.rel.dyn        0x00001900        0x0 load address 0x9050000c
- .rel.iplt      0x00001900        0x0 c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
+.rel.dyn        0x000018f8        0x0 load address 0x9050000c
+ .rel.iplt      0x000018f8        0x0 c:/program files (x86)/cypress/psoc creator/4.2/psoc creator/import/gnu/arm/5.4.1/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/crtbegin.o
 
 .stab
  *(.stab)
