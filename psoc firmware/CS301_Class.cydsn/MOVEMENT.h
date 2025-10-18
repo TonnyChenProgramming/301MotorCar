@@ -13,7 +13,7 @@
 /* ---- Basic Motion ---- */
 void go_straight(void);
 void stop(void);
-void execute_path(uint8_t *instructions, uint8_t length);
+void execute_path(uint8_t *instructions, uint8_t length, uint16_t *food_distances);
 /* ---- Turn Handling ---- */
 void turn_left_until_line(void);
 void turn_right_until_line(void);

@@ -6,7 +6,7 @@
 #include "map.h"   // optional if you define instructions elsewhere
 
 MovementState previous_movement = STOP;
-
+uint16_t food_distances[5] = {2,3,4,5,6};
 // Example instruction sequence
 // Replace this with one produced by map_to_instructions.c
 uint8_t instructions[] = {STRAIGHT,  RIGHT_TURN, STRAIGHT, LEFT_TURN, STRAIGHT, LEFT_TURN, FOOD, U_TURN,STRAIGHT,RIGHT_TURN,STRAIGHT,RIGHT_TURN,STRAIGHT,LEFT_TURN,STRAIGHT,};
@@ -36,7 +36,7 @@ int main(void)
     
 
     // Execute pre-planned path
-    execute_path(instructions, num_instructions);
+    execute_path(instructions, num_instructions,food_distances);
 
     // Final stop
     stop();

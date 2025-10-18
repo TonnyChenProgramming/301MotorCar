@@ -38,7 +38,8 @@ uint8_t left_pwm = 154;
 uint8_t right_pwm = 157;
 uint8_t drift_left_pwm = 162;
 uint8_t drift_right_pwm = 158;
-
+//food number tracking
+uint8_t food_index = 0;
 // ============================================================================
 // Basic motor control
 // ============================================================================
@@ -270,12 +271,11 @@ void move_forward_until_intersection(void)
 // ============================================================================
 // Run Until Food
 // ============================================================================
-void run_for_food(void)
+void run_for_food(uint8_t food_distance)
 {
          //if (food_index < food_len)
                 //{
-    uint16_t distance = 2;
-    go_straigh_with_tick(83*distance);   // move forward to food location
+    go_straigh_with_tick(83*food_distance);   // move forward to food location
     stop();
     CyDelay(1000);                  // 1 second pickup delay
                 //}
@@ -312,7 +312,7 @@ void move_forward_skip_one_intersection(void)
 // ============================================================================
 // Execute instruction list
 // ============================================================================
-void execute_instruction(uint8_t instr)
+void execute_instruction(uint8_t instr,uint16_t *food_distances)
 {
     switch (instr)
     {
@@ -332,7 +332,12 @@ void execute_instruction(uint8_t instr)
             u_turn_enc();
             break;
         case FOOD:
-            run_for_food();
+                if (food_index < 5)
+                {
+                    run_for_food(food_distances[food_index]);
+                    food_index++;
+                }
+
             break;
    
         default:
@@ -344,7 +349,7 @@ void execute_instruction(uint8_t instr)
 // ============================================================================
 // Execute full instruction sequence
 // ============================================================================
-void execute_path(uint8_t *instructions, uint8_t length)
+void execute_path(uint8_t *instructions, uint8_t length, uint16_t *food_distances)
 {
     for (uint8_t i = 0; i < length; i++)
     {
@@ -359,7 +364,7 @@ void execute_path(uint8_t *instructions, uint8_t length)
         }
         else
         {
-            execute_instruction(current);
+            execute_instruction(current, food_distances);
         }
        
 
