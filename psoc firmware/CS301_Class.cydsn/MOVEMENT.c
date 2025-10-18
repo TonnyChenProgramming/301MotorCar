@@ -17,12 +17,12 @@ void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
 // ---------- Encoder calibration ----------
 //left turn
-#define LEFT_TICKS_90_L   (-100) //left motor during left
+#define LEFT_TICKS_90_L   (-90) //left motor during left
 #define RIGHT_TICKS_90_L  (-100) //right motor during left turn
 
 //right turn
 #define LEFT_TICKS_90_R   (100) //left motor during right turn
-#define RIGHT_TICKS_90_R  (100) //right motor during right 90
+#define RIGHT_TICKS_90_R  (90) //right motor during right 90
 
 #define LEFT_TICKS_180_L  (2 * LEFT_TICKS_90_L)
 #define RIGHT_TICKS_180_L (2 * RIGHT_TICKS_90_L)
@@ -204,13 +204,6 @@ void move_forward_until_intersection(void)
         if (turn_cooldown > 0)
             turn_cooldown--;
 
-        // center must remain on the line
-        /*
-        if (o1 != 0 && o2 != 0) {
-            stop();
-            continue;
-        }
-        */
         // intersection detection (with cooldown)
         bool left_turn  = false;
         bool right_turn = false;
@@ -240,7 +233,6 @@ void move_forward_until_intersection(void)
     
         go_straight();
     }
-    stable = 0;
     stop();
     CyDelay(500);
 }
@@ -250,12 +242,28 @@ void move_forward_skip_one_intersection(void)
     // First intersection → skip
     move_forward_until_intersection();
 
-    // drive forward extra to clear the junction fully
-    move_forward_ticks(60);
+    // move forward along the line for 60 encoder ticks (ignore wings)
+    QuadDec_M1_SetCounter(0);
+    QuadDec_M2_SetCounter(0);
+     int32 L = 0;
+    while (abs(L) < 60)
+    {
+         L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
+        LED1_Write(1);
+        // follow the line using only front sensors
+        go_straight();
+
+        
+         
+    }
+    LED1_Write(0);
+    stop();
+    CyDelay(50);
 
     // second intersection → stop here
     move_forward_until_intersection();
 }
+
 
 // ============================================================================
 // Execute instruction list
@@ -280,7 +288,7 @@ void execute_instruction(uint8_t instr)
             u_turn_enc();
             break;
 
-        case STOP:
+   
         default:
             stop();
             break;
