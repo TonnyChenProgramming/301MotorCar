@@ -65,57 +65,47 @@ int main(void)
 
     RobotInstr instructions[MAX_INSTRUCTIONS];
     int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS);
-
-    // Optional: print plan
-   for (int i = 0; i < num_instructions; ++i) {
-        switch (instructions[i].type) {
-            case INSTR_FORWARD_UNTIL_INTERSECTION: usbPutString("Plan: forward-until-intersection\r\n"); break;
-            case INSTR_TURN_LEFT:                  usbPutString("Plan: turn-left\r\n"); break;
-            case INSTR_TURN_RIGHT:                 usbPutString("Plan: turn-right\r\n"); break;
-            case INSTR_GO_STRAIGHT:                usbPutString("Plan: go-straight\r\n"); break;
-            case INSTR_STOP_FOR_FOOD:              usbPutString("Plan: stop-for-food\r\n"); break;
-            default:                               usbPutString("Plan: unknown\r\n"); break;
-        }
+// --- Print plan ---
+for (int i = 0; i < num_instructions; ++i) {
+    switch (instructions[i].type) {
+        case iSTRAIGHT:     usbPutString("Plan: straight until intersection\r\n"); break;
+        case iLEFT:         usbPutString("Plan: left\r\n"); break;
+        case iRIGHT:        usbPutString("Plan: right\r\n"); break;
+        case iTURN_AROUND:  usbPutString("Plan: turn-around\r\n"); break;
+        case iSTOP:         usbPutString("Plan: stop\r\n"); break;
+        default:           usbPutString("Plan: unknown\r\n"); break;
     }
+}
 
     // Wait 5 seconds before starting movement
   //  CyDelay(5000);
 
     // Execute plan
-    for (int i = 0; i < num_instructions; ++i) {
-        switch (instructions[i].type) {
-            case INSTR_FORWARD_UNTIL_INTERSECTION:
-             move_forward_until_intersection();
-          //  usbPutString("Plan: forward-until-intersection\r\n");
+    // --- Execute plan ---
+for (int i = 0; i < num_instructions; ++i) {
+    switch (instructions[i].type) {
+        case iSTRAIGHT:
+            move_forward_until_intersection();
             break;
-            case INSTR_GO_STRAIGHT:
-                move_forward_until_intersection();
-                break;
-            case INSTR_SKIP_LEFT:
-                // Approach until a left turn is available, then go straight past it
-                move_until_left_turn();
-                move_forward_until_intersection();
-                break;
-            case INSTR_SKIP_RIGHT:
-                // Approach until a right turn is available, then go straight past it
-                move_until_right_turn();
-                move_forward_until_intersection();
-                break;
-            case INSTR_TURN_LEFT:
-                turn_left_until_line();
-                break;
-            case INSTR_TURN_RIGHT:
-                turn_right_until_line();
-                break;
-            case INSTR_STOP_FOR_FOOD:
-                stop();
-                CyDelay(1000);
-                break;
-            default:
-                stop();
-                break;
-        }
+        case iLEFT:
+            turn_left_until_line();
+            break;
+        case iRIGHT:
+            turn_right_until_line();
+            break;
+        case iTURN_AROUND:
+            turn_right_until_line();
+            turn_right_until_line();
+            break;
+        case iSTOP:
+            stop();
+            CyDelay(1000);
+            break;
+        default:
+            stop();
+            break;
     }
+}
 
     // Idle after execution
     for(;;) { PWM_1_WriteCompare(255); PWM_2_WriteCompare(127); }
