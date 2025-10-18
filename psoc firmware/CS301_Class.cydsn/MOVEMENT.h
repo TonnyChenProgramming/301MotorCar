@@ -36,6 +36,8 @@ bool on_line(void);
  */
 void motor_left(uint16 val);
 void motor_right(uint16 val);
-
+void turn_right_enc(void);
+void turn_left_enc(void);
+void move_forward_ticks(int32 steps);
 #endif /* MOVEMENT_H */
 /* [] END OF FILE */

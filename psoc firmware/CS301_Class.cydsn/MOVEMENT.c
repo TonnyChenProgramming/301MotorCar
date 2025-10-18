@@ -10,16 +10,20 @@ void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
 void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
 #define STOP_PWM   127
-#define L_FWD_PWM  156
+#define L_FWD_PWM  150
 #define L_REV_PWM  96
 #define R_FWD_PWM  154
 #define R_REV_PWM  94
 
 // ---------- Encoder calibration ----------
-#define LEFT_TICKS_90_L   (-118)
-#define LEFT_TICKS_90_R   (112)
-#define RIGHT_TICKS_90_L  (-118)
-#define RIGHT_TICKS_90_R  (92)
+//left turn
+#define LEFT_TICKS_90_L   (-100) //left motor during left
+#define RIGHT_TICKS_90_L  (-100) //right motor during left turn
+
+//right turn
+#define LEFT_TICKS_90_R   (100) //left motor during right turn
+#define RIGHT_TICKS_90_R  (100) //right motor during right 90
+
 #define LEFT_TICKS_180_L  (2 * LEFT_TICKS_90_L)
 #define RIGHT_TICKS_180_L (2 * RIGHT_TICKS_90_L)
 #define LEFT_TICKS_180_R  (2 * LEFT_TICKS_90_R)
@@ -64,45 +68,100 @@ void go_straight(void)
 // ============================================================================
 // Encoder-based turns
 // ============================================================================
-static void turn_left_enc(void)
+void move_forward_ticks(int32 steps)
 {
+    QuadDec_M1_SetCounter(0);
+    QuadDec_M2_SetCounter(0);
+
+    motor_left(L_FWD_PWM);
+    motor_right(R_FWD_PWM);
+
+    while (1)
+    {
+        int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
+        int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
+
+        if (abs(L) >= steps && abs(R) >= steps)
+            break;
+    }
+
+    stop();
+    CyDelay(50);
+}
+
+/* -------------------- LEFT TURN -------------------- */
+void turn_left_enc(void)
+{
+    // Small forward movement before turning
+    move_forward_ticks(10);
+
+    // Reset encoders for the actual turn
     QuadDec_M1_SetCounter(0);
     QuadDec_M2_SetCounter(0);
 
     motor_left(L_REV_PWM);
     motor_right(R_FWD_PWM);
 
-    while (1) {
+    bool left_done = false;
+    bool right_done = false;
+
+    while (!(left_done && right_done))
+    {
         int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
         int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
-        if (abs(L) >= abs(LEFT_TICKS_90_L) && abs(R) >= abs(RIGHT_TICKS_90_L))
-            break;
+
+        if (!left_done && abs(L) >= abs(LEFT_TICKS_90_L)) {
+            motor_left(STOP_PWM);
+            left_done = true;
+        }
+
+        if (!right_done && abs(R) >= abs(RIGHT_TICKS_90_L)) {
+            motor_right(STOP_PWM);
+            right_done = true;
+        }
     }
 
     stop();
     CyDelay(100);
-    go_straight();
 }
 
-static void turn_right_enc(void)
+/* -------------------- RIGHT TURN -------------------- */
+void turn_right_enc(void)
 {
+    // Small forward movement before turning
+    move_forward_ticks(20);
+
+    // Reset encoders for the actual turn
     QuadDec_M1_SetCounter(0);
     QuadDec_M2_SetCounter(0);
 
     motor_left(L_FWD_PWM);
     motor_right(R_REV_PWM);
 
-    while (1) {
+    bool left_done = false;
+    bool right_done = false;
+
+    while (!(left_done && right_done))
+    {
         int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
         int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
-        if (abs(L) >= abs(LEFT_TICKS_90_R) && abs(R) >= abs(RIGHT_TICKS_90_R))
-            break;
+
+        if (!left_done && abs(L) >= abs(LEFT_TICKS_90_R)) {
+            motor_left(STOP_PWM);
+            left_done = true;
+        }
+
+        if (!right_done && abs(R) >= abs(RIGHT_TICKS_90_R)) {
+            motor_right(STOP_PWM);
+            right_done = true;
+        }
     }
 
     stop();
     CyDelay(100);
-    go_straight();
 }
+
+
 
 static void u_turn_enc(void)
 {
@@ -186,6 +245,17 @@ void move_forward_until_intersection(void)
     CyDelay(500);
 }
 
+void move_forward_skip_one_intersection(void)
+{
+    // First intersection → skip
+    move_forward_until_intersection();
+
+    // drive forward extra to clear the junction fully
+    move_forward_ticks(60);
+
+    // second intersection → stop here
+    move_forward_until_intersection();
+}
 
 // ============================================================================
 // Execute instruction list
@@ -206,7 +276,9 @@ void execute_instruction(uint8_t instr)
             turn_right_enc();
             break;
 
-      
+        case U_TURN:
+            u_turn_enc();
+            break;
 
         case STOP:
         default:
@@ -224,11 +296,23 @@ void execute_path(uint8_t *instructions, uint8_t length)
     {
         uint8_t current = instructions[i];
 
-        // two consecutive straights = skip one intersection
         
+        
+        if (current == STRAIGHT && (i + 1 < length) && instructions[i + 1] == STRAIGHT)
+        {
+            move_forward_skip_one_intersection();
+            i++; // skip the next STRAIGHT since it’s handled
+        }
+        else
+        {
             execute_instruction(current);
+        }
        
 
         if (current == STOP) break;
     }
 }
+
+
+
+

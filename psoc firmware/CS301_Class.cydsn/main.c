@@ -9,7 +9,7 @@ MovementState previous_movement = STOP;
 
 // Example instruction sequence
 // Replace this with one produced by map_to_instructions.c
-uint8_t instructions[] = {STRAIGHT, LEFT_TURN, STRAIGHT, STRAIGHT,RIGHT_TURN, STOP};
+uint8_t instructions[] = {STRAIGHT, RIGHT_TURN, STRAIGHT, STRAIGHT, STOP};
 uint8_t num_instructions = sizeof(instructions) / sizeof(instructions[0]);
 
 static void hardware_init(void)
@@ -28,9 +28,12 @@ static void hardware_init(void)
 int main(void)
 {
     hardware_init();
-
-    // brief pause to settle sensors
+   
     CyDelay(1000);
+     
+    
+    // brief pause to settle sensors
+    
 
     // Execute pre-planned path
     execute_path(instructions, num_instructions);

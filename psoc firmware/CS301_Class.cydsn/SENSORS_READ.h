@@ -32,6 +32,7 @@ typedef enum {
     DRIFTED_RIGHT,
     STOP,
     WAIT,
+    U_TURN,
 } MovementState;
 
 // Prototype
