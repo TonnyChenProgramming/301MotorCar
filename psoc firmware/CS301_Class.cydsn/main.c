@@ -64,7 +64,10 @@ int main(void)
     #endif
 
     RobotInstr instructions[MAX_INSTRUCTIONS];
-    int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS);
+    int food_dists[5];
+    int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists);
+
+    
 // --- Print plan ---
 for (int i = 0; i < num_instructions; ++i) {
     switch (instructions[i].type) {
@@ -73,9 +76,17 @@ for (int i = 0; i < num_instructions; ++i) {
         case iRIGHT:        usbPutString("Plan: right\r\n"); break;
         case iTURN_AROUND:  usbPutString("Plan: turn-around\r\n"); break;
         case iSTOP:         usbPutString("Plan: stop\r\n"); break;
-        default:           usbPutString("Plan: unknown\r\n"); break;
+        default:            usbPutString("Plan: unknown\r\n"); break;
     }
 }
+
+usbPutString("=== Food distances ===\r\n");
+for (int i = 0; i < 5; ++i) {
+    char msg[32];
+    sprintf(msg, "Food %d: %d\r\n", i, food_dists[i]);
+    usbPutString(msg);
+}
+
 
     // Wait 5 seconds before starting movement
   //  CyDelay(5000);
