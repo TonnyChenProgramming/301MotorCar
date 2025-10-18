@@ -30,6 +30,7 @@ typedef enum {
     RIGHT_TURN,
     STOP,
     U_TURN,
+    FOOD,
 } MovementState;
 
 // Prototype

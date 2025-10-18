@@ -39,5 +39,6 @@ void motor_right(uint16 val);
 void turn_right_enc(void);
 void turn_left_enc(void);
 void move_forward_ticks(int32 steps);
+void u_turn_enc(void);
 #endif /* MOVEMENT_H */
 /* [] END OF FILE */

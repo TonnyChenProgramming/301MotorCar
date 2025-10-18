@@ -24,8 +24,9 @@ void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 #define LEFT_TICKS_90_R   (100) //left motor during right turn
 #define RIGHT_TICKS_90_R  (90) //right motor during right 90
 
-#define LEFT_TICKS_180_L  (2 * LEFT_TICKS_90_L)
-#define RIGHT_TICKS_180_L (2 * RIGHT_TICKS_90_L)
+#define LEFT_TICKS_180_L  (164)
+#define RIGHT_TICKS_180_L (154)
+
 #define LEFT_TICKS_180_R  (2 * LEFT_TICKS_90_R)
 #define RIGHT_TICKS_180_R (2 * RIGHT_TICKS_90_R)
 
@@ -87,6 +88,36 @@ void move_forward_ticks(int32 steps)
 
     stop();
     CyDelay(50);
+}
+// ============================================================================
+// Encoder-based turns + Basic motor control
+// ============================================================================
+void go_straigh_with_tick(int32 steps)
+{
+    QuadDec_M1_SetCounter(0);
+    QuadDec_M2_SetCounter(0);
+    
+    while (1)
+    {
+        if ((Output_5_Read()) && !(Output_4_Read())) {
+            motor_left(drift_right_pwm);
+            motor_right(right_pwm);
+        }
+        // drift left (right sensor white)
+        else if (!(Output_5_Read()) && (Output_4_Read())) {
+            motor_left(left_pwm);
+            motor_right(drift_left_pwm);
+        }
+        else {
+            motor_left(left_pwm);
+            motor_right(right_pwm);
+        }
+        int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
+        int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
+
+        if (abs(L) >= steps && abs(R) >= steps)
+            break;
+    }
 }
 
 /* -------------------- LEFT TURN -------------------- */
@@ -163,7 +194,7 @@ void turn_right_enc(void)
 
 
 
-static void u_turn_enc(void)
+ void u_turn_enc(void)
 {
     QuadDec_M1_SetCounter(0);
     QuadDec_M2_SetCounter(0);
@@ -236,6 +267,19 @@ void move_forward_until_intersection(void)
     stop();
     CyDelay(500);
 }
+// ============================================================================
+// Run Until Food
+// ============================================================================
+void run_for_food(void)
+{
+         //if (food_index < food_len)
+                //{
+    uint16_t distance = 2;
+    go_straigh_with_tick(83*distance);   // move forward to food location
+    stop();
+    CyDelay(1000);                  // 1 second pickup delay
+                //}
+}
 
 void move_forward_skip_one_intersection(void)
 {
@@ -287,7 +331,9 @@ void execute_instruction(uint8_t instr)
         case U_TURN:
             u_turn_enc();
             break;
-
+        case FOOD:
+            run_for_food();
+            break;
    
         default:
             stop();
