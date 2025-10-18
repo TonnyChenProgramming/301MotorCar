@@ -1,38 +1,41 @@
 /* ========================================
  *
- * Copyright YOUR COMPANY, THE YEAR
- * All Rights Reserved
- * UNPUBLISHED, LICENSED SOFTWARE.
- *
- * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
- *
- * ========================================
-*/
+ * Movement Control Header
+ * ======================================== */
 
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
-#include "SENSORS_READ.h"
+#include <project.h>
 #include <stdbool.h>
-    
-void stop(void);
-void go_straight(void);
+#include <stdint.h>
 
-// Minimal helpers for executing high-level instructions
-bool is_at_intersection(void);
-bool on_line(void);
-void move_forward_until_intersection(void);
+/* ---- Basic Motion ---- */
+void go_straight(void);
+void stop(void);
+void execute_path(uint8_t *instructions, uint8_t length);
+/* ---- Turn Handling ---- */
 void turn_left_until_line(void);
 void turn_right_until_line(void);
 
-// Specific navigation helpers
+/* ---- Path Progression ---- */
+void move_forward_until_intersection(void);
 void move_until_left_turn(void);
 void move_until_right_turn(void);
 
-
-// Follow line until STOP or intersection
+/* ---- State Machine Integration ---- */
 void move_handling(void);
 
-#endif
+/* ---- Line / Junction Detection ---- */
+bool is_at_intersection(void);
+bool on_line(void);
+
+/* ---- Motor Interface ----
+ * motor_left() and motor_right() are globally visible
+ * wrappers to PWM compare writes.
+ */
+void motor_left(uint16 val);
+void motor_right(uint16 val);
+
+#endif /* MOVEMENT_H */
 /* [] END OF FILE */

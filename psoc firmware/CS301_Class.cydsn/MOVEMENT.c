@@ -1,245 +1,234 @@
 #include "project.h"
 #include <stdbool.h>
+#include <stdlib.h>
 #include "MOVEMENT.h"
 #include "SENSORS_READ.h"
 #include "main.h"
-#include "SENSORS_READ.h"
 
-extern MovementState previous_movement;
-extern uint8_t timer_flag; // from main.c Timer ISR
+// ---------- Motor control ----------
+void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
+void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
-static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
-static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
-#define counter_left 200
-#define counter_right 200
-uint8_t left_pwm = 154; //163
-uint8_t right_pwm = 157; //165 
+#define STOP_PWM   127
+#define L_FWD_PWM  156
+#define L_REV_PWM  96
+#define R_FWD_PWM  154
+#define R_REV_PWM  94
 
-uint8_t drift_left_pwm = 162;  //169
-uint8_t drift_right_pwm = 158; //165
+// ---------- Encoder calibration ----------
+#define LEFT_TICKS_90_L   (-118)
+#define LEFT_TICKS_90_R   (112)
+#define RIGHT_TICKS_90_L  (-118)
+#define RIGHT_TICKS_90_R  (92)
+#define LEFT_TICKS_180_L  (2 * LEFT_TICKS_90_L)
+#define RIGHT_TICKS_180_L (2 * RIGHT_TICKS_90_L)
+#define LEFT_TICKS_180_R  (2 * LEFT_TICKS_90_R)
+#define RIGHT_TICKS_180_R (2 * RIGHT_TICKS_90_R)
 
-uint16_t count_down = 0;
-void usbPutString(char *s);
+#define ENCODER_LEFT_SIGN  (+1)
+#define ENCODER_RIGHT_SIGN (+1)
+
+// ---------- Line-follow PWM ----------
+uint8_t left_pwm = 154;
+uint8_t right_pwm = 157;
+uint8_t drift_left_pwm = 162;
+uint8_t drift_right_pwm = 158;
+
+// ============================================================================
+// Basic motor control
+// ============================================================================
+void stop(void)
+{
+    motor_left(STOP_PWM);
+    motor_right(STOP_PWM);
+}
 
 void go_straight(void)
 {
-    // Left sensor not in line (drift right)
+    // drift right (left sensor white)
     if ((Output_5_Read()) && !(Output_4_Read())) {
         motor_left(drift_right_pwm);
         motor_right(right_pwm);
     }
-    
-    // Right sensor not in line (drift left)
+    // drift left (right sensor white)
     else if (!(Output_5_Read()) && (Output_4_Read())) {
         motor_left(left_pwm);
         motor_right(drift_left_pwm);
     }
-    
     else {
         motor_left(left_pwm);
         motor_right(right_pwm);
     }
-
 }
 
-
-
-void stop(void)
+// ============================================================================
+// Encoder-based turns
+// ============================================================================
+static void turn_left_enc(void)
 {
-    motor_left(127);
-    motor_right(127);
-}
+    QuadDec_M1_SetCounter(0);
+    QuadDec_M2_SetCounter(0);
 
-void move_handling(void)
-{
-    MovementState m = GetMovement();
+    motor_left(L_REV_PWM);
+    motor_right(R_FWD_PWM);
 
-    // --- 1. Intersection rule (both wings black) ---
-  //  if (Output_6_Read() == 0 && Output_3_Read() == 0) {
-    //    m = RIGHT_TURN;   // always take right turn
-   // }
-
-    // --- 3. Execute main movement ---
-    switch (m)
-    {
-        case STOP:
-            motor_left(127);
-            motor_right(127);
-            break;
-
-        case STRAIGHT:
-            go_straight();  // keep moving straight
-            break;
-
-        case LEFT_TURN:
-            // 54, 195
-            //80, 170
-            motor_left(96);
-            motor_right(156);
-
-            while ((Output_4_Read() == 1) && (Output_5_Read() == 1)) {
-                m = LEFT_TURN;
-                count_down = counter_left;
-            }
-            while (count_down > 0)
-            {
-                count_down--;
-            }
-            
-            motor_left(127);
-            motor_right(127);
-            go_straight();
-            
-            break;
-
-        case RIGHT_TURN:
-            //164,80
-            
-            motor_left(154); //170, 80
-            motor_right(94);// 154, 90
-            
-            while ((Output_5_Read() == 1) && (Output_4_Read() == 1)) {
-                m = RIGHT_TURN;
-                count_down = counter_right;
-            }
-            while (count_down > 0)
-            {
-                count_down--;
-            }
-            
-            motor_left(127);
-            motor_right(127);
-            go_straight();
-            
-            break;
-
-        default:
-            go_straight();
+    while (1) {
+        int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
+        int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
+        if (abs(L) >= abs(LEFT_TICKS_90_L) && abs(R) >= abs(RIGHT_TICKS_90_L))
             break;
     }
 
-    // --- 4. Update previous state ---
-    previous_movement = m;
+    stop();
+    CyDelay(100);
+    go_straight();
 }
 
-// --- Junction and line helpers ---
-
-// Compute availability of branches based on active-low sensors
-static inline void read_junction_options(bool *hasStraight, bool *hasLeft, bool *hasRight)
+static void turn_right_enc(void)
 {
-    uint8 o3 = Output_3_Read(); // right wing (0=line)
-    uint8 o6 = Output_6_Read(); // left wing  (0=line)
-    uint8 o4 = Output_4_Read(); // front-right (0=line)
-    uint8 o5 = Output_5_Read(); // front-left  (0=line)
-    if (hasLeft)    *hasLeft    = (o6 == 0);
-    if (hasRight)   *hasRight   = (o3 == 0);
-    if (hasStraight)*hasStraight= (o4 == 0) || (o5 == 0);
+    QuadDec_M1_SetCounter(0);
+    QuadDec_M2_SetCounter(0);
+
+    motor_left(L_FWD_PWM);
+    motor_right(R_REV_PWM);
+
+    while (1) {
+        int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
+        int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
+        if (abs(L) >= abs(LEFT_TICKS_90_R) && abs(R) >= abs(RIGHT_TICKS_90_R))
+            break;
+    }
+
+    stop();
+    CyDelay(100);
+    go_straight();
 }
 
-// Returns true if robot is at a decision point (any branch or dead-end)
-bool is_at_intersection(void)
+static void u_turn_enc(void)
 {
-    bool s=false,l=false,r=false;
-    uint8 o4 = Output_4_Read();
-    uint8 o5 = Output_5_Read();
-    read_junction_options(&s,&l,&r);
-    bool bothFront = (o4 == 0) && (o5 == 0);
-    bool deadEnd = !s; // straight not available
-    return l || r || bothFront || deadEnd;
+    QuadDec_M1_SetCounter(0);
+    QuadDec_M2_SetCounter(0);
+
+    motor_left(L_REV_PWM);
+    motor_right(R_FWD_PWM);
+
+    while (1) {
+        int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
+        int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
+        if (abs(L) >= abs(LEFT_TICKS_180_L) && abs(R) >= abs(RIGHT_TICKS_180_L))
+            break;
+    }
+
+    stop();
+    CyDelay(100);
+    go_straight();
 }
 
-// Returns true if robot is on (any) line with front sensors
-bool on_line(void)
-{
-    return (Output_4_Read() == 0) || (Output_5_Read() == 0);
-}
-
-// Move forward, following the line, until any decision point is detected
+// ============================================================================
+// Line following and intersection logic
+// ============================================================================
 void move_forward_until_intersection(void)
 {
     int stable = 0;
-    while (stable < 3) {
-        if (timer_flag) {
-            timer_flag = 0;
-            if (is_at_intersection()) stable++; else stable = 0;
+    static int turn_cooldown = 0;
+
+    while (stable < 1)
+    {
+        uint8 o1 = Output_1_Read();
+        uint8 o2 = Output_2_Read();
+        uint8 o3 = Output_3_Read();
+        uint8 o4 = Output_4_Read();
+        uint8 o5 = Output_5_Read();
+        uint8 o6 = Output_6_Read();
+
+        // cooldown countdown
+        if (turn_cooldown > 0)
+            turn_cooldown--;
+
+        // center must remain on the line
+        /*
+        if (o1 != 0 && o2 != 0) {
+            stop();
+            continue;
         }
+        */
+        // intersection detection (with cooldown)
+        bool left_turn  = false;
+        bool right_turn = false;
+
+        if (turn_cooldown == 0) {
+            if ((o6 == 0) && (o3 == 0)) {
+                turn_cooldown = 85;  // T intersection
+                right_turn = true;
+            } 
+            else if (o6 == 0) {
+                LED2_Write(1);
+                turn_cooldown = 85;
+                left_turn = true;
+            } 
+            else if (o3 == 0) {
+                LED4_Write(1);
+                turn_cooldown = 85;
+                right_turn = true;
+            }
+        }
+
+        bool intersection = left_turn || right_turn;
+        if (intersection)
+                    stable++;
+                else
+                    stable = 0;
+    
         go_straight();
     }
+    stable = 0;
     stop();
+    CyDelay(500);
 }
 
-// At a decision point, turn left until front sensors reacquire the line
-void turn_left_until_line(void)
-{
-    // 54, 195
-            //80, 170
-            motor_left(96);
-            motor_right(156);
 
-            while ((Output_4_Read() == 1) && (Output_5_Read() == 1)) {
-                count_down = counter_left;
-            }
-            while (count_down > 0)
-            {
-                count_down--;
-            }
-            
-            motor_left(127);
-            motor_right(127);
-            go_straight();
-            
-            
-}
-
-// At a decision point, turn right until front sensors reacquire the line
-void turn_right_until_line(void)
+// ============================================================================
+// Execute instruction list
+// ============================================================================
+void execute_instruction(uint8_t instr)
 {
-     //164,80
-            
-            motor_left(154); //170, 80
-            motor_right(94);// 154, 90
-            
-            while ((Output_5_Read() == 1) && (Output_4_Read() == 1)) {
-                count_down = counter_right;
-            }
-            while (count_down > 0)
-            {
-                count_down--;
-            }
-            
-            motor_left(127);
-            motor_right(127);
-            go_straight();
-}
+    switch (instr)
+    {
+        case STRAIGHT:
+            move_forward_until_intersection();
+            break;
 
-// Move forward, following the line, until a left turn becomes available (with or without straight)
-void move_until_left_turn(void)
-{
-    int stable = 0;
-    while (stable < 3) {
-        if (timer_flag) {
-            timer_flag = 0;
-            bool s=false,l=false,r=false;
-            read_junction_options(&s,&l,&r);
-            if (l) stable++; else stable = 0;
-        }
-        go_straight();
+        case LEFT_TURN:
+            turn_left_enc();
+            break;
+
+        case RIGHT_TURN:
+            turn_right_enc();
+            break;
+
+      
+
+        case STOP:
+        default:
+            stop();
+            break;
     }
-    stop();
 }
 
-// Move forward, following the line, until a right turn becomes available (with or without straight)
-void move_until_right_turn(void)
+// ============================================================================
+// Execute full instruction sequence
+// ============================================================================
+void execute_path(uint8_t *instructions, uint8_t length)
 {
-    int stable = 0;
-    while (stable < 3) {
-        if (timer_flag) {
-            timer_flag = 0;
-            bool s=false,l=false,r=false;
-            read_junction_options(&s,&l,&r);
-            if (r) stable++; else stable = 0;
-        }
-        go_straight();
+    for (uint8_t i = 0; i < length; i++)
+    {
+        uint8_t current = instructions[i];
+
+        // two consecutive straights = skip one intersection
+        
+            execute_instruction(current);
+       
+
+        if (current == STOP) break;
     }
-    stop();
 }

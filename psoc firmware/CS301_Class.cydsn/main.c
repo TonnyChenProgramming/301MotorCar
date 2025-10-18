@@ -1,212 +1,46 @@
-// Main File 
-
-// Including all header files
-#include <project.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-
-#include "main.h"
-#include "defines.h"     
-#include "vars.h"
-#include "isr_1.h"
-#include "SENSORS_READ.h"
+#include "project.h"
+#include <stdint.h>
+#include <stdbool.h>
 #include "MOVEMENT.h"
-#include "map_to_instructions.h" 
+#include "SENSORS_READ.h"
+#include "map.h"   // optional if you define instructions elsewhere
 
+MovementState previous_movement = STOP;
 
+// Example instruction sequence
+// Replace this with one produced by map_to_instructions.c
+uint8_t instructions[] = {STRAIGHT, LEFT_TURN, STRAIGHT, STRAIGHT,RIGHT_TURN, STOP};
+uint8_t num_instructions = sizeof(instructions) / sizeof(instructions[0]);
 
-#define TIMER_BASE_HZ 100000UL
-
- 
-
-static volatile int16 left_wheel_val; // positive
-static volatile int16 right_wheel_val;//negative
-
-static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
-static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
-
-uint8_t timer_flag = 0;
-MovementState current_move;
-
-// static void print_telemetry(void);
-void usbPutString(char *s);
-void usbPutChar(char c);
-void handle_usb();
-
-/* Timer ISR */
-CY_ISR(Timer_TS_ISR_Handler)
-{
-    timer_flag = 1;   
-}
-
-
-// helpers
-#define S_ACTIVE(pin_read) ((pin_read) == 0u)   // active-low -> 1 when line
-
-// active-low: 0 = on line, 1 = off line
-#define S_ACTIVE(pin_read) ((pin_read) == 0u)
-
-/* ================= Main ================= */
-int main(void)
+static void hardware_init(void)
 {
     CyGlobalIntEnable;
-    
+
     PWM_1_Start();
     PWM_2_Start();
-    
-    isr_1_StartEx(Timer_TS_ISR_Handler);   // hook first
-    Timer_TS_Start();                      // then start
 
-    #ifdef USE_USB
-    USBUART_Start(0, USBUART_5V_OPERATION);
-    #endif
+    QuadDec_M1_Start();
+    QuadDec_M2_Start();
 
-    RobotInstr instructions[MAX_INSTRUCTIONS];
-    int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS);
-
-    // Optional: print plan
-for (int i = 0; i < num_instructions; ++i) {
-    switch (instructions[i].type) {
-        case INSTR_FORWARD_UNTIL_INTERSECTION:
-            usbPutString("Plan: forward-until-intersection\r\n");
-            break;
-        case INSTR_GO_STRAIGHT:
-            usbPutString("Plan: go-straight\r\n");
-            break;
-        case INSTR_TAKE_LEFT:
-            usbPutString("Plan: take-left\r\n");
-            break;
-        case INSTR_TAKE_RIGHT:
-            usbPutString("Plan: take-right\r\n");
-            break;
-        case INSTR_SKIP_LEFT:
-            usbPutString("Plan: skip-left\r\n");
-            break;
-        case INSTR_SKIP_RIGHT:
-            usbPutString("Plan: skip-right\r\n");
-            break;
-        case INSTR_SKIP_4WAY:
-            usbPutString("Plan: skip-4way\r\n");
-            break;
-        case INSTR_TURN_LEFT:
-            usbPutString("Plan: turn-left\r\n");
-            break;
-        case INSTR_TURN_RIGHT:
-            usbPutString("Plan: turn-right\r\n");
-            break;
-        case INSTR_STOP_FOR_FOOD:
-            usbPutString("Plan: stop-for-food\r\n");
-            break;
-        default:
-            usbPutString("Plan: unknown\r\n");
-            break;
-    }
+  
 }
 
-
-    // Wait 5 seconds before starting movement
-  //  CyDelay(5000);
-
-    // Execute plan
-    for (int i = 0; i < num_instructions; ++i) {
-        switch (instructions[i].type) {
-            case INSTR_FORWARD_UNTIL_INTERSECTION:
-             move_forward_until_intersection();
-          //  usbPutString("Plan: forward-until-intersection\r\n");
-            break;
-            case INSTR_GO_STRAIGHT:
-                move_forward_until_intersection();
-                break;
-            case INSTR_SKIP_LEFT:
-                // Approach until a left turn is available, then go straight past it
-                move_until_left_turn();
-                move_forward_until_intersection();
-                break;
-            case INSTR_SKIP_RIGHT:
-                // Approach until a right turn is available, then go straight past it
-                move_until_right_turn();
-                move_forward_until_intersection();
-                break;
-            case INSTR_TURN_LEFT:
-                turn_left_until_line();
-                break;
-            case INSTR_TURN_RIGHT:
-                turn_right_until_line();
-                break;
-            case INSTR_STOP_FOR_FOOD:
-                stop();
-                CyDelay(1000);
-                break;
-            default:
-                stop();
-                break;
-        }
-    }
-
-    // Idle after execution
-    for(;;) { PWM_1_WriteCompare(255); PWM_2_WriteCompare(127); }
-}
- 
-
-
-void usbPutString(char *s)
+int main(void)
 {
-#ifdef USE_USB
-    while (USBUART_CDCIsReady() == 0) {}
-    s[63] = '\0';
-    s[62] = '!';              
-    USBUART_PutData((uint8*)s, (uint16)strlen(s));
-#else
-    (void)s;
-#endif
-}
+    hardware_init();
 
-void usbPutChar(char c)
-{
-#ifdef USE_USB
-    while (USBUART_CDCIsReady() == 0) {}
-    USBUART_PutChar((uint8)c);
-#else
-    (void)c;
-#endif
-}
+    // brief pause to settle sensors
+    CyDelay(1000);
 
-void handle_usb(void)
-{
-#ifdef USE_USB
-    static uint8 usbStarted = FALSE;
-    static uint16 usbBufCount = 0;
+    // Execute pre-planned path
+    execute_path(instructions, num_instructions);
 
-    if (!usbStarted) {
-        if (USBUART_GetConfiguration()) {
-            USBUART_CDC_Init();
-            usbStarted = TRUE;
-        }
-        return;
+    // Final stop
+    stop();
+
+    for (;;)
+    {
+        // Idle loop — blink LED if desired
+     
     }
-
-    if (USBUART_DataIsReady() == 0) return;
-
-    uint8 c = USBUART_GetChar();
-
-    if ((c == CHAR_ENTER) || (c == '\n')) {
-        entry[usbBufCount] = '\0';
-        strcpy(line, entry);
-        usbBufCount = 0;
-        flag_KB_string = 1;
-    } else {
-        if (((c == CHAR_BACKSP) || (c == CHAR_DEL)) && (usbBufCount > 0)) {
-            usbBufCount--;
-        } else {
-            if (usbBufCount > (BUF_SIZE - 2)) {
-                USBUART_PutChar('!');
-            } else {
-                entry[usbBufCount++] = (char)c;
-            }
-        }
-    }
-#endif
 }
-
