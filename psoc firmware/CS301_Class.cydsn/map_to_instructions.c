@@ -67,14 +67,22 @@ static int pop_best(Node *arr, int *size) {
     return (*size);
 }
 
-// Emit clean minimal instructions: one STRAIGHT per segment, turns between them
+// Put near other helpers
+static inline bool has_side_branch(int r, int c, int came_dir, int go_dir) {
+    for (int d = 0; d < 4; ++d) {
+        if (!is_free(r + drow[d], c + dcol[d])) continue;
+        if (d != came_dir && d != go_dir) return true;
+    }
+    return false;
+}
+
 static void emit_plan_for_path(const int path[][2], int len,
                                RobotInstr instr[], int *count, int max_instr)
 {
     if (len < 2) return;
     int idx = *count;
 
-    // Determine initial heading from first step
+    // infer initial heading from first step
     int r0 = path[0][0], c0 = path[0][1];
     int r1 = path[1][0], c1 = path[1][1];
     int heading = -1;
@@ -82,47 +90,60 @@ static void emit_plan_for_path(const int path[][2], int len,
         if (r0 + drow[d] == r1 && c0 + dcol[d] == c1)
             heading = d;
 
-    // Start moving straight
-    if (idx < max_instr) instr[idx++].type = iSTRAIGHT;
+    // count decision points (intersections) passed while keeping same heading
+    int straight_decisions = 0;
 
-    for (int i = 2; i < len; ++i) {
-        int rp = path[i - 1][0], cp = path[i - 1][1];
-        int rn = path[i][0], cn = path[i][1];
+    for (int i = 1; i < len; ++i) {
+        int r_prev = path[i-1][0], c_prev = path[i-1][1];
+        int r_here = path[i][0],  c_here = path[i][1];
 
-        int new_dir = -1;
+        // direction for this step
+        int step_dir = -1;
         for (int d = 0; d < 4; ++d)
-            if (rp + drow[d] == rn && cp + dcol[d] == cn)
-                new_dir = d;
+            if (r_prev + drow[d] == r_here && c_prev + dcol[d] == c_here)
+                step_dir = d;
 
-        if (new_dir == -1) continue;
+        int came_dir = (step_dir + 2) & 3;
+        int go_dir   = step_dir;
 
-        int diff = (new_dir - heading + 4) & 3;
+        bool is_goal = (i == len - 1);
+        bool decision_point = is_goal || has_side_branch(r_here, c_here, came_dir, go_dir);
+
+        int diff = (step_dir - heading + 4) & 3;
 
         if (diff == 0) {
-            // still in same direction — keep going, don’t emit anything
-            continue;
+            // still going same way
+            if (decision_point) {
+                // passed a junction while straight
+                straight_decisions++;
+            }
+        } else {
+            // heading changes at this cell -> turn
+            // If this cell is also a decision point, the straight segment
+            // should count it as well (we reached this intersection before turning).
+            int pre_straights = straight_decisions + (decision_point ? 1 : 0);
+
+            for (int k = 0; k < pre_straights && idx < max_instr; ++k)
+                instr[idx++].type = iSTRAIGHT;
+
+            if (diff == 1 && idx < max_instr)      instr[idx++].type = iRIGHT;
+            else if (diff == 3 && idx < max_instr) instr[idx++].type = iLEFT;
+            else if (diff == 2 && idx < max_instr) instr[idx++].type = iTURN_AROUND;
+
+            heading = step_dir;
+            straight_decisions = 0;
+
+            if (idx >= max_instr - 3) break;
         }
-
-        // change in direction = turn
-        if (diff == 1 && idx < max_instr)
-            instr[idx++].type = iRIGHT;
-        else if (diff == 3 && idx < max_instr)
-            instr[idx++].type = iLEFT;
-        else if (diff == 2 && idx < max_instr)
-            instr[idx++].type = iTURN_AROUND;
-
-        heading = new_dir;
-
-        // start next straight segment
-        if (idx < max_instr)
-            instr[idx++].type = iSTRAIGHT;
-
-        if (idx >= max_instr - 2)
-            break;
     }
+
+    // end of path (goal): emit any remaining STRAIGHTs
+    for (int k = 0; k < straight_decisions && idx < max_instr; ++k)
+        instr[idx++].type = iSTRAIGHT;
 
     *count = idx;
 }
+
 
 // Main A* and instruction generator
 int generate_instructions_from_map(RobotInstr instr[], int max_instr)
