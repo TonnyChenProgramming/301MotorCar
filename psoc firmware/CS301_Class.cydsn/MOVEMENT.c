@@ -316,7 +316,7 @@ void move_forward_until_intersection(void)
 
         if (intersection) {
             stable++;
-            turn_cooldown = 5000;   // about ~1 sec at 8 kHz loop rate
+            turn_cooldown = 75000;   // 80000 works
         } else {
             stable = 0;
             LED2_Write(0);

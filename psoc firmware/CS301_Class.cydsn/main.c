@@ -1,5 +1,5 @@
 // ========================================
-// Main File – With Debugging via USB (Putty)
+// Main File – Debug Removed (No Putty Output)
 // ========================================
 
 #include <project.h>
@@ -45,12 +45,15 @@ CY_ISR(Timer_TS_ISR_Handler)
 // --- USB Debug Output Helper ---
 static void dbg(const char *msg)
 {
-#ifdef USE_USB
-    while (USBUART_CDCIsReady() == 0) {}
-    USBUART_PutString(msg);
-#else
+    /*
+    #ifdef USE_USB
+        while (USBUART_CDCIsReady() == 0) {}
+        USBUART_PutString(msg);
+    #else
+        (void)msg;
+    #endif
+    */
     (void)msg;
-#endif
 }
 
 /* ================= Main ================= */
@@ -67,46 +70,20 @@ int main(void)
     isr_1_StartEx(Timer_TS_ISR_Handler);
     Timer_TS_Start();
 
-#ifdef USE_USB
-    USBUART_Start(0, USBUART_5V_OPERATION);
-    dbg("\r\n=== USB Debug Interface Initialized ===\r\n");
-#endif
-
-    dbg("=== Generating instructions from map ===\r\n");
+    /*
+    #ifdef USE_USB
+        USBUART_Start(0, USBUART_5V_OPERATION);
+        dbg("\r\n=== USB Debug Interface Initialized ===\r\n");
+    #endif
+    */
 
     RobotInstr instructions[MAX_INSTRUCTIONS];
     int food_dists[5];
     int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists);
 
-    // --- Print plan for debugging ---
-    dbg("\r\n=== Instruction Plan ===\r\n");
-    for (int i = 0; i < num_instructions; ++i) {
-        switch (instructions[i].type) {
-            case iSTRAIGHT:     dbg("Plan: STRAIGHT\r\n"); break;
-            case iLEFT:         dbg("Plan: LEFT\r\n"); break;
-            case iRIGHT:        dbg("Plan: RIGHT\r\n"); break;
-            case iTURN_AROUND:  dbg("Plan: TURN-AROUND\r\n"); break;
-            case iSTOP:         dbg("Plan: STOP\r\n"); break;
-            default:            dbg("Plan: UNKNOWN\r\n"); break;
-        }
-    }
-
-    dbg("\r\n=== Food Distances ===\r\n");
-    for (int i = 0; i < 5; ++i) {
-        char msg[32];
-        sprintf(msg, "Food %d: %d\r\n", i, food_dists[i]);
-        dbg(msg);
-    }
-
-    dbg("\r\n=== Beginning Execution ===\r\n");
-
     // --- Execute plan ---
     for (int i = 0; i < num_instructions; ++i)
     {
-        char msg[64];
-        sprintf(msg, "\r\n[STATE] Executing instruction %d: ", i);
-        dbg(msg);
-
         switch (instructions[i].type)
         {
             case iSTRAIGHT:
@@ -115,58 +92,39 @@ int main(void)
                     if (food_index < 5)
                     {
                         move_forward_until_intersection();
-                        //run_for_food(food_dists[food_index]);
-                        //food_index++;
                     }
-                } else{
-                    dbg("STRAIGHT\r\n");
+                } 
+                else
+                {
                     move_forward_until_intersection();
-                    dbg("[DONE] Straight movement complete\r\n");
                 }
-                
                 break;
 
-
             case iLEFT:
-                dbg("LEFT TURN\r\n");
                 turn_left_enc();
-                dbg("[DONE] Left turn complete\r\n");
                 break;
 
             case iRIGHT:
-                dbg("RIGHT TURN\r\n");
                 turn_right_enc();
-                dbg("[DONE] Right turn complete\r\n");
                 break;
 
             case iTURN_AROUND:
-                dbg("TURN-AROUND\r\n");
                 u_turn_enc();
-                dbg("[DONE] U-turn complete\r\n");
                 break;
 
             case iSTOP:
-                //dbg("STOP\r\n");
                 //stop();
                 //CyDelay(1000);
-                //dbg("[DONE] Stop complete\r\n");
-                dbg("[DONE] Stop complete\r\n");
                 break;
 
             default:
-                dbg("UNKNOWN INSTRUCTION\r\n");
                 stop();
                 CyDelay(2000);
                 break;
         }
-
-        // Optional short delay between instructions for clarity
-       // CyDelay(250);
     }
 
-    dbg("===Path Complete Entering Idle Mode ===\r\n");
-
-    // --- Idle (hold motors steady) ---
+    // --- Idle ---
     for(;;)
     { 
         PWM_1_WriteCompare(255); 
@@ -175,70 +133,79 @@ int main(void)
 }
 
 // ==========================================================
-// USB Communication Functions
+// USB Communication Functions (Disabled)
 // ==========================================================
 void usbPutString(char *s)
 {
-#ifdef USE_USB
-    while (USBUART_CDCIsReady() == 0) {}
-    USBUART_PutData((uint8*)s, (uint16)strlen(s));
-#else
     (void)s;
-#endif
+    /*
+    #ifdef USE_USB
+        while (USBUART_CDCIsReady() == 0) {}
+        USBUART_PutData((uint8*)s, (uint16)strlen(s));
+    #else
+        (void)s;
+    #endif
+    */
 }
 
 void usbPutChar(char c)
 {
-#ifdef USE_USB
-    while (USBUART_CDCIsReady() == 0) {}
-    USBUART_PutChar((uint8)c);
-#else
     (void)c;
-#endif
+    /*
+    #ifdef USE_USB
+        while (USBUART_CDCIsReady() == 0) {}
+        USBUART_PutChar((uint8)c);
+    #else
+        (void)c;
+    #endif
+    */
 }
 
 // ==========================================================
-// USB Command Handler (for keyboard/Putty input, optional)
+// USB Command Handler (Disabled)
 // ==========================================================
 void handle_usb(void)
 {
-#ifdef USE_USB
-    static uint8 usbStarted = FALSE;
-    static uint16 usbBufCount = 0;
+    (void)0;
+    /*
+    #ifdef USE_USB
+        static uint8 usbStarted = FALSE;
+        static uint16 usbBufCount = 0;
 
-    if (!usbStarted)
-    {
-        if (USBUART_GetConfiguration())
+        if (!usbStarted)
         {
-            USBUART_CDC_Init();
-            usbStarted = TRUE;
-            dbg("[USB] Configuration initialized\r\n");
+            if (USBUART_GetConfiguration())
+            {
+                USBUART_CDC_Init();
+                usbStarted = TRUE;
+                dbg("[USB] Configuration initialized\r\n");
+            }
+            return;
         }
-        return;
-    }
 
-    if (USBUART_DataIsReady() == 0)
-        return;
+        if (USBUART_DataIsReady() == 0)
+            return;
 
-    uint8 c = USBUART_GetChar();
+        uint8 c = USBUART_GetChar();
 
-    if ((c == CHAR_ENTER) || (c == '\n'))
-    {
-        entry[usbBufCount] = '\0';
-        strcpy(line, entry);
-        usbBufCount = 0;
-        flag_KB_string = 1;
-    }
-    else
-    {
-        if (((c == CHAR_BACKSP) || (c == CHAR_DEL)) && (usbBufCount > 0))
+        if ((c == CHAR_ENTER) || (c == '\n'))
         {
-            usbBufCount--;
+            entry[usbBufCount] = '\0';
+            strcpy(line, entry);
+            usbBufCount = 0;
+            flag_KB_string = 1;
         }
-        else if (usbBufCount < (BUF_SIZE - 2))
+        else
         {
-            entry[usbBufCount++] = (char)c;
+            if (((c == CHAR_BACKSP) || (c == CHAR_DEL)) && (usbBufCount > 0))
+            {
+                usbBufCount--;
+            }
+            else if (usbBufCount < (BUF_SIZE - 2))
+            {
+                entry[usbBufCount++] = (char)c;
+            }
         }
-    }
-#endif
+    #endif
+    */
 }

@@ -45,6 +45,8 @@ static inline bool has_side_branch(int r, int c, int came_dir, int go_dir) {
     return false;
 }
 
+
+
 static void emit_plan_for_path(const int path[][2], int len,
                                RobotInstr instr[], int *count, int max_instr,
                                int *heading_ptr,
