@@ -220,54 +220,61 @@ void turn_right_enc(void)
 // ============================================================================
 void move_forward_until_intersection(void)
 {
-    int stable = 0;
     static int turn_cooldown = 0;
+    int stable = 0;
 
-    while (stable < 1)
+    while (1)
     {
-        uint8 o1 = Output_1_Read();
-        uint8 o2 = Output_2_Read();
-        uint8 o3 = Output_3_Read();
-        uint8 o4 = Output_4_Read();
-        uint8 o5 = Output_5_Read();
-        uint8 o6 = Output_6_Read();
+        uint8 o3 = Output_3_Read();  // right wing
+        uint8 o6 = Output_6_Read();  // left wing
+        uint8 o4 = Output_4_Read();  // front-right
+        uint8 o5 = Output_5_Read();  // front-left
 
-        // cooldown countdown
+        // decrement cooldown timer
         if (turn_cooldown > 0)
             turn_cooldown--;
 
-        // intersection detection (with cooldown)
-        bool left_turn  = false;
-        bool right_turn = false;
+        bool intersection_detected = false;
 
+        // detect intersection only when cooldown expired
         if (turn_cooldown == 0) {
             if ((o6 == 0) && (o3 == 0)) {
-                turn_cooldown = 85;  // T intersection
-                right_turn = true;
-            } 
+                LED2_Write(1);
+                LED4_Write(1);
+                intersection_detected = true;
+            }
             else if (o6 == 0) {
                 LED2_Write(1);
-                turn_cooldown = 85;
-                left_turn = true;
-            } 
+                intersection_detected = true;
+            }
             else if (o3 == 0) {
                 LED4_Write(1);
-                turn_cooldown = 85;
-                right_turn = true;
+                intersection_detected = true;
             }
         }
 
-        bool intersection = left_turn || right_turn;
-        if (intersection)
-                    stable++;
-                else
-                    stable = 0;
-    
+        // stable intersection detection for 3 consecutive readings
+        if (intersection_detected) {
+            stable++;
+        } else {
+            stable = 0;
+            LED2_Write(0);
+            LED4_Write(0);
+        }
+
+        if (stable >= 3) {
+            stop();
+            CyDelay(300);
+            turn_cooldown = 85;   // prevent immediate re-trigger
+            LED2_Write(0);
+            LED4_Write(0);
+            break;  // exit the function — return to main, next instruction
+        }
+
         go_straight();
     }
-    stop();
-    CyDelay(500);
 }
+
 // ============================================================================
 // Run Until Food
 // ============================================================================
