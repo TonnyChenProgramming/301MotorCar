@@ -114,8 +114,9 @@ int main(void)
                 {
                     if (food_index < 5)
                     {
-                        run_for_food(food_dists[food_index]);
-                        food_index++;
+                        move_forward_until_intersection();
+                        //run_for_food(food_dists[food_index]);
+                        //food_index++;
                     }
                 } else{
                     dbg("STRAIGHT\r\n");
@@ -155,11 +156,12 @@ int main(void)
             default:
                 dbg("UNKNOWN INSTRUCTION\r\n");
                 stop();
+                CyDelay(2000);
                 break;
         }
 
         // Optional short delay between instructions for clarity
-        CyDelay(250);
+       // CyDelay(250);
     }
 
     dbg("===Path Complete Entering Idle Mode ===\r\n");

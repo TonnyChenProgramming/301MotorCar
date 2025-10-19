@@ -16,9 +16,9 @@ unsigned char map[15][19] = {
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 };
 
-unsigned char start_pos[2] = {1,1};
+unsigned char start_pos[2] = {1,3};
 unsigned char food_list[5][2]= {
-{2,13},
+{13,17},
 {1,16},
 {7,1},
 {13,5},

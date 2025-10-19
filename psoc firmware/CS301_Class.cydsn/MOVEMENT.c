@@ -132,7 +132,7 @@ void turn_left_enc(void)
     QuadDec_M2_SetCounter(0);
 
     motor_left(L_REV_PWM);
-    motor_right(R_FWD_PWM + 10);
+    motor_right(R_FWD_PWM);
 
     bool left_done = false;
     bool right_done = false;
@@ -218,71 +218,116 @@ void turn_right_enc(void)
 // ============================================================================
 // Line following and intersection logic
 // ============================================================================
+
+
+/*
 void move_forward_until_intersection(void)
 {
+    int stable = 0;
     static int turn_cooldown = 0;
+
+    while (stable < 1)
+    {
+        uint8 o1 = Output_1_Read();
+        uint8 o2 = Output_2_Read();
+        uint8 o3 = Output_3_Read();
+        uint8 o4 = Output_4_Read();
+        uint8 o5 = Output_5_Read();
+        uint8 o6 = Output_6_Read();
+
+        // cooldown countdown
+        if (turn_cooldown > 0)
+            turn_cooldown--;
+
+        // intersection detection (with cooldown)
+        bool left_turn  = false;
+        bool right_turn = false;
+
+        if (turn_cooldown == 0) {
+            if ((o6 == 0) && (o3 == 0)) {
+                turn_cooldown = 20000;  // T intersection
+                right_turn = true;
+            } 
+            else if (o6 == 0) {
+                LED2_Write(1);
+                turn_cooldown = 20000;
+                left_turn = true;
+            } 
+            else if (o3 == 0) {
+                LED4_Write(1);
+                turn_cooldown = 20000;
+                right_turn = true;
+            }
+        }
+
+        bool intersection = left_turn || right_turn;
+        if (intersection)
+                    stable++;
+                else
+                    stable = 0;
+    
+        go_straight();
+    }
+    //move_forward_ticks(50);   // Adjust 20–40 ticks depending on your map spacing
+
+    stop();
+CyDelay(100);
+}
+
+*/
+
+
+void move_forward_until_intersection(void)
+{
+    static uint32_t turn_cooldown = 0;  // stays across calls
     int stable = 0;
 
     while (stable < 1)
     {
         uint8 o3 = Output_3_Read();  // right wing
         uint8 o6 = Output_6_Read();  // left wing
-        uint8 o4 = Output_4_Read();  // front-right
-        uint8 o5 = Output_5_Read();  // front-left
 
-        // decrement cooldown timer
+        // decrement cooldown to prevent re-trigger
         if (turn_cooldown > 0)
+        {
             turn_cooldown--;
-
-        
-        bool left_turn = false;
-        bool right_turn = false;
-
-        // detect intersection only when cooldown expired
-        if (turn_cooldown == 0) {
-            if ((o6 == 0) && (o3 == 0)) {
-                LED2_Write(1);
-                LED4_Write(1);
-                turn_cooldown = 85;
-                right_turn = true;
-            }
-            else if (o6 == 0) {
-                LED2_Write(1);
-                turn_cooldown = 85;
-                left_turn = true;
-            }
-            else if (o3 == 0) {
-                LED4_Write(1);
-                turn_cooldown = 85;
-                right_turn = true;
-            }
+            go_straight();
+            continue;   // skip detection while cooling down
         }
 
-        // stable intersection detection for 3 consecutive readings
-        
+        bool left_turn  = false;
+        bool right_turn = false;
+
+        if ((o6 == 0) && (o3 == 0)) {
+            LED2_Write(1);
+            LED4_Write(1);
+            right_turn = true;       // T intersection
+        } 
+        else if (o6 == 0) {
+            LED2_Write(1);
+            left_turn = true;
+        } 
+        else if (o3 == 0) {
+            LED4_Write(1);
+            right_turn = true;
+        }
+
         bool intersection = left_turn || right_turn;
+
         if (intersection) {
             stable++;
+            turn_cooldown = 5000;   // about ~1 sec at 8 kHz loop rate
         } else {
             stable = 0;
             LED2_Write(0);
             LED4_Write(0);
         }
 
-    /*
-        if (stable >= 3) {
-            stop();
-            CyDelay(300);
-            turn_cooldown = 85;   // prevent immediate re-trigger
-            LED2_Write(0);
-            LED4_Write(0);
-            break;  // exit the function — return to main, next instruction
-        }
-*/
         go_straight();
     }
+
     stop();
-    CyDelay(500);
+    CyDelay(100);
 }
 
 // ============================================================================
@@ -294,7 +339,7 @@ void run_for_food(uint8_t food_distance)
                 //{
     go_straigh_with_tick(83*food_distance);   // move forward to food location
     stop();
-    CyDelay(1000);                  // 1 second pickup delay
+    CyDelay(100);                  // 1 second pickup delay
                 //}
 }
 
@@ -383,10 +428,6 @@ void execute_path(uint8_t *instructions, uint8_t length, uint16_t *food_distance
         {
             execute_instruction(current, food_distances);
         }
-        
-        
-        
-        
        
 
         if (current == STOP) break;
