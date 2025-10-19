@@ -39,7 +39,7 @@ uint8_t right_pwm = 157;
 uint8_t drift_left_pwm = 162;
 uint8_t drift_right_pwm = 158;
 //food number tracking
-uint8_t food_index = 0;
+static uint8_t food_index = 0;
 // ============================================================================
 // Basic motor control
 // ============================================================================
@@ -223,7 +223,7 @@ void move_forward_until_intersection(void)
     static int turn_cooldown = 0;
     int stable = 0;
 
-    while (1)
+    while (stable < 1)
     {
         uint8 o3 = Output_3_Read();  // right wing
         uint8 o6 = Output_6_Read();  // left wing
@@ -234,27 +234,34 @@ void move_forward_until_intersection(void)
         if (turn_cooldown > 0)
             turn_cooldown--;
 
-        bool intersection_detected = false;
+        
+        bool left_turn = false;
+        bool right_turn = false;
 
         // detect intersection only when cooldown expired
         if (turn_cooldown == 0) {
             if ((o6 == 0) && (o3 == 0)) {
                 LED2_Write(1);
                 LED4_Write(1);
-                intersection_detected = true;
+                turn_cooldown = 85;
+                right_turn = true;
             }
             else if (o6 == 0) {
                 LED2_Write(1);
-                intersection_detected = true;
+                turn_cooldown = 85;
+                left_turn = true;
             }
             else if (o3 == 0) {
                 LED4_Write(1);
-                intersection_detected = true;
+                turn_cooldown = 85;
+                right_turn = true;
             }
         }
 
         // stable intersection detection for 3 consecutive readings
-        if (intersection_detected) {
+        
+        bool intersection = left_turn || right_turn;
+        if (intersection) {
             stable++;
         } else {
             stable = 0;
@@ -262,6 +269,7 @@ void move_forward_until_intersection(void)
             LED4_Write(0);
         }
 
+    /*
         if (stable >= 3) {
             stop();
             CyDelay(300);
@@ -270,9 +278,11 @@ void move_forward_until_intersection(void)
             LED4_Write(0);
             break;  // exit the function — return to main, next instruction
         }
-
+*/
         go_straight();
     }
+    stop();
+    CyDelay(500);
 }
 
 // ============================================================================
