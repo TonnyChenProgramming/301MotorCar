@@ -24,11 +24,9 @@ void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 #define LEFT_TICKS_90_R   (100) //left motor during right turn
 #define RIGHT_TICKS_90_R  (90) //right motor during right 90
 
-#define LEFT_TICKS_180_L  (164)
-#define RIGHT_TICKS_180_L (154)
+#define LEFT_TICKS_180_L  (195)
+#define RIGHT_TICKS_180_L (210)
 
-#define LEFT_TICKS_180_R  (2 * LEFT_TICKS_90_R)
-#define RIGHT_TICKS_180_R (2 * RIGHT_TICKS_90_R)
 
 #define ENCODER_LEFT_SIGN  (+1)
 #define ENCODER_RIGHT_SIGN (+1)
@@ -121,72 +119,78 @@ void go_straigh_with_tick(int32 steps)
     }
 }
 
+static void wait_until_front_on_line(void)
+{
+    uint8 stable = 0;
+
+    while (stable < 5)
+    {
+        uint8 o4 = Output_4_Read(); // front-right
+        uint8 o5 = Output_5_Read(); // front-left
+
+        bool left_on_line  = (o5 == 0);
+        bool right_on_line = (o4 == 0);
+
+        if (left_on_line && right_on_line)
+            stable++;
+        else
+            stable = 0;
+
+        //CyDelay(10); // 10ms per check → ~50ms total stability
+    }
+}
+
+
 /* -------------------- LEFT TURN -------------------- */
 void turn_left_enc(void)
 {
-    // Small forward movement before turning
-    move_forward_ticks(10);
+    motor_left(90);
+    motor_right(170);
 
-    // Reset encoders for the actual turn
-    QuadDec_M1_SetCounter(0);
-    QuadDec_M2_SetCounter(0);
+    uint8 stable = 0;
 
-    motor_left(L_REV_PWM);
-    motor_right(R_FWD_PWM);
-
-    bool left_done = false;
-    bool right_done = false;
-
-    while (!(left_done && right_done))
+    while (stable < 3)
     {
-        int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
-        int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
+        uint8 o4 = Output_4_Read();
+        uint8 o5 = Output_5_Read();
 
-        if (!left_done && abs(L) >= abs(LEFT_TICKS_90_L)) {
-            motor_left(STOP_PWM);
-            left_done = true;
-        }
+        bool on_line = (o4 == 0) && (o5 == 0);
 
-        if (!right_done && abs(R) >= abs(RIGHT_TICKS_90_L)) {
-            motor_right(STOP_PWM);
-            right_done = true;
-        }
+        if (on_line)
+            stable++;
+        else
+            stable = 0;
+
+        //CyDelay(10);
     }
 
     stop();
     CyDelay(100);
 }
+
 
 /* -------------------- RIGHT TURN -------------------- */
 void turn_right_enc(void)
 {
-    // Small forward movement before turning
-    move_forward_ticks(20);
+    // Start turning
+    motor_left(155);
+    motor_right(101);
 
-    // Reset encoders for the actual turn
-    QuadDec_M1_SetCounter(0);
-    QuadDec_M2_SetCounter(0);
+    uint8 stable = 0;
 
-    motor_left(L_FWD_PWM);
-    motor_right(R_REV_PWM);
-
-    bool left_done = false;
-    bool right_done = false;
-
-    while (!(left_done && right_done))
+    while (stable < 2)
     {
-        int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
-        int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
+        uint8 o4 = Output_4_Read(); // front-right
+        uint8 o5 = Output_5_Read(); // front-left
 
-        if (!left_done && abs(L) >= abs(LEFT_TICKS_90_R)) {
-            motor_left(STOP_PWM);
-            left_done = true;
-        }
+        bool on_line = (o4 == 0) && (o5 == 0);
 
-        if (!right_done && abs(R) >= abs(RIGHT_TICKS_90_R)) {
-            motor_right(STOP_PWM);
-            right_done = true;
-        }
+        if (on_line)
+            stable++;
+        else
+            stable = 0;
+
+        CyDelay(10); // check every 10ms
     }
 
     stop();
@@ -195,18 +199,27 @@ void turn_right_enc(void)
 
 
 
- void u_turn_enc(void)
+
+  void u_turn_enc(void)
 {
     QuadDec_M1_SetCounter(0);
     QuadDec_M2_SetCounter(0);
-
+    
+    
     motor_left(L_REV_PWM);
-    motor_right(R_FWD_PWM);
-
+    motor_right(STOP_PWM);
     while (1) {
         int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
+        
+        if (abs(L) >= abs(LEFT_TICKS_180_L) )
+            break;
+    }
+    motor_left(STOP_PWM);
+    motor_right(R_FWD_PWM);
+    while (1) {
+
         int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
-        if (abs(L) >= abs(LEFT_TICKS_180_L) && abs(R) >= abs(RIGHT_TICKS_180_L))
+        if (abs(R) >= abs(RIGHT_TICKS_180_L))
             break;
     }
 
