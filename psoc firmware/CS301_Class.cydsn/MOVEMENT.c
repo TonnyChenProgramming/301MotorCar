@@ -24,11 +24,8 @@ void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 #define LEFT_TICKS_90_R   (100) //left motor during right turn
 #define RIGHT_TICKS_90_R  (90) //right motor during right 90
 
-#define LEFT_TICKS_180_L  (164)
-#define RIGHT_TICKS_180_L (154)
-
-#define LEFT_TICKS_180_R  (2 * LEFT_TICKS_90_R)
-#define RIGHT_TICKS_180_R (2 * RIGHT_TICKS_90_R)
+#define LEFT_TICKS_180_L  (195)
+#define RIGHT_TICKS_180_L (210)
 
 #define ENCODER_LEFT_SIGN  (+1)
 #define ENCODER_RIGHT_SIGN (+1)
@@ -197,22 +194,32 @@ void turn_right_enc(void)
 
  void u_turn_enc(void)
 {
-    QuadDec_M1_SetCounter(0);
+        QuadDec_M1_SetCounter(0);
     QuadDec_M2_SetCounter(0);
-
+    
+    
     motor_left(L_REV_PWM);
-    motor_right(R_FWD_PWM);
-
+    motor_right(STOP_PWM);
     while (1) {
         int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
+        
+        if (abs(L) >= abs(LEFT_TICKS_180_L) )
+            break;
+    }
+    motor_left(STOP_PWM);
+    motor_right(R_FWD_PWM);
+    while (1) {
+
         int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
-        if (abs(L) >= abs(LEFT_TICKS_180_L) && abs(R) >= abs(RIGHT_TICKS_180_L))
+        if (abs(R) >= abs(RIGHT_TICKS_180_L))
             break;
     }
 
     stop();
     CyDelay(100);
     go_straight();
+
+   
 }
 
 // ============================================================================
