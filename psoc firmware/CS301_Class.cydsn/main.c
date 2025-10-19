@@ -9,8 +9,8 @@ MovementState previous_movement = STOP;
 uint16_t food_distances[5] = {2,3,4,5,6};
 // Example instruction sequence
 // Replace this with one produced by map_to_instructions.c
-//uint8_t instructions[] = {STRAIGHT,  RIGHT_TURN, STRAIGHT, LEFT_TURN, STRAIGHT, LEFT_TURN, FOOD, U_TURN,STRAIGHT,RIGHT_TURN,STRAIGHT,RIGHT_TURN,STRAIGHT,LEFT_TURN,STRAIGHT,};
-uint8_t instructions[] = {STRAIGHT, STRAIGHT, RIGHT_TURN};
+uint8_t instructions[] = {STRAIGHT,  RIGHT_TURN, STRAIGHT, LEFT_TURN, STRAIGHT, LEFT_TURN, FOOD, U_TURN,STRAIGHT,RIGHT_TURN,STRAIGHT,RIGHT_TURN,STRAIGHT,LEFT_TURN,STRAIGHT,};
+//uint8_t instructions[] = {STRAIGHT, STRAIGHT, RIGHT_TURN};
 uint8_t num_instructions = sizeof(instructions) / sizeof(instructions[0]);
 
 static void hardware_init(void)
@@ -32,7 +32,6 @@ int main(void)
 
     CyDelay(1000);
      
-    
     // brief pause to settle sensors
     
 
