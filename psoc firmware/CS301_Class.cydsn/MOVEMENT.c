@@ -30,6 +30,8 @@ void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 #define ENCODER_LEFT_SIGN  (+1)
 #define ENCODER_RIGHT_SIGN (+1)
 
+#define COUNTDOWN_LEFT 0
+#define COUNTDOWN_RIGHT 0
 // ---------- Line-follow PWM ----------
 uint8_t left_pwm = 154;
 uint8_t right_pwm = 157;
@@ -37,6 +39,9 @@ uint8_t drift_left_pwm = 162;
 uint8_t drift_right_pwm = 158;
 //food number tracking
 static uint8_t food_index = 0;
+static uint16_t count_down = 0;
+uint8_t last_drift = 0;
+
 // ============================================================================
 // Basic motor control
 // ============================================================================
@@ -52,17 +57,31 @@ void go_straight(void)
     if ((Output_5_Read()) && !(Output_4_Read())) {
         motor_left(drift_right_pwm);
         motor_right(right_pwm);
+        last_drift = 0;
     }
     // drift left (right sensor white)
     else if (!(Output_5_Read()) && (Output_4_Read())) {
         motor_left(left_pwm);
         motor_right(drift_left_pwm);
+        last_drift = 1;
     }
-    else {
+    else if ((Output_5_Read()) && (Output_4_Read())) {
+        if (last_drift) {
+            motor_left(left_pwm);
+            motor_right(drift_left_pwm);
+        }
+        else {
+        motor_left(drift_right_pwm);
+        motor_right(right_pwm);}
+    }
+    else
+        {
         motor_left(left_pwm);
         motor_right(right_pwm);
+        }
+
     }
-}
+
 
 // ============================================================================
 // Encoder-based turns
@@ -149,6 +168,17 @@ void turn_left_enc(void)
             right_done = true;
         }
     }
+    // SMALL adjustment if undershoot
+    motor_left(100);
+    motor_right(152);
+    count_down = 0;
+    if ((Output_4_Read() == 1) && (Output_5_Read() == 1)) {
+        count_down = COUNTDOWN_LEFT;
+    }
+    while (count_down > 0)
+    {
+        count_down--;
+    }
 
     stop();
     CyDelay(100);
@@ -184,6 +214,19 @@ void turn_right_enc(void)
             motor_right(STOP_PWM);
             right_done = true;
         }
+
+    }
+    // SMALL adjustment if undershoot
+    count_down = 0;
+    motor_left(150); //170, 80
+    motor_right(98);// 154, 90
+            
+    if ((Output_5_Read() == 1) && (Output_4_Read() == 1)) {
+
+        count_down = COUNTDOWN_RIGHT;
+    }
+    while (count_down > 0){
+        count_down--;
     }
 
     stop();
@@ -194,7 +237,7 @@ void turn_right_enc(void)
 
  void u_turn_enc(void)
 {
-        QuadDec_M1_SetCounter(0);
+    QuadDec_M1_SetCounter(0);
     QuadDec_M2_SetCounter(0);
     
     
