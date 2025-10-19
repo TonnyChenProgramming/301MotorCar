@@ -37,6 +37,8 @@ uint8_t left_pwm = 154;
 uint8_t right_pwm = 157;
 uint8_t drift_left_pwm = 162;
 uint8_t drift_right_pwm = 158;
+uint8_t adjust_left_pwm = 170;
+uint8_t adjust_right_pwm = 165;
 //food number tracking
 static uint8_t food_index = 0;
 static uint16_t count_down = 0;
@@ -68,10 +70,10 @@ void go_straight(void)
     else if ((Output_5_Read()) && (Output_4_Read())) {
         if (last_drift) {
             motor_left(left_pwm);
-            motor_right(drift_left_pwm);
+            motor_right(adjust_left_pwm);
         }
         else {
-        motor_left(drift_right_pwm);
+        motor_left(adjust_right_pwm);
         motor_right(right_pwm);}
     }
     else
@@ -168,18 +170,8 @@ void turn_left_enc(void)
             right_done = true;
         }
     }
-    // SMALL adjustment if undershoot
-    motor_left(100);
-    motor_right(152);
-    count_down = 0;
-    if ((Output_4_Read() == 1) && (Output_5_Read() == 1)) {
-        count_down = COUNTDOWN_LEFT;
-    }
-    while (count_down > 0)
-    {
-        count_down--;
-    }
 
+    last_drift = 1;
     stop();
     CyDelay(100);
 }
@@ -217,18 +209,8 @@ void turn_right_enc(void)
 
     }
     // SMALL adjustment if undershoot
-    count_down = 0;
-    motor_left(150); //170, 80
-    motor_right(98);// 154, 90
-            
-    if ((Output_5_Read() == 1) && (Output_4_Read() == 1)) {
 
-        count_down = COUNTDOWN_RIGHT;
-    }
-    while (count_down > 0){
-        count_down--;
-    }
-
+    last_drift = 0;        
     stop();
     CyDelay(100);
 }
