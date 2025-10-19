@@ -79,7 +79,8 @@ int main(void)
 
     RobotInstr instructions[MAX_INSTRUCTIONS];
     int food_dists[5];
-    int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists);
+    int food_axes[5]; // 0 = X-direction, 1 = Y-direction
+    int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists, food_axes);
 
     // --- Execute plan ---
     for (int i = 0; i < num_instructions; ++i)
@@ -87,13 +88,21 @@ int main(void)
         switch (instructions[i].type)
         {
             case iSTRAIGHT:
-                if (instructions[i+1].type == iSTOP)
+                if (i + 1 < num_instructions && instructions[i + 1].type == iSTOP)
                 {
                     if (food_index < 5)
                     {
-                        move_forward_until_intersection();
+                        double cell_len_cm = (food_axes[food_index] == 0) ? 11.21 : 7.7;
+                        double distance_cm = food_dists[food_index] * cell_len_cm;
+                        int ticks = (int)((distance_cm / 11.21) * 83.0);
+
+                        // Directly move forward precise distance to the food
+                        go_straigh_with_tick(ticks);
+                        stop();
+                        food_index++;
+                        i++; // Skip the STOP since we've already handled it
                     }
-                } 
+                }
                 else
                 {
                     move_forward_until_intersection();
@@ -123,6 +132,18 @@ int main(void)
                 break;
         }
     }
+    
+    for (int i = 0; i < 5; ++i) {
+        double distance_cm = 0.0;
+        if (food_axes[i] == 0)
+            distance_cm = food_dists[i] * 11.21; // horizontal
+        else
+            distance_cm = food_dists[i] * 7.7;   // vertical
+
+        printf("Food %d: %d cells, axis=%s, distance=%.2f cm\n",
+               i, food_dists[i],
+               (food_axes[i] == 0 ? "X" : "Y"),
+               distance_cm);
 
     // --- Idle ---
     for(;;)

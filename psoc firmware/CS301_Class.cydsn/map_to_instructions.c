@@ -50,7 +50,8 @@ static inline bool has_side_branch(int r, int c, int came_dir, int go_dir) {
 static void emit_plan_for_path(const int path[][2], int len,
                                RobotInstr instr[], int *count, int max_instr,
                                int *heading_ptr,
-                               int *food_dists_ptr, int current_food_index)
+                               int *food_dists_ptr, int *food_axes_ptr, int current_food_index)
+
 {
     if (len < 2) return;
     int idx = *count;
@@ -134,6 +135,11 @@ static void emit_plan_for_path(const int path[][2], int len,
             else
                 break;
         }
+        int axis = 0; 
+        if (final_dir == 1 || final_dir == 3) 
+            axis = 1;
+        if (food_axes_ptr)
+            food_axes_ptr[current_food_index] = axis;
 
         food_dists_ptr[current_food_index] = straight_to_goal;
     }
@@ -147,7 +153,7 @@ static void emit_plan_for_path(const int path[][2], int len,
 
 
 
-int generate_instructions_from_map(RobotInstr instr[], int max_instr, int food_dists[])
+int generate_instructions_from_map(RobotInstr instr[], int max_instr, int food_dists[], int food_axes[])
 {
     int total = 0;
     int cur_r = start_pos[0];
@@ -247,7 +253,7 @@ int generate_instructions_from_map(RobotInstr instr[], int max_instr, int food_d
             }
         }
 
-        emit_plan_for_path((const int (*)[2])path, len, instr, &total, max_instr, &heading, food_dists, f);
+        emit_plan_for_path((const int (*)[2])path, len, instr, &total, max_instr, &heading, food_dists, food_axes, f);
 
         cur_r = goal_r;
         cur_c = goal_c;
