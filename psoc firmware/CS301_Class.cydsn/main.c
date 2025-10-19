@@ -4,6 +4,7 @@
 #include <project.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -20,8 +21,8 @@
 static volatile int16 left_wheel_val; // positive
 static volatile int16 right_wheel_val;//negative
 
-static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
-static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
+//static void motor_left(uint16 val)  { PWM_1_WriteCompare(val); }
+//static void motor_right(uint16 val) { PWM_2_WriteCompare(val); }
 
 uint8_t timer_flag = 0;
 MovementState current_move;
@@ -90,14 +91,14 @@ int main(void)
                 move_forward_until_intersection();
                 break;
             case iLEFT:
-                turn_left_until_line();
+                turn_left_enc();
                 break;
             case iRIGHT:
-                turn_right_until_line();
+                turn_right_enc();
                 break;
             case iTURN_AROUND:
-                turn_right_until_line();
-                turn_right_until_line();
+                turn_right_enc();
+                turn_right_enc();
                 break;
             case iSTOP:
                 stop();

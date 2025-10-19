@@ -1,38 +1,38 @@
 /* ========================================
  *
- * Copyright YOUR COMPANY, THE YEAR
- * All Rights Reserved
- * UNPUBLISHED, LICENSED SOFTWARE.
- *
- * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
- *
- * ========================================
-*/
+ * Movement Control Header
+ * ======================================== */
 
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
-#include "SENSORS_READ.h"
+#include <project.h>
 #include <stdbool.h>
-    
-void stop(void);
+#include <stdint.h>
+
+/* ---- Basic Motion ---- */
 void go_straight(void);
+void stop(void);
 
-// Minimal helpers for executing high-level instructions
-bool is_at_intersection(void);
-bool on_line(void);
+/* ---- Movement and Turning ---- */
+void move_forward_ticks(int32 steps);
+void go_straigh_with_tick(int32 steps);
 void move_forward_until_intersection(void);
-void turn_left_until_line(void);
-void turn_right_until_line(void);
+void move_forward_skip_one_intersection(void);
+void turn_left_enc(void);
+void turn_right_enc(void);
+void u_turn_enc(void);
 
-// Specific navigation helpers
-void move_until_left_turn(void);
-void move_until_right_turn(void);
+/* ---- Food Handling ---- */
+void run_for_food(uint8_t food_distance);
 
+/* ---- Path Execution ---- */
+void execute_instruction(uint8_t instr, uint16_t *food_distances);
+void execute_path(uint8_t *instructions, uint8_t length, uint16_t *food_distances);
 
-// Follow line until STOP or intersection
-void move_handling(void);
+/* ---- Motor Interface ---- */
+void motor_left(uint16 val);
+void motor_right(uint16 val);
 
-#endif
+#endif /* MOVEMENT_H */
 /* [] END OF FILE */
