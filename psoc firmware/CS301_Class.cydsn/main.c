@@ -18,12 +18,13 @@
 #include "map_to_instructions.h" 
 
 #define TIMER_BASE_HZ 100000UL
-#define USE_USB 1
+//#define USE_USB 1
 
 // --- Globals ---
 static volatile int16 left_wheel_val;
 static volatile int16 right_wheel_val;
 uint8_t timer_flag = 0;
+uint8_t food_index = 0;
 MovementState current_move;
 
 // --- Function Prototypes ---
@@ -109,10 +110,19 @@ int main(void)
         switch (instructions[i].type)
         {
             case iSTRAIGHT:
-                dbg("STRAIGHT\r\n");
-                move_forward_until_intersection();
-                dbg("[DONE] Straight movement complete\r\n");
-                break;
+                if (instructions[i+1].type == iSTOP)
+                {
+                    if (food_index < 5)
+                    {
+                        run_for_food(food_dists[food_index]);
+                        food_index++;
+                    }
+                } else{
+                    dbg("STRAIGHT\r\n");
+                    move_forward_until_intersection();
+                    dbg("[DONE] Straight movement complete\r\n");
+                }
+
 
             case iLEFT:
                 dbg("LEFT TURN\r\n");
@@ -128,15 +138,15 @@ int main(void)
 
             case iTURN_AROUND:
                 dbg("TURN-AROUND\r\n");
-                turn_right_enc();
-                turn_right_enc();
+                u_turn_enc();
                 dbg("[DONE] U-turn complete\r\n");
                 break;
 
             case iSTOP:
-                dbg("STOP\r\n");
-                stop();
-                CyDelay(1000);
+                //dbg("STOP\r\n");
+                //stop();
+                //CyDelay(1000);
+                //dbg("[DONE] Stop complete\r\n");
                 dbg("[DONE] Stop complete\r\n");
                 break;
 
@@ -150,7 +160,7 @@ int main(void)
         CyDelay(250);
     }
 
-    dbg("\r\n=== Path Complete – Entering Idle Mode ===\r\n");
+    dbg("===Path Complete Entering Idle Mode ===\r\n");
 
     // --- Idle (hold motors steady) ---
     for(;;)
