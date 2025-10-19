@@ -132,7 +132,7 @@ void turn_left_enc(void)
     QuadDec_M2_SetCounter(0);
 
     motor_left(L_REV_PWM);
-    motor_right(R_FWD_PWM);
+    motor_right(R_FWD_PWM + 10);
 
     bool left_done = false;
     bool right_done = false;
@@ -383,6 +383,10 @@ void execute_path(uint8_t *instructions, uint8_t length, uint16_t *food_distance
         {
             execute_instruction(current, food_distances);
         }
+        
+        
+        
+        
        
 
         if (current == STOP) break;

@@ -122,6 +122,8 @@ int main(void)
                     move_forward_until_intersection();
                     dbg("[DONE] Straight movement complete\r\n");
                 }
+                
+                break;
 
 
             case iLEFT:
