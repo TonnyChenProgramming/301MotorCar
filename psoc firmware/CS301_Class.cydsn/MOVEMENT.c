@@ -371,7 +371,7 @@ void run_for_food(uint8_t food_distance)
                 //{
     go_straigh_with_tick(83*food_distance);   // move forward to food location
     stop();
-    CyDelay(100);                  // 1 second pickup delay
+    CyDelay(1000);                  // 1 second pickup delay
                 //}
 }
 

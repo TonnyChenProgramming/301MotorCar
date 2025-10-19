@@ -91,7 +91,7 @@ int main(void)
                 {
                     if (food_index < 5)
                     {
-                        move_forward_until_intersection();
+                        run_for_food(food_dists[food_index]);
                     }
                 } 
                 else
