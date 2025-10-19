@@ -63,20 +63,20 @@ int main(void)
     USBUART_Start(0, USBUART_5V_OPERATION);
     #endif
 
-    MovementState instructions[MAX_INSTRUCTIONS];
+    RobotInstr instructions[MAX_INSTRUCTIONS];
     int food_dists[5];
-    int num_instructions = generate_movements_from_map(instructions, MAX_INSTRUCTIONS, food_dists);
+    int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists);
+
 
     
 // --- Print plan ---
 for (int i = 0; i < num_instructions; ++i) {
-    switch (instructions[i]) {
-        case STRAIGHT:     usbPutString("Plan: straight until intersection\r\n"); break;
-        case LEFT_TURN:         usbPutString("Plan: left\r\n"); break;
-        case RIGHT_TURN:        usbPutString("Plan: right\r\n"); break;
-        case U_TURN:  usbPutString("Plan: turn-around\r\n"); break;
-        case STOP:         usbPutString("Plan: stop\r\n"); break;
-        case FOOD: usbPutString("Plan: food\r\n"); break;
+    switch (instructions[i].type) {
+        case iSTRAIGHT:     usbPutString("Plan: straight until intersection\r\n"); break;
+        case iLEFT:         usbPutString("Plan: left\r\n"); break;
+        case iRIGHT:        usbPutString("Plan: right\r\n"); break;
+        case iTURN_AROUND:  usbPutString("Plan: turn-around\r\n"); break;
+        case iSTOP:         usbPutString("Plan: stop\r\n"); break;
         default:            usbPutString("Plan: unknown\r\n"); break;
     }
 }
@@ -94,7 +94,33 @@ for (int i = 0; i < 5; ++i) {
 
     // Execute plan
     // --- Execute plan ---
+for (int i = 0; i < num_instructions; ++i) {
+    switch (instructions[i].type) {
+        case iSTRAIGHT:
+            move_forward_until_intersection();
+            break;
+        case iLEFT:
+            turn_left_until_line();
+            break;
+        case iRIGHT:
+            turn_right_until_line();
+            break;
+        case iTURN_AROUND:
+            turn_right_until_line();
+            turn_right_until_line();
+            break;
+        case iSTOP:
+            stop();
+            CyDelay(1000);
+            break;
+        default:
+            stop();
+            break;
+    }
+}
 
+    // Idle after execution
+    for(;;) { PWM_1_WriteCompare(255); PWM_2_WriteCompare(127); }
 }
  
 

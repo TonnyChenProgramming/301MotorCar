@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "SENSORS_READ.h"
+
 #define ROWS 15
 #define COLS 19
 
@@ -14,9 +14,9 @@
 
 #if USE_USB
 extern void usbPutString(char *s);
-static void dbg_puts(const char *s) { usbPutString((char*)s); }
+static void dbg_puts(const char *s) {}
 #else
-static void dbg_puts(const char *s) { printf("%s", s); }
+static void dbg_puts(const char *s) {}
 #endif
 
 // Directions: 0 = right, 1 = down, 2 = left, 3 = up
@@ -33,18 +33,6 @@ static inline int heuristic(int r, int c, int gr, int gc) {
     return abs(r - gr) + abs(c - gc);
 }
 
-static void debug_print_path(const int path[][2], int len, int leg_idx) {
-    char line[128];
-    snprintf(line, sizeof(line), "\r\n=== RAW PATH (leg %d) len=%d ===\r\n", leg_idx, len);
-    dbg_puts(line);
-    for (int i = 0; i < len; ++i) {
-        snprintf(line, sizeof(line), "(%d,%d)%s", path[i][0], path[i][1],
-                 (i == len - 1) ? "\r\n" : " ");
-        dbg_puts(line);
-    }
-    dbg_puts("=== END RAW PATH ===\r\n");
-}
-
 typedef struct {
     int r, c, f;
 } Node;
@@ -58,7 +46,7 @@ static inline bool has_side_branch(int r, int c, int came_dir, int go_dir) {
 }
 
 static void emit_plan_for_path(const int path[][2], int len,
-                               MovementState instr[], int *count, int max_instr,
+                               RobotInstr instr[], int *count, int max_instr,
                                int *heading_ptr,
                                int *food_dists_ptr, int current_food_index)
 {
@@ -94,15 +82,13 @@ static void emit_plan_for_path(const int path[][2], int len,
         int diff = (step_dir - heading + 4) & 3;
 
         if (diff != 0) {
-            // emit any pending straights first
             for (int k = 0; k < straight_decisions && idx < max_instr; ++k)
-                instr[idx++] = STRAIGHT;
+                instr[idx++].type = iSTRAIGHT;
             straight_decisions = 0;
 
-            // now emit the turn
-            if (diff == 1 && idx < max_instr)      instr[idx++] = RIGHT_TURN;
-            else if (diff == 3 && idx < max_instr) instr[idx++] = LEFT_TURN;
-            else if (diff == 2 && idx < max_instr) instr[idx++] = U_TURN;
+            if (diff == 1 && idx < max_instr)      instr[idx++].type = iRIGHT;
+            else if (diff == 3 && idx < max_instr) instr[idx++].type = iLEFT;
+            else if (diff == 2 && idx < max_instr) instr[idx++].type = iTURN_AROUND;
 
             heading = step_dir;
         } 
@@ -110,33 +96,25 @@ static void emit_plan_for_path(const int path[][2], int len,
             straight_decisions++;
         }
 
-        // ✅ FOOD logic — if the straight ahead leads directly to a food target
-        if (is_goal && food_dists_ptr && food_dists_ptr[current_food_index] > 0 && idx < max_instr) {
-            instr[idx++] = FOOD;
-            straight_decisions = 0;
-        }
-
         if (idx >= max_instr - 3)
             break;
     }
 
-    // Emit leftover straights
     for (int k = 0; k < straight_decisions && idx < max_instr; ++k)
-        instr[idx++] = STRAIGHT;
+        instr[idx++].type = iSTRAIGHT;
 
-    // ✅ Add a missing straight if we ended just before goal
     if (straight_decisions == 0 && len > 1 && idx < max_instr) {
         int r_last = path[len-2][0], c_last = path[len-2][1];
         int r_goal = path[len-1][0], c_goal = path[len-1][1];
         if (abs(r_last - r_goal) + abs(c_last - c_goal) == 1)
-            instr[idx++] = STRAIGHT;
+            instr[idx++].type = iSTRAIGHT;
     }
 
-    // ✅ Compute final straight distance to goal (after last turn)
     if (food_dists_ptr) {
         int straight_to_goal = 0;
         int goal_r = path[len - 1][0], goal_c = path[len - 1][1];
         int prev_r = path[len - 2][0], prev_c = path[len - 2][1];
+
         int final_dir = -1;
         for (int d = 0; d < 4; ++d)
             if (goal_r + drow[d] == prev_r && goal_c + dcol[d] == prev_c)
@@ -158,9 +136,8 @@ static void emit_plan_for_path(const int path[][2], int len,
         food_dists_ptr[current_food_index] = straight_to_goal;
     }
 
-    // Always stop at end of leg
     if (idx < max_instr)
-        instr[idx++] = STOP;
+        instr[idx++].type = iSTOP;
 
     *count = idx;
     *heading_ptr = heading;
@@ -168,7 +145,7 @@ static void emit_plan_for_path(const int path[][2], int len,
 
 
 
-int generate_movements_from_map(MovementState instr[], int max_instr, int food_dists[])
+int generate_instructions_from_map(RobotInstr instr[], int max_instr, int food_dists[])
 {
     int total = 0;
     int cur_r = start_pos[0];
@@ -176,19 +153,11 @@ int generate_movements_from_map(MovementState instr[], int max_instr, int food_d
     const int foods = sizeof(food_list) / sizeof(food_list[0]);
     int heading = -1;
 
-    char msg[128];
-
     for (int f = 0; f < foods && total < max_instr; ++f) {
         int goal_r = food_list[f][0];
         int goal_c = food_list[f][1];
 
-        snprintf(msg, sizeof(msg), "\r\n--- STARTING LEG %d: (%d,%d) → (%d,%d) ---\r\n",
-                 f, cur_r, cur_c, goal_r, goal_c);
-        dbg_puts(msg);
-
         if (!is_free(goal_r, goal_c)) {
-            snprintf(msg, sizeof(msg), "!! Food %d is on a wall. Skipping.\r\n", f);
-            dbg_puts(msg);
             food_dists[f] = -1;
             continue;
         }
@@ -234,7 +203,6 @@ int generate_movements_from_map(MovementState instr[], int max_instr, int food_d
             }
         }
 
-        // reconstruct path
         int path[256][2];
         int len = 0;
         int r = goal_r, c = goal_c;
@@ -249,12 +217,10 @@ int generate_movements_from_map(MovementState instr[], int max_instr, int food_d
         }
 
         if (len < 2) {
-            dbg_puts("!! No path found for this leg.\r\n");
             food_dists[f] = -1;
             continue;
         }
 
-        // reverse path order
         for (int i = 0; i < len / 2; ++i) {
             int tr = path[i][0], tc = path[i][1];
             path[i][0] = path[len - 1 - i][0];
@@ -263,9 +229,6 @@ int generate_movements_from_map(MovementState instr[], int max_instr, int food_d
             path[len - 1 - i][1] = tc;
         }
 
-        debug_print_path(path, len, f);
-
-        // handle possible 180° reverse
         int new_heading = -1;
         int r0 = path[0][0], c0 = path[0][1];
         int r1 = path[1][0], c1 = path[1][1];
@@ -277,13 +240,11 @@ int generate_movements_from_map(MovementState instr[], int max_instr, int food_d
             int back_r = cur_r - drow[heading];
             int back_c = cur_c - dcol[heading];
             if (path[1][0] == back_r && path[1][1] == back_c && total < max_instr) {
-                dbg_puts("[DBG] Detected reverse path start → inserting U_TURN\r\n");
-                instr[total++] = U_TURN;
+                instr[total++].type = iTURN_AROUND;
                 heading = new_heading;
             }
         }
 
-        // use new FOOD-compatible emitter
         emit_plan_for_path((const int (*)[2])path, len, instr, &total, max_instr, &heading, food_dists, f);
 
         cur_r = goal_r;
