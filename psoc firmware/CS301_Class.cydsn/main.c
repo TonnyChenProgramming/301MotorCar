@@ -15,11 +15,7 @@
 #include "MOVEMENT.h"
 #include "map_to_instructions.h" 
 
-
-
 #define TIMER_BASE_HZ 100000UL
-
- 
 
 static volatile int16 left_wheel_val; // positive
 static volatile int16 right_wheel_val;//negative
@@ -41,12 +37,8 @@ CY_ISR(Timer_TS_ISR_Handler)
     timer_flag = 1;   
 }
 
-
 // helpers
 #define S_ACTIVE(pin_read) ((pin_read) == 0u)   // active-low -> 1 when line
-
-// active-low: 0 = on line, 1 = off line
-#define S_ACTIVE(pin_read) ((pin_read) == 0u)
 
 /* ================= Main ================= */
 int main(void)
@@ -67,71 +59,73 @@ int main(void)
     int food_dists[5];
     int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists);
 
-
-    
-// --- Print plan ---
-for (int i = 0; i < num_instructions; ++i) {
-    switch (instructions[i].type) {
-        case iSTRAIGHT:     usbPutString("Plan: straight until intersection\r\n"); break;
-        case iLEFT:         usbPutString("Plan: left\r\n"); break;
-        case iRIGHT:        usbPutString("Plan: right\r\n"); break;
-        case iTURN_AROUND:  usbPutString("Plan: turn-around\r\n"); break;
-        case iSTOP:         usbPutString("Plan: stop\r\n"); break;
-        default:            usbPutString("Plan: unknown\r\n"); break;
+    // --- Print plan (DISABLED FOR TESTING) ---
+    /*
+    for (int i = 0; i < num_instructions; ++i) {
+        switch (instructions[i].type) {
+            case iSTRAIGHT:     usbPutString("Plan: straight until intersection\r\n"); break;
+            case iLEFT:         usbPutString("Plan: left\r\n"); break;
+            case iRIGHT:        usbPutString("Plan: right\r\n"); break;
+            case iTURN_AROUND:  usbPutString("Plan: turn-around\r\n"); break;
+            case iSTOP:         usbPutString("Plan: stop\r\n"); break;
+            default:            usbPutString("Plan: unknown\r\n"); break;
+        }
     }
-}
 
-usbPutString("=== Food distances ===\r\n");
-for (int i = 0; i < 5; ++i) {
-    char msg[32];
-    sprintf(msg, "Food %d: %d\r\n", i, food_dists[i]);
-    usbPutString(msg);
-}
-
+    usbPutString("=== Food distances ===\r\n");
+    for (int i = 0; i < 5; ++i) {
+        char msg[32];
+        sprintf(msg, "Food %d: %d\r\n", i, food_dists[i]);
+        usbPutString(msg);
+    }
+    */
 
     // Wait 5 seconds before starting movement
-  //  CyDelay(5000);
+    // CyDelay(5000);
 
-    // Execute plan
     // --- Execute plan ---
-for (int i = 0; i < num_instructions; ++i) {
-    switch (instructions[i].type) {
-        case iSTRAIGHT:
-            move_forward_until_intersection();
-            break;
-        case iLEFT:
-            turn_left_until_line();
-            break;
-        case iRIGHT:
-            turn_right_until_line();
-            break;
-        case iTURN_AROUND:
-            turn_right_until_line();
-            turn_right_until_line();
-            break;
-        case iSTOP:
-            stop();
-            CyDelay(1000);
-            break;
-        default:
-            stop();
-            break;
+    for (int i = 0; i < num_instructions; ++i) {
+        switch (instructions[i].type) {
+            case iSTRAIGHT:
+                move_forward_until_intersection();
+                break;
+            case iLEFT:
+                turn_left_until_line();
+                break;
+            case iRIGHT:
+                turn_right_until_line();
+                break;
+            case iTURN_AROUND:
+                turn_right_until_line();
+                turn_right_until_line();
+                break;
+            case iSTOP:
+                stop();
+                CyDelay(1000);
+                break;
+            default:
+                stop();
+                break;
+        }
     }
-}
 
     // Idle after execution
-    for(;;) { PWM_1_WriteCompare(255); PWM_2_WriteCompare(127); }
+    for(;;) { 
+        PWM_1_WriteCompare(255); 
+        PWM_2_WriteCompare(127); 
+    }
 }
  
-
 
 void usbPutString(char *s)
 {
 #ifdef USE_USB
+    /*
     while (USBUART_CDCIsReady() == 0) {}
     s[63] = '\0';
     s[62] = '!';              
     USBUART_PutData((uint8*)s, (uint16)strlen(s));
+    */
 #else
     (void)s;
 #endif
@@ -140,8 +134,10 @@ void usbPutString(char *s)
 void usbPutChar(char c)
 {
 #ifdef USE_USB
+    /*
     while (USBUART_CDCIsReady() == 0) {}
     USBUART_PutChar((uint8)c);
+    */
 #else
     (void)c;
 #endif
@@ -175,7 +171,7 @@ void handle_usb(void)
             usbBufCount--;
         } else {
             if (usbBufCount > (BUF_SIZE - 2)) {
-                USBUART_PutChar('!');
+                // USBUART_PutChar('!');   // commented out
             } else {
                 entry[usbBufCount++] = (char)c;
             }
@@ -183,4 +179,3 @@ void handle_usb(void)
     }
 #endif
 }
-
