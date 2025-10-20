@@ -26,6 +26,7 @@ static volatile int16 right_wheel_val;
 uint8_t timer_flag = 0;
 uint8_t food_index = 0;
 MovementState current_move;
+uint8_t skip_straight_counter = 0;
 
 // --- Function Prototypes ---
 void usbPutString(char *s);
@@ -83,25 +84,49 @@ int main(void)
     int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists, food_axes);
 
     CyDelay(1000);
+    // scan for intersection && food pattern
     // --- Execute plan ---
     for (int i = 0; i < num_instructions; ++i)
     {
+
         switch (instructions[i].type)
         {
             case iSTRAIGHT:
-                if (instructions[i+1].type == iSTOP)
-                {
-                    if (food_index < 5)
-                    {
-                        run_for_food(food_dists[food_index], food_axes[food_index]);
-                        food_index++;
-                    }
-                } 
-                else
-                {
-                    move_forward_until_intersection();
+            {
+                // If we are already skipping a final straight segment, just consume this step
+                if (skip_straight_counter > 0) {
+                    --skip_straight_counter;
+                    break;
                 }
+
+                // Only consider "final segment" if this straight comes right after a LEFT/RIGHT turn
+                bool after_lr = (i > 0) &&
+                    (instructions[i-1].type == iLEFT || instructions[i-1].type == iRIGHT);
+
+                if (after_lr) {
+                    // Look ahead: count continuous STRAIGHTs starting from current i
+                    int k = i;
+                    while (k < num_instructions && instructions[k].type == iSTRAIGHT) {
+                        ++k;
+                    }
+
+                    // If these STRAIGHTs are immediately followed by a STOP,
+                    // this is the final turn-to-food segment — call food ONCE and skip the segment.
+                    if (k < num_instructions && instructions[k].type == iSTOP) {
+                        if (food_index < 5) {
+                            run_for_food(food_dists[food_index], food_axes[food_index]);
+                            ++food_index;
+                        }
+                        // Skip the remaining STRAIGHTs in this block (we already consumed the current one)
+                        skip_straight_counter = (uint8_t)(k - i - 1);
+                        break; // Do not physically move forward for this segment
+                    }
+                }
+
+                // Normal straight movement when not in the final segment
+                move_forward_until_intersection();
                 break;
+            }
 
             case iLEFT:
                 turn_left_enc();
