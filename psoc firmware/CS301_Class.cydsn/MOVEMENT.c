@@ -366,16 +366,16 @@ void move_forward_until_intersection(void)
         bool right_turn = false;
 
         if ((o6 == 0) && (o3 == 0)) {
-            LED2_Write(1);
-            LED4_Write(1);
+            //LED2_Write(1);
+            //LED4_Write(1);
             right_turn = true;       // T intersection
         } 
         else if (o6 == 0) {
-            LED2_Write(1);
+            //LED2_Write(1);
             left_turn = true;
         } 
         else if (o3 == 0) {
-            LED4_Write(1);
+            //LED4_Write(1);
             right_turn = true;
         }
 
@@ -383,11 +383,11 @@ void move_forward_until_intersection(void)
 
         if (intersection) {
             stable++;
-            turn_cooldown = 75000;   // 80000 works
+            turn_cooldown = 150000;   // 80000 works
         } else {
             stable = 0;
-            LED2_Write(0);
-            LED4_Write(0);
+            //LED2_Write(0);
+            //LED4_Write(0);
         }
 
         go_straight();
@@ -428,7 +428,7 @@ void move_forward_skip_one_intersection(void)
     while (abs(L) < 60)
     {
          L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
-        LED1_Write(1);
+        //LED1_Write(1);
         // follow the line using only front sensors
         go_straight();
 

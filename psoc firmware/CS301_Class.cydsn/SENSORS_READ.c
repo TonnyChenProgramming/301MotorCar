@@ -40,7 +40,7 @@ MovementState GetMovement(void)
     
     // Left Wing
     if (o6 == 0) {
-        LED2_Write(1);
+        //LED2_Write(1);
         
         /*
         if (left_on < 5) {
@@ -56,7 +56,7 @@ MovementState GetMovement(void)
     
     // Right Wing
     if (o3 == 0) {
-        LED4_Write(1); 
+        //LED4_Write(1); 
         
         /*
         if (right_on < 5) {
@@ -76,8 +76,8 @@ MovementState GetMovement(void)
     
     // front-left & front right
     if (o5 == 0 && o4 == 0) {
-        LED1_Write(1); 
-        LED6_Write(1);
+        //LED1_Write(1); 
+        //LED6_Write(1);
         
         return STRAIGHT;
     }
