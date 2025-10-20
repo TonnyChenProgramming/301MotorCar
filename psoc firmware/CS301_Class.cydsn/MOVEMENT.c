@@ -230,36 +230,30 @@ void turn_right_enc(void)
 
 
 
- void u_turn_enc(void)
+void u_turn_enc(void)
 {
+    // Reset encoders before rotation
     QuadDec_M1_SetCounter(0);
     QuadDec_M2_SetCounter(0);
-    
-    
-    motor_left(L_REV_PWM);
-    motor_right(STOP_PWM);
-    while (1) {
-        int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
-        
-        if (abs(L) >= abs(LEFT_TICKS_180_L) )
-            break;
-    }
-    motor_left(STOP_PWM);
-    motor_right(R_FWD_PWM);
-    while (1) {
 
-        int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
-        if (abs(R) >= abs(RIGHT_TICKS_180_L))
+    // Both wheels move in opposite directions for a centered spin
+    motor_left(L_REV_PWM + 6);   // reverse left motor
+    motor_right(R_FWD_PWM + 6);  // forward right motor
+
+    while (1)
+    {
+        int32 L = abs(QuadDec_M1_GetCounter());
+        int32 R = abs(QuadDec_M2_GetCounter());
+
+        // stop when both encoders reach ~half the turn distance
+        // because both sides contribute equally to total rotation
+        if (L >= abs(LEFT_TICKS_180_L) && R >= abs(RIGHT_TICKS_180_L))
             break;
     }
 
     stop();
     CyDelay(100);
-    go_straight();
-
-   
 }
-
 // ============================================================================
 // Line following and intersection logic
 // ============================================================================
