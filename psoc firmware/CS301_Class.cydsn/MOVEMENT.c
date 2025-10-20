@@ -118,18 +118,30 @@ void go_straigh_with_tick(int32 steps)
     
     while (1)
     {
-        if ((Output_5_Read()) && !(Output_4_Read())) {
-            motor_left(drift_right_pwm);
-            motor_right(right_pwm);
-        }
-        // drift left (right sensor white)
-        else if (!(Output_5_Read()) && (Output_4_Read())) {
+    if ((Output_5_Read()) && !(Output_4_Read())) {
+        motor_left(drift_right_pwm);
+        motor_right(right_pwm);
+        last_drift = 0;
+    }
+    // drift left (right sensor white)
+    else if (!(Output_5_Read()) && (Output_4_Read())) {
+        motor_left(left_pwm);
+        motor_right(drift_left_pwm);
+        last_drift = 1;
+    }
+    else if ((Output_5_Read()) && (Output_4_Read())) {
+        if (last_drift) {
             motor_left(left_pwm);
-            motor_right(drift_left_pwm);
+            motor_right(adjust_left_pwm);
         }
         else {
-            motor_left(left_pwm);
-            motor_right(right_pwm);
+        motor_left(adjust_right_pwm);
+        motor_right(right_pwm);}
+    }
+    else
+        {
+        motor_left(left_pwm);
+        motor_right(right_pwm);
         }
         int32 L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
         int32 R = ENCODER_RIGHT_SIGN * QuadDec_M2_GetCounter();
