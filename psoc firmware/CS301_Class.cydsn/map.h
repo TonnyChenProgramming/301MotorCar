@@ -21,8 +21,8 @@ unsigned char start_pos[2] = {13,17};
 unsigned char food_list[5][2]= {
 {11,7},
 {11,11},
-{5,3},
-{3,14},
+{8,1},
+{11,11},
 {5,5}
 };
 
