@@ -82,6 +82,7 @@ int main(void)
     int food_axes[5];
     int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists, food_axes);
 
+    CyDelay(1000);
     // --- Execute plan ---
     for (int i = 0; i < num_instructions; ++i)
     {
