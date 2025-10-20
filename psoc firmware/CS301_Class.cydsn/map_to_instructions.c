@@ -12,7 +12,7 @@
 #define USE_USB 1
 #endif
 
-#if USE_USB
+#if USE_USB 
 extern void usbPutString(char *s);
 static void dbg_puts(const char *s) {}
 #else

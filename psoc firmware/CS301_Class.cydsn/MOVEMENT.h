@@ -24,7 +24,8 @@ void turn_right_enc(void);
 void u_turn_enc(void);
 
 /* ---- Food Handling ---- */
-void run_for_food(uint8_t food_distance);
+void run_for_food(uint8_t food_distance, uint8_t axis);
+
 
 /* ---- Path Execution ---- */
 void execute_instruction(uint8_t instr, uint16_t *food_distances);

@@ -79,6 +79,7 @@ int main(void)
 
     RobotInstr instructions[MAX_INSTRUCTIONS];
     int food_dists[5];
+    int food_axes[5];
     int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists);
 
     // --- Execute plan ---
@@ -91,7 +92,7 @@ int main(void)
                 {
                     if (food_index < 5)
                     {
-                        run_for_food(food_dists[food_index]);
+                        run_for_food(food_dists[food_index], food_axes[food_index]);
                     }
                 } 
                 else

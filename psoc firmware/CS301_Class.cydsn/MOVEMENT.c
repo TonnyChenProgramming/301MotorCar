@@ -41,6 +41,7 @@ uint8_t adjust_left_pwm = 170;
 uint8_t adjust_right_pwm = 165;
 //food number tracking
 static uint8_t food_index = 0;
+extern int food_axes[5];
 static uint16_t count_down = 0;
 uint8_t last_drift = 0;
 
@@ -377,14 +378,20 @@ void move_forward_until_intersection(void)
 // ============================================================================
 // Run Until Food
 // ============================================================================
-void run_for_food(uint8_t food_distance)
+void run_for_food(uint8_t food_distance, uint8_t axis)
 {
-         //if (food_index < food_len)
-                //{
-    go_straigh_with_tick(83*food_distance);   // move forward to food location
+    int distance_ticks;
+
+    if (axis == 0)      // Horizontal (left/right)
+        distance_ticks = 150 * food_distance;
+    else if (axis == 1) // Vertical (up/down)
+        distance_ticks = 200 * food_distance;
+    else
+        distance_ticks = 200 * food_distance;  // fallback
+
+    go_straigh_with_tick(distance_ticks);
     stop();
-    CyDelay(1000);                  // 1 second pickup delay
-                //}
+    CyDelay(1000);  // pickup delay
 }
 
 void move_forward_skip_one_intersection(void)
@@ -440,7 +447,7 @@ void execute_instruction(uint8_t instr,uint16_t *food_distances)
         case FOOD:
                 if (food_index < 5)
                 {
-                    run_for_food(food_distances[food_index]);
+                    run_for_food(food_distances[food_index], food_axes[food_index]);
                     food_index++;
                 }
 
