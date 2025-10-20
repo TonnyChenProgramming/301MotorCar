@@ -237,8 +237,8 @@ void u_turn_enc(void)
     QuadDec_M2_SetCounter(0);
 
     // Both wheels move in opposite directions for a centered spin
-    motor_left(L_REV_PWM + 7);   // reverse left motor
-    motor_right(R_FWD_PWM + 7);  // forward right motor
+    motor_left(95 + 7);   // reverse left motor
+    motor_right(153 + 7);  // forward right motor
 
     while (1)
     {
@@ -260,17 +260,17 @@ void u_turn_enc(void)
     // Case 1: only left sensor sees line → drifted right → nudge left
     if ((o5 == 0) && (o4 != 0))
     {
-        motor_left(110);
-        motor_right(145);
-        CyDelay(80);   // small pulse to nudge left
+        motor_left(115);
+        motor_right(140);
+        CyDelay(50);   // small pulse to nudge left
         stop();
     }
     // Case 2: only right sensor sees line → drifted left → nudge right
     else if ((o4 == 0) && (o5 != 0))
     {
-        motor_left(145);
-        motor_right(110);
-        CyDelay(80);   // small pulse to nudge right
+        motor_left(140);
+        motor_right(115);
+        CyDelay(50);   // small pulse to nudge right
         stop();
     }
     // Case 3: both see line → already straight
@@ -405,9 +405,10 @@ void run_for_food(uint8_t food_distance, uint8_t axis)
     int distance_ticks;
 
     if (axis == 0)      // Horizontal (left/right)
-        distance_ticks = 126 * food_distance;   //123 almost
+        distance_ticks = 130 * food_distance;   //123 almost
     else if (axis == 1) // Vertical (up/down)
-        distance_ticks = 40 * food_distance;
+        distance_ticks = 91.5 * food_distance; //40
+    
     else
         distance_ticks = 10 * food_distance;  // fallback
 
