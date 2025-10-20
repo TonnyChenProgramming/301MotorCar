@@ -17,7 +17,8 @@ typedef struct {
 
 #define MAX_INSTRUCTIONS 256
 
-int generate_instructions_from_map(RobotInstr instr[], int max_instr, int food_dists[]);
+int generate_instructions_from_map(RobotInstr instr[], int max_instr, int food_dists[], int food_axes[]);
+
 
 
 #endif

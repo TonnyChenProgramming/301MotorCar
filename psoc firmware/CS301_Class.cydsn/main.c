@@ -80,7 +80,7 @@ int main(void)
     RobotInstr instructions[MAX_INSTRUCTIONS];
     int food_dists[5];
     int food_axes[5];
-    int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists);
+    int num_instructions = generate_instructions_from_map(instructions, MAX_INSTRUCTIONS, food_dists, food_axes);
 
     // --- Execute plan ---
     for (int i = 0; i < num_instructions; ++i)

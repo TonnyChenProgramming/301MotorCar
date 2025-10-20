@@ -383,11 +383,11 @@ void run_for_food(uint8_t food_distance, uint8_t axis)
     int distance_ticks;
 
     if (axis == 0)      // Horizontal (left/right)
-        distance_ticks = 150 * food_distance;
+        distance_ticks = 124 * food_distance;   //120 almost
     else if (axis == 1) // Vertical (up/down)
-        distance_ticks = 200 * food_distance;
+        distance_ticks = 100 * food_distance;
     else
-        distance_ticks = 200 * food_distance;  // fallback
+        distance_ticks = 10 * food_distance;  // fallback
 
     go_straigh_with_tick(distance_ticks);
     stop();
