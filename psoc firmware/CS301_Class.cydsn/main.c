@@ -94,6 +94,7 @@ int main(void)
                     if (food_index < 5)
                     {
                         run_for_food(food_dists[food_index], food_axes[food_index]);
+                        food_index++;
                     }
                 } 
                 else
