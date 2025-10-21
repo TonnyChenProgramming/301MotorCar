@@ -185,6 +185,7 @@ void turn_left_enc(void)
     }
 
     last_drift = 1;
+    move_forward_ticks(10);
     stop();
     CyDelay(100);
 }
@@ -223,7 +224,8 @@ void turn_right_enc(void)
     }
     // SMALL adjustment if undershoot
 
-    last_drift = 0;        
+    last_drift = 0;  
+    move_forward_ticks(10);
     stop();
     CyDelay(100);
 }
@@ -383,7 +385,7 @@ void move_forward_until_intersection(void)
 
         if (intersection) {
             stable++;
-            turn_cooldown = 150000;   // 80000 works
+            turn_cooldown = 120000;   // 80000 works
         } else {
             stable = 0;
             //LED2_Write(0);
@@ -394,7 +396,7 @@ void move_forward_until_intersection(void)
     }
 
     stop();
-    CyDelay(100);
+    CyDelay(70);
 }
 
 // ============================================================================
@@ -426,7 +428,7 @@ void move_forward_skip_one_intersection(void)
     QuadDec_M1_SetCounter(0);
     QuadDec_M2_SetCounter(0);
      int32 L = 0;
-    while (abs(L) < 60)
+    while (abs(L) < 60) //60
     {
          L = ENCODER_LEFT_SIGN  * QuadDec_M1_GetCounter();
         //LED1_Write(1);
@@ -438,7 +440,7 @@ void move_forward_skip_one_intersection(void)
     }
     LED1_Write(0);
     stop();
-    CyDelay(50);
+    CyDelay(60);
 
     // second intersection → stop here
     move_forward_until_intersection();
