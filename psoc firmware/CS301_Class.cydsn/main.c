@@ -130,7 +130,7 @@ int main(void)
     // --- Idle ---
     for(;;)
     { 
-        PWM_1_WriteCompare(127); 
+        PWM_1_WriteCompare(170); 
         PWM_2_WriteCompare(127); 
     }
 }

@@ -45,13 +45,13 @@ static inline bool has_side_branch(int r, int c, int came_dir, int go_dir) {
     return false;
 }
 
-
-
+// ============================================================
+// emit_plan_for_path – now fixes straight-to-goal distance logic
+// ============================================================
 static void emit_plan_for_path(const int path[][2], int len,
                                RobotInstr instr[], int *count, int max_instr,
                                int *heading_ptr,
                                int *food_dists_ptr, int *food_axes_ptr, int current_food_index)
-
 {
     if (len < 2) return;
     int idx = *count;
@@ -113,31 +113,51 @@ static void emit_plan_for_path(const int path[][2], int len,
             instr[idx++].type = iSTRAIGHT;
     }
 
+    // ============================================================
+    // Compute correct straight_to_goal distance from last decision
+    // ============================================================
     if (food_dists_ptr) {
-        int straight_to_goal = 0;
         int goal_r = path[len - 1][0], goal_c = path[len - 1][1];
         int prev_r = path[len - 2][0], prev_c = path[len - 2][1];
 
+        // Determine final direction toward goal
         int final_dir = -1;
         for (int d = 0; d < 4; ++d)
             if (goal_r + drow[d] == prev_r && goal_c + dcol[d] == prev_c)
                 final_dir = d;
 
-        for (int i = len - 1; i > 0; --i) {
-            int r1 = path[i][0], c1 = path[i][1];
-            int r0 = path[i - 1][0], c0 = path[i - 1][1];
-            int dir = -1;
-            for (int d = 0; d < 4; ++d)
-                if (r1 + drow[d] == r0 && c1 + dcol[d] == c0)
-                    dir = d;
-            if (dir == final_dir)
+        int straight_to_goal = 0;
+
+        if (final_dir != -1) {
+            for (int i = len - 1; i > 0; --i) {
+                int r_cur = path[i][0];
+                int c_cur = path[i][1];
+                int r_prev = path[i - 1][0];
+                int c_prev = path[i - 1][1];
+
+                int dir = -1;
+                for (int d = 0; d < 4; ++d)
+                    if (r_cur + drow[d] == r_prev && c_cur + dcol[d] == c_prev)
+                        dir = d;
+
+                if (dir != final_dir)
+                    break; // stopped turning
+
+                int came_dir = dir;
+                int go_dir = (came_dir + 2) & 3;
+
+                // stop before last decision point
+                if (has_side_branch(r_cur, c_cur, came_dir, go_dir))
+                    break;
+
                 straight_to_goal++;
-            else
-                break;
+            }
         }
-        int axis = 0; 
-        if (final_dir == 1 || final_dir == 3) 
+
+        int axis = 0;
+        if (final_dir == 1 || final_dir == 3)
             axis = 1;
+
         if (food_axes_ptr)
             food_axes_ptr[current_food_index] = axis;
 
@@ -151,8 +171,9 @@ static void emit_plan_for_path(const int path[][2], int len,
     *heading_ptr = heading;
 }
 
-
-
+// ============================================================
+// generate_instructions_from_map
+// ============================================================
 int generate_instructions_from_map(RobotInstr instr[], int max_instr, int food_dists[], int food_axes[])
 {
     int total = 0;
@@ -253,7 +274,9 @@ int generate_instructions_from_map(RobotInstr instr[], int max_instr, int food_d
             }
         }
 
-        emit_plan_for_path((const int (*)[2])path, len, instr, &total, max_instr, &heading, food_dists, food_axes, f);
+        emit_plan_for_path((const int (*)[2])path, len, instr,
+                           &total, max_instr, &heading,
+                           food_dists, food_axes, f);
 
         cur_r = goal_r;
         cur_c = goal_c;
